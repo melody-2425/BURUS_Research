@@ -4,22 +4,28 @@
             <span class="brand-mark">B</span>
             <span><strong>BURUS</strong><small>Barangay Utility Reporting</small></span>
         </a>
-        <div>
-            <a class="ghost-link" href="index.php?page=login">Login</a>
-            <a class="btn btn-primary" href="index.php?page=register">Get Started</a>
+        <div class="landing-menu">
+            <a href="index.php?page=landing">Home</a>
+            <a href="#resources">Resources</a>
+            <a href="#contact">Contact Us</a>
+        </div>
+        <div class="landing-actions">
+            <a class="btn btn-outline" href="index.php?page=login">Log In</a>
+            <a class="btn btn-primary" href="index.php?page=register">Sign Up</a>
         </div>
     </nav>
+
     <section class="hero">
         <div class="hero-copy">
-            <span class="section-kicker">Transparent Governance</span>
-            <h1>BURUS</h1>
-            <p>A barangay utility reporting system for residents, officials, and administrators to submit, assign, update, and track infrastructure concerns.</p>
+            <span class="section-kicker">Transparent barangay service</span>
+            <h1>Digitalizing Civic Service for a Better Barangay</h1>
+            <p>BURUS helps residents report local utility concerns and helps barangay teams track, respond, and resolve issues with clear status updates.</p>
             <div class="button-row">
-                <a class="btn btn-primary" href="index.php?page=login">Open Dashboard</a>
-                <a class="btn btn-light" href="index.php?page=report-new">Report an Issue</a>
+                <a class="btn btn-primary" href="index.php?page=login">Get Started</a>
+                <a class="btn btn-outline" href="#resources">View Resources</a>
             </div>
         </div>
-        <div class="hero-dashboard">
+        <div class="hero-dashboard" aria-hidden="true">
             <div class="hero-topline"></div>
             <div class="hero-grid">
                 <div></div><div></div><div></div>
@@ -29,21 +35,44 @@
             </div>
         </div>
     </section>
-    <section class="feature-grid">
+
+    <section id="resources" class="feature-grid">
         <article class="feature-card">
             <span class="feature-icon"></span>
-            <h3>Resident Reporting</h3>
-            <p>Submit utility complaints with category, location, description, and photo upload UI.</p>
+            <h3>Fast Reporting</h3>
+            <p>Residents can submit issue type, location, description, and photo evidence through a clear guided form.</p>
         </article>
         <article class="feature-card">
             <span class="feature-icon"></span>
-            <h3>Barangay Management</h3>
-            <p>Officials can review, assign, and update reports filtered to their barangay.</p>
+            <h3>Transparent Tracking</h3>
+            <p>Ticket status, assignment, comments, and timelines are visible from submission through resolution.</p>
         </article>
         <article class="feature-card">
             <span class="feature-icon"></span>
-            <h3>Public Accountability</h3>
-            <p>Track ticket progress, timeline events, notifications, feedback, and analytics.</p>
+            <h3>Community Engagement</h3>
+            <p>Feedback threads, notifications, and analytics keep residents and officials aligned on barangay concerns.</p>
         </article>
     </section>
+
+    <section class="landing-cta">
+        <div>
+            <h2>Ready to improve response visibility?</h2>
+            <p>Open the prototype dashboard and begin tracking barangay reports in one place.</p>
+        </div>
+        <a class="btn btn-primary" href="index.php?page=login">Open BURUS</a>
+    </section>
+
+    <footer id="contact" class="landing-footer">
+        <div class="landing-footer-inner">
+            <a class="brand" href="index.php?page=landing">
+                <span class="brand-mark">B</span>
+                <span><strong>BURUS</strong><small>Civic service platform</small></span>
+            </a>
+            <div class="footer-links">
+                <a href="index.php?page=landing">Home</a>
+                <a href="#resources">Resources</a>
+                <a href="index.php?page=login">Contact</a>
+            </div>
+        </div>
+    </footer>
 </main>

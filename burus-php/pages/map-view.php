@@ -8,69 +8,75 @@ $pendingReports = countReportsByStatus($mapReports, 'Pending');
 $progressReports = countReportsByStatus($mapReports, 'In Progress');
 $resolvedReports = countReportsByStatus($mapReports, 'Resolved');
 ?>
-<section class="map-counts">
-    <article class="stat-card"><span>Total Reports</span><strong><?php echo e($totalReports); ?></strong><small><?php echo e($barangay['name']); ?></small></article>
-    <article class="stat-card danger"><span>Pending Reports</span><strong><?php echo e($pendingReports); ?></strong><small>Not solved</small></article>
-    <article class="stat-card warning"><span>In Progress Reports</span><strong><?php echo e($progressReports); ?></strong><small>Not solved</small></article>
-    <article class="stat-card success"><span>Resolved Reports</span><strong><?php echo e($resolvedReports); ?></strong><small>Solved</small></article>
-</section>
-<section class="map-layout">
-    <div class="panel map-panel">
-        <div class="panel-heading"><div><h2>Barangay Map View</h2><p>Transparent overlay map showing reported issues for <?php echo e($barangay['name']); ?>.</p></div></div>
-        <div class="static-map">
-            <div class="map-glass"></div>
-            <span class="road road-a"></span>
-            <span class="road road-b"></span>
-            <span class="road road-c"></span>
-            <span class="zone zone-a"></span>
-            <span class="zone zone-b"></span>
-            <?php foreach ($mapReports as $report): ?>
-                <?php
-                $resident = getUserById($report['resident_id']);
-                $isSolved = $report['status'] === 'Resolved';
-                $mapStatusClass = strtolower(str_replace(' ', '-', $report['status']));
-                ?>
-                <a class="map-overlay-pin map-<?php echo e($mapStatusClass); ?>" href="index.php?page=report-details&id=<?php echo e($report['id']); ?>" style="left: <?php echo e($report['pin']['x']); ?>%; top: <?php echo e($report['pin']['y']); ?>%;" title="<?php echo e($report['ticket_id'] . ' - ' . $report['issue_type']); ?>">
-                    <span class="pin-dot"></span>
-                    <span class="pin-card">
-                        <strong><?php echo e($report['ticket_id']); ?></strong>
-                        <small><?php echo e($report['issue_type']); ?></small>
-                        <small><?php echo e($resident['name'] ?? 'Resident'); ?></small>
-                        <small><?php echo e($report['location']); ?></small>
-                        <small><?php echo e($report['date_submitted']); ?></small>
-                        <small><?php echo e($report['status']); ?></small>
-                        <em><?php echo e($isSolved ? 'Solved' : 'Not Solved'); ?></em>
-                    </span>
-                </a>
-            <?php endforeach; ?>
-        </div>
+<section class="page-header">
+    <div>
+        <h2>Barangay Map View</h2>
+        <p>All reports from residents in <?php echo e($barangay['name']); ?> are shown on the shared map.</p>
     </div>
-    <aside class="panel map-side-panel">
-        <div class="panel-heading compact-heading">
-            <div>
-                <h2>Pinned Issues</h2>
-                <p><?php echo e($totalReports); ?> report<?php echo $totalReports === 1 ? '' : 's'; ?> shown on map</p>
-            </div>
+    <a class="btn btn-primary" href="index.php?page=report-new">Report New Issue</a>
+</section>
+
+<section class="stats-row">
+    <article class="stat-card"><span>Total Reports</span><strong><?php echo e($totalReports); ?></strong><small><?php echo e($barangay['name']); ?></small></article>
+    <article class="stat-card warning"><span>Pending</span><strong><?php echo e($pendingReports); ?></strong><small>Waiting review</small></article>
+    <article class="stat-card"><span>In Progress</span><strong><?php echo e($progressReports); ?></strong><small>Assigned work</small></article>
+    <article class="stat-card success"><span>Resolved</span><strong><?php echo e($resolvedReports); ?></strong><small>Solved</small></article>
+</section>
+
+<section class="map-page">
+    <aside class="map-sidebar">
+        <form method="get" class="stack-form">
+            <input type="hidden" name="page" value="map-view">
+            <input class="search-input" type="search" name="q" value="<?php echo e($_GET['q'] ?? ''); ?>" placeholder="Search for addresses or specific issues...">
+        </form>
+
+        <h2>Issue Legend</h2>
+        <div class="legend">
+            <span><b class="water"></b>Water Leak</span>
+            <span><b class="pothole"></b>Pothole</span>
+            <span><b class="power"></b>Power Outage</span>
+            <span><b class="resolved"></b>Resolved</span>
         </div>
-        <div class="map-card-list">
+
+        <h2>Nearby Active Issues</h2>
+        <div class="activity-list">
             <?php foreach ($mapReports as $report): ?>
-                <?php
-                $resident = getUserById($report['resident_id']);
-                $isSolved = $report['status'] === 'Resolved';
-                $mapStatusClass = strtolower(str_replace(' ', '-', $report['status']));
-                ?>
-                <a href="index.php?page=report-details&id=<?php echo e($report['id']); ?>" class="map-card map-<?php echo e($mapStatusClass); ?> <?php echo e($isSolved ? 'solved' : 'not-solved'); ?>">
-                    <span class="map-card-head">
-                        <strong><?php echo e($report['ticket_id']); ?></strong>
-                        <em class="badge <?php echo e(getStatusBadgeClass($report['status'])); ?>"><?php echo e($report['status']); ?></em>
-                    </span>
-                    <span><b>Issue:</b> <?php echo e($report['issue_type']); ?></span>
-                    <span><b>Resident:</b> <?php echo e($resident['name'] ?? 'Resident'); ?></span>
-                    <span><b>Location:</b> <?php echo e($report['location']); ?></span>
-                    <span><b>Date:</b> <?php echo e($report['date_submitted']); ?></span>
-                    <span class="solved-label"><?php echo e($isSolved ? 'Solved' : 'Not Solved'); ?></span>
+                <?php $resident = getUserById($report['resident_id']); ?>
+                <a class="map-card" href="index.php?page=report-details&id=<?php echo e($report['id']); ?>">
+                    <strong><?php echo e($report['ticket_id']); ?></strong>
+                    <small><?php echo e($report['issue_type']); ?> by <?php echo e($resident['name'] ?? 'Resident'); ?></small>
+                    <span class="status-badge <?php echo e(getTransparentStatusClass($report)); ?>"><?php echo e(getTransparentStatusLabel($report)); ?></span>
                 </a>
             <?php endforeach; ?>
         </div>
     </aside>
+
+    <div class="map-canvas">
+        <span class="map-road road-a"></span>
+        <span class="map-road road-b"></span>
+        <span class="map-road road-c"></span>
+
+        <?php foreach ($mapReports as $report): ?>
+            <?php
+            $resident = getUserById($report['resident_id']);
+            $isSolved = $report['status'] === 'Resolved';
+            $statusClass = $report['status'] === 'In Progress' ? 'status-progress' : 'status-' . strtolower($report['status']);
+            $sameAreaCount = count(array_filter($mapReports, fn($item) => $item['location'] === $report['location']));
+            ?>
+            <a class="map-pin <?php echo e($statusClass); ?>" href="index.php?page=report-details&id=<?php echo e($report['id']); ?>" style="left: <?php echo e($report['pin']['x']); ?>%; top: <?php echo e($report['pin']['y']); ?>%;">
+                <span class="pin-dot"></span>
+                <span class="map-popup">
+                    <strong><?php echo e($report['ticket_id']); ?></strong>
+                    <small>Resident: <?php echo e($resident['name'] ?? 'Resident'); ?></small>
+                    <small>Issue: <?php echo e($report['issue_type']); ?></small>
+                    <small>Location: <?php echo e($report['location']); ?></small>
+                    <small>Status: <?php echo e($report['status']); ?></small>
+                    <small><?php echo e($isSolved ? 'Solved' : 'Not Solved'); ?></small>
+                    <small><?php echo e($sameAreaCount); ?> report<?php echo $sameAreaCount === 1 ? '' : 's'; ?> in this area</small>
+                </span>
+            </a>
+        <?php endforeach; ?>
+
+        <a class="btn btn-primary map-new-button" href="index.php?page=report-new">Report New Issue</a>
+    </div>
 </section>

@@ -104,6 +104,19 @@ $reports = [
         ],
         'rating' => null,
         'pin' => ['x' => 28, 'y' => 42],
+        'evidence' => [
+            [
+                'type' => 'resident_upload',
+                'title' => 'Initial Report Photo',
+                'description' => 'Photo submitted by resident showing the reported issue.',
+                'image' => 'assets/images/sample-water-leak-before.jpg',
+                'uploaded_by' => 'Maria Santos',
+                'uploaded_role' => 'resident',
+                'date' => 'May 18, 2026 09:30 AM',
+            ],
+        ],
+        'resolution_evidence' => [],
+        'resident_confirmation' => null,
     ],
     [
         'id' => 2,
@@ -125,6 +138,29 @@ $reports = [
         ],
         'rating' => null,
         'pin' => ['x' => 63, 'y' => 34],
+        'evidence' => [
+            [
+                'type' => 'resident_upload',
+                'title' => 'Initial Report Photo',
+                'description' => 'Photo submitted by resident showing the reported issue.',
+                'image' => 'assets/images/sample-street-light-before.jpg',
+                'uploaded_by' => 'Carlo Reyes',
+                'uploaded_role' => 'resident',
+                'date' => 'May 17, 2026 07:10 PM',
+            ],
+        ],
+        'resolution_evidence' => [
+            [
+                'type' => 'official_resolution',
+                'title' => 'Resolution Photo',
+                'description' => 'Photo uploaded by official showing that the issue has been fixed.',
+                'image' => 'assets/images/sample-street-light-after.jpg',
+                'uploaded_by' => 'Leah Cruz',
+                'uploaded_role' => 'official',
+                'date' => 'May 18, 2026 04:35 PM',
+            ],
+        ],
+        'resident_confirmation' => null,
     ],
     [
         'id' => 3,
@@ -145,6 +181,35 @@ $reports = [
         ],
         'rating' => 5,
         'pin' => ['x' => 45, 'y' => 58],
+        'evidence' => [
+            [
+                'type' => 'resident_upload',
+                'title' => 'Initial Report Photo',
+                'description' => 'Photo submitted by resident showing the reported issue.',
+                'image' => 'assets/images/sample-road-before.jpg',
+                'uploaded_by' => 'Juan Dela Cruz',
+                'uploaded_role' => 'resident',
+                'date' => 'May 15, 2026 08:20 AM',
+            ],
+        ],
+        'resolution_evidence' => [
+            [
+                'type' => 'official_resolution',
+                'title' => 'Resolution Photo',
+                'description' => 'Photo uploaded by official showing that the issue has been fixed.',
+                'image' => 'assets/images/sample-road-after.jpg',
+                'uploaded_by' => 'Road Maintenance Team',
+                'uploaded_role' => 'official',
+                'date' => 'May 17, 2026 02:30 PM',
+            ],
+        ],
+        'resident_confirmation' => [
+            'confirmed' => false,
+            'status' => 'Still Needs Attention',
+            'comment' => 'The pothole was repaired, but the area still needs cleaning.',
+            'rating' => 3,
+            'date' => 'May 17, 2026 05:10 PM',
+        ],
     ],
     [
         'id' => 4,
@@ -165,6 +230,35 @@ $reports = [
         ],
         'rating' => 4,
         'pin' => ['x' => 76, 'y' => 67],
+        'evidence' => [
+            [
+                'type' => 'resident_upload',
+                'title' => 'Initial Report Photo',
+                'description' => 'Photo submitted by resident showing the reported issue.',
+                'image' => 'assets/images/sample-trash-before.jpg',
+                'uploaded_by' => 'Ana Lim',
+                'uploaded_role' => 'resident',
+                'date' => 'May 14, 2026 10:05 AM',
+            ],
+        ],
+        'resolution_evidence' => [
+            [
+                'type' => 'official_resolution',
+                'title' => 'Resolution Photo',
+                'description' => 'Photo uploaded by official showing that the issue has been fixed.',
+                'image' => 'assets/images/sample-trash-after.jpg',
+                'uploaded_by' => 'Sanitation Team',
+                'uploaded_role' => 'official',
+                'date' => 'May 16, 2026 03:45 PM',
+            ],
+        ],
+        'resident_confirmation' => [
+            'confirmed' => true,
+            'status' => 'Confirmed Resolved',
+            'comment' => 'The trash has been collected and the area is now clean.',
+            'rating' => 5,
+            'date' => 'May 18, 2026 05:10 PM',
+        ],
     ],
 ];
 
@@ -333,8 +427,32 @@ $staff = [
 ];
 
 $activityLogs = [
-    ['barangay_id' => 'tejero', 'message' => 'Maintenance Team A accepted #BRGY-2026-00124.', 'date' => 'May 18, 2026'],
-    ['barangay_id' => 'tejero', 'message' => 'Sanitation Team resolved #BRGY-2026-00126.', 'date' => 'May 16, 2026'],
-    ['barangay_id' => 'labangon', 'message' => 'Road Maintenance Team resolved #BRGY-2026-00125.', 'date' => 'May 17, 2026'],
+    [
+        'id' => 1,
+        'barangay_id' => 'tejero',
+        'title' => 'New report submitted',
+        'message' => 'Maria Santos submitted a Water Leak report.',
+        'type' => 'report',
+        'date' => 'May 18, 2026',
+        'time' => '09:30 AM'
+    ],
+    [
+        'id' => 2,
+        'barangay_id' => 'tejero',
+        'title' => 'Report status updated',
+        'message' => 'Street Light report was marked In Progress.',
+        'type' => 'status',
+        'date' => 'May 18, 2026',
+        'time' => '10:15 AM'
+    ],
+    [
+        'id' => 3,
+        'barangay_id' => 'labangon',
+        'title' => 'Road damage report resolved',
+        'message' => 'Road Damage report near Katipunan Street was resolved.',
+        'type' => 'resolved',
+        'date' => 'May 18, 2026',
+        'time' => '11:00 AM'
+    ]
 ];
 ?>

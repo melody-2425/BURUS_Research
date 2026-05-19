@@ -17,6 +17,7 @@
         <div class="demo-accounts">
             <strong>Demo accounts</strong>
             <span>resident@burus.test / 123456</span>
+            <span>official@burus.test / 123456</span>
             <span>admin@burus.test / 123456</span>
             <span>labangon@burus.test / 123456</span>
         </div>

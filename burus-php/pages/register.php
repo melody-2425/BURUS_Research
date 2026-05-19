@@ -5,7 +5,7 @@
             <span><strong>BURUS</strong><small>Resident Registration</small></span>
         </a>
         <h1>Create resident account</h1>
-        <p>This prototype simulates registration with PHP sessions and hardcoded sample data.</p>
+        <p>This prototype saves shared accounts to server-side JSON files.</p>
         <form method="post" class="stack-form two-cols">
             <label>Full Name<input type="text" name="name" value="Ana Mercado" required></label>
             <label>Email Address<input type="email" name="email" value="ana@burus.test" required></label>

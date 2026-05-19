@@ -1,9 +1,10 @@
 <?php
-global $feedback;
+global $reports, $feedback;
 $user = getCurrentUser();
 $barangay = getCurrentBarangay();
-$myReports = getReportsByResident($user['id']);
+$myReports = getReportsByResident($reports, $user['id']);
 $myFeedback = getFeedbackByResident($feedback, $user['id']);
+$recentReports = array_slice($myReports, 0, 4);
 $recentReply = null;
 foreach ($myFeedback as $item) {
     if (!empty($item['official_reply'])) {
@@ -11,68 +12,88 @@ foreach ($myFeedback as $item) {
         break;
     }
 }
-$readyToRate = array_values(array_filter($myFeedback, fn($item) => canResidentRate($item)));
 ?>
-<section class="content-grid">
-    <div class="welcome-card">
+<section class="page-header">
+    <div>
         <span class="section-kicker"><?php echo e($barangay['name']); ?></span>
-        <h2>Hello, <?php echo e($user['name']); ?></h2>
-        <p>Track your submitted infrastructure concerns and receive updates from barangay staff.</p>
-        <a class="btn btn-primary" href="index.php?page=report-new">Report New Issue</a>
+        <h2>Welcome back, <?php echo e($user['name']); ?>.</h2>
+        <p>Track your reports, review barangay updates, and continue feedback conversations.</p>
     </div>
-    <div class="stats-row">
-        <article class="stat-card"><span>Total</span><strong><?php echo count($myReports); ?></strong><small>My complaints</small></article>
-        <article class="stat-card"><span>Pending</span><strong><?php echo countReportsByStatus($myReports, 'Pending'); ?></strong><small>Waiting review</small></article>
-        <article class="stat-card"><span>In Progress</span><strong><?php echo countReportsByStatus($myReports, 'In Progress'); ?></strong><small>Being handled</small></article>
-        <article class="stat-card"><span>Resolved</span><strong><?php echo countReportsByStatus($myReports, 'Resolved'); ?></strong><small>Completed</small></article>
-    </div>
+    <a class="btn btn-primary" href="index.php?page=report-new">Report New Issue</a>
 </section>
-<section class="panel">
-    <div class="panel-heading">
-        <div><h2>Recent Reports</h2><p>Your latest submitted tickets.</p></div>
-        <a class="ghost-link" href="index.php?page=my-reports">View all</a>
-    </div>
-    <?php $reports = $myReports; include __DIR__ . '/partials/report-table.php'; ?>
+
+<section class="stats-row">
+    <article class="stat-card"><span>Total Reports</span><strong><?php echo count($myReports); ?></strong><small>Submitted by you</small></article>
+    <article class="stat-card warning"><span>Pending</span><strong><?php echo countReportsByStatus($myReports, 'Pending'); ?></strong><small>Waiting for review</small></article>
+    <article class="stat-card"><span>In Progress</span><strong><?php echo countReportsByStatus($myReports, 'In Progress'); ?></strong><small>Currently assigned</small></article>
+    <article class="stat-card success"><span>Resolved</span><strong><?php echo countReportsByStatus($myReports, 'Resolved'); ?></strong><small>Completed tickets</small></article>
 </section>
-<section class="two-column">
-    <div class="panel">
-        <h2>Issue Types</h2>
-        <div class="bar-list">
-            <?php foreach (getCommonIssueTypes($myReports) as $type => $count): ?>
-                <div class="bar-item"><span><?php echo e($type); ?></span><b style="width: <?php echo e(30 + ($count * 20)); ?>%"></b><em><?php echo e($count); ?></em></div>
-            <?php endforeach; ?>
-        </div>
+
+<section class="dashboard-grid">
+    <div class="grid">
+        <article class="table-card">
+            <div class="panel-heading">
+                <div>
+                    <h2>Recent Reports</h2>
+                    <p>Your latest submitted tickets and current status.</p>
+                </div>
+                <a class="ghost-link" href="index.php?page=my-reports">View all</a>
+            </div>
+            <div class="table-wrap">
+                <table class="report-table">
+                    <thead>
+                        <tr><th>Ticket ID</th><th>Issue Type</th><th>Date Submitted</th><th>Status</th><th>Action</th></tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($recentReports as $report): ?>
+                            <tr>
+                                <td><strong><?php echo e($report['ticket_id']); ?></strong><small><?php echo e($report['location']); ?></small></td>
+                                <td><?php echo e($report['issue_type']); ?></td>
+                                <td><?php echo e($report['date_submitted']); ?></td>
+                                <td><span class="status-badge <?php echo e(getTransparentStatusClass($report)); ?>"><?php echo e(getTransparentStatusLabel($report)); ?></span></td>
+                                <td><a class="table-link" href="index.php?page=report-details&id=<?php echo e($report['id']); ?>">Open</a></td>
+                            </tr>
+                        <?php endforeach; ?>
+                        <?php if (!$recentReports): ?><tr><td colspan="5" class="empty-state">No reports submitted yet.</td></tr><?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+        </article>
+
+        <section class="grid grid-2">
+            <article class="card">
+                <h2>Announcements</h2>
+                <p class="muted">Barangay office hours remain <?php echo e($barangay['office_hours']); ?>. Emergency concerns should still be reported directly to the barangay desk.</p>
+            </article>
+            <article class="card">
+                <h2>Community Activity</h2>
+                <div class="activity-list">
+                    <?php foreach (array_slice(getActivityLogsByBarangay($barangay['id']), 0, 2) as $log): ?>
+                        <div><strong><?php echo e($log['message']); ?></strong><small><?php echo e($log['date']); ?></small></div>
+                    <?php endforeach; ?>
+                </div>
+            </article>
+        </section>
     </div>
-    <div class="panel">
-        <div class="panel-heading compact-heading">
-            <div>
-                <h2>Feedback & Response</h2>
-                <p>Official replies and service ratings for your reports.</p>
+
+    <aside class="grid">
+        <div class="quick-card">
+            <h2>Quick Actions</h2>
+            <p>Common tasks for resident reporting.</p>
+            <div class="quick-list">
+                <a href="index.php?page=report-new">Create a new report</a>
+                <a href="index.php?page=map-view">View barangay map</a>
+                <a href="index.php?page=messages">Open feedback threads</a>
             </div>
-            <a class="ghost-link" href="index.php?page=messages">Open</a>
         </div>
-        <div class="feedback-mini-list">
-            <div>
-                <span>Recent Official Replies</span>
-                <strong><?php echo e(count(array_filter($myFeedback, fn($item) => !empty($item['official_reply'])))); ?></strong>
-            </div>
-            <div>
-                <span>Reports Ready for Rating</span>
-                <strong><?php echo e(count($readyToRate)); ?></strong>
-            </div>
+        <article class="card">
+            <h2>Recent Updates</h2>
             <?php if ($recentReply): ?>
-                <a href="index.php?page=messages&feedback_id=<?php echo e($recentReply['id']); ?>">
-                    <span>Latest Feedback Thread</span>
-                    <strong><?php echo e($recentReply['ticket_id']); ?></strong>
-                    <small><?php echo e($recentReply['official_reply']); ?></small>
-                </a>
+                <p class="muted"><?php echo e($recentReply['ticket_id']); ?></p>
+                <strong><?php echo e($recentReply['official_reply']); ?></strong>
             <?php else: ?>
-                <a href="index.php?page=messages">
-                    <span>Latest Feedback Thread</span>
-                    <strong>No official replies yet</strong>
-                    <small>Open the feedback page to add a report comment.</small>
-                </a>
+                <p class="muted">No official replies yet. Your updates will appear here after barangay staff responds.</p>
             <?php endif; ?>
-        </div>
-    </div>
+        </article>
+    </aside>
 </section>

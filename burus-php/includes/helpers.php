@@ -1,5 +1,12 @@
 <?php
-require_once __DIR__ . '/../data/sample-data.php';
+require_once __DIR__ . '/storage.php';
+
+$barangays = loadJson('barangays.json');
+$users = loadJson('users.json');
+$reports = loadJson('reports.json');
+$feedback = loadJson('feedback.json');
+$notifications = loadJson('notifications.json');
+$staff = loadJson('staff.json');
 
 function e($value)
 {
@@ -82,15 +89,27 @@ function getBarangayById($barangayId)
 
 function getReportsByBarangay($reports, $barangayId)
 {
+    $reports = array_map('normalizeReportRecord', $reports);
+
     return array_values(array_filter($reports, function ($report) use ($barangayId) {
         return $report['barangay_id'] === $barangayId;
     }));
 }
 
-function getReportsByResident($residentId)
+function getReportsByResident($reportsOrResidentId, $residentId = null)
 {
     global $reports;
-    return array_values(array_filter($reports, fn($report) => $report['resident_id'] === (int) $residentId));
+
+    if ($residentId === null) {
+        $residentId = $reportsOrResidentId;
+        $sourceReports = $reports;
+    } else {
+        $sourceReports = $reportsOrResidentId;
+    }
+
+    $sourceReports = array_map('normalizeReportRecord', $sourceReports);
+
+    return array_values(array_filter($sourceReports, fn($report) => $report['resident_id'] === (int) $residentId));
 }
 
 function getReportById($id)
@@ -99,11 +118,30 @@ function getReportById($id)
 
     foreach ($reports as $report) {
         if ($report['id'] === (int) $id) {
-            return $report;
+            return normalizeReportRecord($report);
         }
     }
 
     return null;
+}
+
+function normalizeReportRecord($report)
+{
+    if (!isset($report['pin']) && isset($report['pin_x'], $report['pin_y'])) {
+        $report['pin'] = ['x' => (int) $report['pin_x'], 'y' => (int) $report['pin_y']];
+    }
+
+    if (!isset($report['pin'])) {
+        $report['pin'] = ['x' => 50, 'y' => 50];
+    }
+
+    $report['evidence'] = $report['evidence'] ?? [];
+    $report['resolution_evidence'] = $report['resolution_evidence'] ?? [];
+    $report['resident_confirmation'] = $report['resident_confirmation'] ?? null;
+    $report['timeline'] = $report['timeline'] ?? ['Submitted'];
+    $report['comments'] = $report['comments'] ?? [];
+
+    return $report;
 }
 
 function countReportsByStatus($reports, $status)
@@ -195,6 +233,69 @@ function canResidentRate($item)
     return $item['status'] === 'Resolved' && empty($item['rating']);
 }
 
+function getNotificationsByUser($userId, $barangayId)
+{
+    global $notifications;
+
+    return array_values(array_filter($notifications, function ($notification) use ($userId, $barangayId) {
+        return $notification['barangay_id'] === $barangayId && $notification['user_id'] === (int) $userId;
+    }));
+}
+
+function isConfirmedResolved($report)
+{
+    return isset($report['resident_confirmation'])
+        && ($report['resident_confirmation']['status'] ?? '') === 'Confirmed Resolved';
+}
+
+function needsFurtherAttention($report)
+{
+    return isset($report['resident_confirmation'])
+        && ($report['resident_confirmation']['status'] ?? '') === 'Still Needs Attention';
+}
+
+function getTransparentStatusLabel($report)
+{
+    if (needsFurtherAttention($report)) {
+        return 'Follow-up Needed';
+    }
+
+    if (($report['status'] ?? '') === 'Resolved' && isConfirmedResolved($report)) {
+        return 'Confirmed Resolved';
+    }
+
+    if (($report['status'] ?? '') === 'Resolved') {
+        return 'Awaiting Resident Confirmation';
+    }
+
+    if (($report['status'] ?? '') === 'In Progress') {
+        return 'Being Worked On';
+    }
+
+    return 'Not Solved';
+}
+
+function getTransparentStatusClass($report)
+{
+    if (needsFurtherAttention($report)) {
+        return 'status-followup';
+    }
+
+    if (($report['status'] ?? '') === 'Resolved' && isConfirmedResolved($report)) {
+        return 'status-resolved';
+    }
+
+    if (($report['status'] ?? '') === 'Resolved') {
+        return 'status-awaiting';
+    }
+
+    if (($report['status'] ?? '') === 'In Progress') {
+        return 'status-progress';
+    }
+
+    return 'status-pending';
+}
+
 function countLowRatings($feedback)
 {
     return count(array_filter($feedback, function ($item) {
@@ -202,10 +303,16 @@ function countLowRatings($feedback)
     }));
 }
 
-function getActivityLogsByBarangay($barangayId)
-{
+function getActivityLogsByBarangay($barangayId) {
     global $activityLogs;
-    return array_values(array_filter($activityLogs, fn($log) => $log['barangay_id'] === $barangayId));
+
+    if (!isset($activityLogs) || !is_array($activityLogs)) {
+        return [];
+    }
+
+    return array_values(array_filter($activityLogs, function($log) use ($barangayId) {
+        return isset($log['barangay_id']) && $log['barangay_id'] === $barangayId;
+    }));
 }
 
 function getCommonIssueTypes($reports)
@@ -226,9 +333,111 @@ function generateTicketId()
     return '#BRGY-' . date('Y') . '-' . str_pad((string) random_int(120, 999), 5, '0', STR_PAD_LEFT);
 }
 
+function isResident($user)
+{
+    return $user && $user['role'] === 'resident';
+}
+
+function isOfficial($user)
+{
+    return $user && $user['role'] === 'official';
+}
+
+function isAdmin($user)
+{
+    return $user && $user['role'] === 'admin';
+}
+
+function canManageReports($user)
+{
+    return $user && in_array($user['role'], ['official', 'admin'], true);
+}
+
+function canAccessSystemSettings($user)
+{
+    return isAdmin($user);
+}
+
+function canAccessAnalytics($user)
+{
+    return isAdmin($user);
+}
+
+function canAccessResidentDirectory($user)
+{
+    return isAdmin($user);
+}
+
 function isAdminLike($user)
 {
-    return $user && in_array($user['role'], ['admin', 'official'], true);
+    return canManageReports($user);
+}
+
+function roleLabel($user)
+{
+    if (isAdmin($user)) {
+        return 'Administrator';
+    }
+
+    if (isOfficial($user)) {
+        return 'Barangay Official';
+    }
+
+    if (isResident($user)) {
+        return 'Resident';
+    }
+
+    return 'Guest';
+}
+
+function allowedPagesForRole($user)
+{
+    if (isResident($user)) {
+        return [
+            'resident-dashboard',
+            'my-reports',
+            'report-new',
+            'map-view',
+            'report-details',
+            'messages',
+            'notifications',
+            'profile',
+        ];
+    }
+
+    if (isOfficial($user)) {
+        return [
+            'official-dashboard',
+            'issue-reports',
+            'map-view',
+            'report-details',
+            'messages',
+            'notifications',
+            'profile',
+        ];
+    }
+
+    if (isAdmin($user)) {
+        return [
+            'admin-dashboard',
+            'issue-reports',
+            'resident-directory',
+            'analytics',
+            'system-settings',
+            'map-view',
+            'report-details',
+            'messages',
+            'notifications',
+            'profile',
+        ];
+    }
+
+    return [];
+}
+
+function canAccessPage($user, $page)
+{
+    return in_array($page, allowedPagesForRole($user), true);
 }
 
 function requireLogin()
@@ -241,7 +450,15 @@ function requireLogin()
 
 function routeForUser($user)
 {
-    return isAdminLike($user) ? 'admin-dashboard' : 'resident-dashboard';
+    if (isAdmin($user)) {
+        return 'admin-dashboard';
+    }
+
+    if (isOfficial($user)) {
+        return 'official-dashboard';
+    }
+
+    return 'resident-dashboard';
 }
 
 function pageTitle($page)
@@ -251,12 +468,13 @@ function pageTitle($page)
         'login' => 'Sign In',
         'register' => 'Create Account',
         'resident-dashboard' => 'Resident Dashboard',
+        'official-dashboard' => 'Official Dashboard',
         'my-reports' => 'My Reports',
         'report-new' => 'Report New Issue',
         'report-details' => 'Ticket Details',
         'notifications' => 'Notifications',
         'messages' => 'Feedback & Response',
-        'profile' => 'Profile Settings',
+        'profile' => 'Account Settings',
         'admin-dashboard' => 'Admin Dashboard',
         'issue-reports' => 'Issue Reports',
         'resident-directory' => 'Resident Directory',

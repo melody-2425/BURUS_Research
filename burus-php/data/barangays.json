@@ -1,0 +1,18 @@
+[
+    {
+        "id": "tejero",
+        "name": "Barangay Tejero",
+        "city": "Cebu City",
+        "contact": "032-123-4567",
+        "captain": "Hon. Roberto Villanueva",
+        "office_hours": "Monday to Friday, 8:00 AM - 5:00 PM"
+    },
+    {
+        "id": "labangon",
+        "name": "Barangay Labangon",
+        "city": "Cebu City",
+        "contact": "032-987-6543",
+        "captain": "Hon. Elena Cabahug",
+        "office_hours": "Monday to Saturday, 8:00 AM - 5:00 PM"
+    }
+]

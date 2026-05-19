@@ -1,0 +1,42 @@
+[
+    {
+        "id": 1,
+        "barangay_id": "tejero",
+        "user_id": 1,
+        "title": "Report Submitted",
+        "message": "Your report #BRGY-2026-00123 has been submitted.",
+        "type": "info",
+        "is_read": false,
+        "date": "May 18, 2026"
+    },
+    {
+        "id": 2,
+        "barangay_id": "tejero",
+        "user_id": 1,
+        "title": "Status Updated",
+        "message": "Your street light report is now In Progress.",
+        "type": "success",
+        "is_read": false,
+        "date": "May 17, 2026"
+    },
+    {
+        "id": 3,
+        "barangay_id": "labangon",
+        "user_id": 3,
+        "title": "Report Resolved",
+        "message": "Your road damage report has been resolved.",
+        "type": "success",
+        "is_read": true,
+        "date": "May 17, 2026"
+    },
+    {
+        "id": 4,
+        "barangay_id": "labangon",
+        "user_id": 8,
+        "title": "Report Submitted",
+        "message": "Your report #BRGY-2026-00187 has been submitted.",
+        "type": "info",
+        "is_read": false,
+        "date": "May 19, 2026"
+    }
+]

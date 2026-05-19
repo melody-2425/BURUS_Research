@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "barangay_id": "tejero",
+    "title": "New report submitted",
+    "message": "Maria Santos submitted a Water Leak report.",
+    "type": "report",
+    "date": "May 18, 2026",
+    "time": "09:30 AM"
+  },
+  {
+    "id": 2,
+    "barangay_id": "labangon",
+    "title": "Road damage report resolved",
+    "message": "Road Damage report near Katipunan Street was resolved.",
+    "type": "resolved",
+    "date": "May 18, 2026",
+    "time": "11:00 AM"
+  }
+]

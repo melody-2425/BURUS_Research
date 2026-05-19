@@ -1,0 +1,23 @@
+[
+    {
+        "id": 1,
+        "barangay_id": "tejero",
+        "name": "Maintenance Team A",
+        "department": "Public Works",
+        "status": "Available"
+    },
+    {
+        "id": 2,
+        "barangay_id": "labangon",
+        "name": "Road Maintenance Team",
+        "department": "Engineering",
+        "status": "Assigned"
+    },
+    {
+        "id": 3,
+        "barangay_id": "tejero",
+        "name": "Sanitation Team",
+        "department": "Environment",
+        "status": "Available"
+    }
+]

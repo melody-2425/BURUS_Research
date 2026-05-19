@@ -24,7 +24,7 @@ $reports = $reports ?? [];
                         <small><?php echo e($report['issue_type']); ?> · <span class="<?php echo e(getPriorityClass($report['priority'])); ?>"><?php echo e($report['priority']); ?></span></small>
                     </td>
                     <td><?php echo e($report['location']); ?></td>
-                    <td><span class="badge <?php echo e(getStatusBadgeClass($report['status'])); ?>"><?php echo e($report['status']); ?></span></td>
+                    <td><span class="badge <?php echo e(getTransparentStatusClass($report)); ?>"><?php echo e(getTransparentStatusLabel($report)); ?></span></td>
                     <td><?php echo e($report['assigned_to']); ?></td>
                     <td><?php echo e($report['date_submitted']); ?></td>
                     <td><a class="table-link" href="index.php?page=report-details&id=<?php echo e($report['id']); ?>">Open</a></td>

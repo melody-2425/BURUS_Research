@@ -1,0 +1,72 @@
+[
+    {
+        "id": 1,
+        "name": "Maria Santos",
+        "email": "resident@burus.test",
+        "password": "123456",
+        "role": "resident",
+        "barangay_id": "tejero",
+        "address": "Sitio Proper, Tejero",
+        "contact": "09123456789"
+    },
+    {
+        "id": 2,
+        "name": "Leah Cruz",
+        "email": "admin@burus.test",
+        "password": "123456",
+        "role": "admin",
+        "barangay_id": "tejero",
+        "address": "Barangay Hall, Tejero",
+        "contact": "09987654321"
+    },
+    {
+        "id": 3,
+        "name": "Juan Dela Cruz",
+        "email": "labangon@burus.test",
+        "password": "123456",
+        "role": "resident",
+        "barangay_id": "labangon",
+        "address": "Katipunan Street, Labangon",
+        "contact": "09111222333"
+    },
+    {
+        "id": 7,
+        "name": "Marco Reyes",
+        "email": "official@burus.test",
+        "password": "123456",
+        "role": "official",
+        "barangay_id": "tejero",
+        "address": "Barangay Operations Center, Tejero",
+        "contact": "09170001111"
+    },
+    {
+        "id": 4,
+        "name": "Carlo Reyes",
+        "email": "carlo@burus.test",
+        "password": "123456",
+        "role": "resident",
+        "barangay_id": "tejero",
+        "address": "Basketball Court Area, Tejero",
+        "contact": "09175550123"
+    },
+    {
+        "id": 8,
+        "name": "Ana Mercado",
+        "email": "ana@burus.test",
+        "password": "123456",
+        "role": "resident",
+        "barangay_id": "labangon",
+        "address": "Sample Street, Cebu City",
+        "contact": "09181234567"
+    },
+    {
+        "id": 9,
+        "name": "Sylvie",
+        "email": "sylvie@burus.test",
+        "password": "123456",
+        "role": "official",
+        "barangay_id": "labangon",
+        "address": "casa mira 56",
+        "contact": "09181234567"
+    }
+]
