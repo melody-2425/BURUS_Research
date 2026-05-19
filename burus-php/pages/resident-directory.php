@@ -4,14 +4,16 @@ global $users;
 $residents = isAdmin(getCurrentUser())
     ? array_values(array_filter($users, fn($user) => $user['role'] === 'resident'))
     : getResidentsByBarangay($barangay['id']);
+$search = trim($_GET['search'] ?? $_GET['q'] ?? '');
+if ($search !== '') {
+    $residents = array_values(array_filter($residents, function ($resident) use ($search) {
+        return stripos($resident['name'], $search) !== false
+            || stripos($resident['email'], $search) !== false
+            || stripos($resident['address'], $search) !== false
+            || stripos($resident['contact'], $search) !== false;
+    }));
+}
 ?>
-<section class="page-header">
-    <div>
-        <h2>Resident Directory</h2>
-        <p><?php echo e(isAdmin(getCurrentUser()) ? 'Residents registered across all barangays.' : 'Residents registered under ' . $barangay['name'] . '.'); ?></p>
-    </div>
-</section>
-
 <section class="stats-row">
     <article class="stat-card"><span>Total Residents</span><strong><?php echo count($residents); ?></strong><small>Registered profiles</small></article>
     <article class="stat-card success"><span>Verified</span><strong><?php echo count($residents); ?></strong><small>Prototype accounts</small></article>

@@ -34,15 +34,6 @@ $activityTimeline = [
     ['title' => needsFurtherAttention($report) ? 'Resident requested follow-up' : 'Resident confirmed resolved', 'done' => !empty($residentConfirmation), 'detail' => $residentConfirmation['date'] ?? 'Awaiting resident confirmation'],
 ];
 ?>
-<section class="page-header">
-    <div>
-        <span class="section-kicker"><?php echo e($report['ticket_id']); ?></span>
-        <h2>Ticket Details</h2>
-        <p>Review issue information, evidence, official proof, and resident confirmation.</p>
-    </div>
-    <span class="status-badge <?php echo e(getTransparentStatusClass($report)); ?>"><?php echo e(getTransparentStatusLabel($report)); ?></span>
-</section>
-
 <section class="details-layout">
     <div class="grid">
         <article class="panel">

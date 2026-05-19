@@ -1,13 +1,14 @@
 <?php
 $notifications = getNotificationsForCurrentUser();
+$search = trim($_GET['search'] ?? $_GET['q'] ?? '');
+if ($search !== '') {
+    $notifications = array_values(array_filter($notifications, function ($notification) use ($search) {
+        return stripos($notification['title'], $search) !== false
+            || stripos($notification['message'], $search) !== false
+            || stripos($notification['type'], $search) !== false;
+    }));
+}
 ?>
-<section class="page-header">
-    <div>
-        <h2>Notifications</h2>
-        <p>Report status changes, official comments, maintenance notices, and community announcements.</p>
-    </div>
-</section>
-
 <section class="filter-tabs">
     <span class="active">All Notifications</span>
     <span>Unread</span>

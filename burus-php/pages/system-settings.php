@@ -1,11 +1,4 @@
 <?php $barangay = getCurrentBarangay(); ?>
-<section class="page-header">
-    <div>
-        <h2>System Settings</h2>
-        <p>Configure barangay profile, access roles, notifications, audit logs, and safety controls.</p>
-    </div>
-</section>
-
 <section class="filter-tabs">
     <span class="active">General Settings</span>
     <span>Roles & Permissions</span>

@@ -5,13 +5,6 @@ $reports = isAdmin(getCurrentUser()) ? array_map('normalizeReportRecord', $repor
 $types = getCommonIssueTypes($reports);
 $resolutionRate = count($reports) ? round((countReportsByStatus($reports, 'Resolved') / count($reports)) * 100) : 0;
 ?>
-<section class="page-header">
-    <div>
-        <h2>Analytics</h2>
-        <p><?php echo e(isAdmin(getCurrentUser()) ? 'System-wide performance trends and operational insights.' : 'Performance trends and operational insights for ' . $barangay['name'] . '.'); ?></p>
-    </div>
-</section>
-
 <section class="stats-row">
     <article class="stat-card"><span>Total Complaints</span><strong><?php echo count($reports); ?></strong><small>Tracked tickets</small></article>
     <article class="stat-card success"><span>Resolution Rate</span><strong><?php echo e($resolutionRate); ?>%</strong><small>Resolved reports</small></article>

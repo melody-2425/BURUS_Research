@@ -6,6 +6,7 @@ $reports = isAdmin(getCurrentUser()) ? array_map('normalizeReportRecord', $allRe
 $statusFilter = $_GET['status'] ?? 'All';
 $typeFilter = $_GET['type'] ?? 'All';
 $priorityFilter = $_GET['priority'] ?? 'All';
+$search = trim($_GET['search'] ?? $_GET['q'] ?? '');
 
 if ($statusFilter !== 'All') {
     $reports = array_values(array_filter($reports, fn($report) => $report['status'] === $statusFilter));
@@ -16,19 +17,18 @@ if ($typeFilter !== 'All') {
 if ($priorityFilter !== 'All') {
     $reports = array_values(array_filter($reports, fn($report) => $report['priority'] === $priorityFilter));
 }
+if ($search !== '') {
+    $reports = array_values(array_filter($reports, function ($report) use ($search) {
+        $resident = getUserById($report['resident_id']);
+        return stripos($report['ticket_id'], $search) !== false
+            || stripos($report['issue_type'], $search) !== false
+            || stripos($report['title'], $search) !== false
+            || stripos($report['location'], $search) !== false
+            || stripos($resident['name'] ?? '', $search) !== false;
+    }));
+}
 $allBarangayReports = isAdmin(getCurrentUser()) ? array_map('normalizeReportRecord', $allReports) : getReportsByBarangay($allReports, $barangay['id']);
 ?>
-<section class="page-header">
-    <div>
-        <h2>Issue Reports Management</h2>
-        <p><?php echo e(isAdmin(getCurrentUser()) ? 'Review, filter, and audit reports across all barangays.' : 'Review, filter, assign, and update reports for ' . $barangay['name'] . '.'); ?></p>
-    </div>
-    <div class="button-row">
-        <button class="btn btn-outline" type="button">Export Report</button>
-        <a class="btn btn-primary" href="index.php?page=report-new">Manual Entry</a>
-    </div>
-</section>
-
 <section class="stats-row">
     <article class="stat-card"><span>Total Tickets</span><strong><?php echo count($allBarangayReports); ?></strong><small>Barangay reports</small></article>
     <article class="stat-card warning"><span>Pending</span><strong><?php echo countReportsByStatus($allBarangayReports, 'Pending'); ?></strong><small>Needs review</small></article>

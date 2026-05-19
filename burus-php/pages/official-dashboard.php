@@ -9,15 +9,6 @@ $progressReports = countReportsByStatus($barangayReports, 'In Progress');
 $reportsNeedingUpdate = array_values(array_filter($barangayReports, fn($report) => $report['status'] !== 'Resolved'));
 $recentFeedback = array_slice($barangayFeedback, 0, 3);
 ?>
-<section class="page-header">
-    <div>
-        <span class="section-kicker"><?php echo e($barangay['name']); ?></span>
-        <h2>Official Dashboard</h2>
-        <p>Handle day-to-day complaint operations, assignments, resident updates, and active issue monitoring.</p>
-    </div>
-    <a class="btn btn-primary" href="index.php?page=issue-reports">Review Reports</a>
-</section>
-
 <section class="stats-row">
     <article class="stat-card warning"><span>Pending Complaints</span><strong><?php echo e($pendingReports); ?></strong><small>Need first review</small></article>
     <article class="stat-card"><span>In Progress</span><strong><?php echo e($progressReports); ?></strong><small>Currently assigned</small></article>

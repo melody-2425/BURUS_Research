@@ -6,6 +6,16 @@ $isResident = $currentUser['role'] === 'resident';
 $feedbackItems = $isResident
     ? getFeedbackByResident($feedback, $currentUser['id'])
     : getFeedbackByBarangay($feedback, $currentUser['barangay_id']);
+$search = trim($_GET['search'] ?? $_GET['q'] ?? '');
+if ($search !== '') {
+    $feedbackItems = array_values(array_filter($feedbackItems, function ($item) use ($search) {
+        return stripos($item['ticket_id'], $search) !== false
+            || stripos($item['resident_name'], $search) !== false
+            || stripos($item['issue_type'], $search) !== false
+            || stripos($item['location'], $search) !== false
+            || stripos($item['last_message'], $search) !== false;
+    }));
+}
 
 $visibleFeedbackItems = $feedbackItems;
 if (!$isResident && isset($_GET['filter'])) {
@@ -43,13 +53,6 @@ $ratedCount = countFeedbackByStatus($feedbackItems, 'Rated');
 $readyToRateCount = count(array_filter($feedbackItems, fn($item) => canResidentRate($item)));
 $resolvedWithFeedback = count(array_filter($feedbackItems, fn($item) => isResolvedReport($item) && !empty($item['last_message'])));
 ?>
-<section class="page-header">
-    <div>
-        <h2>Feedback & Response</h2>
-        <p><?php echo $isResident ? 'View your report conversations, add comments, and rate resolved services.' : 'Manage barangay report feedback, official replies, and service ratings.'; ?></p>
-    </div>
-</section>
-
 <section class="stats-row">
     <article class="stat-card"><span><?php echo $isResident ? 'My Threads' : 'Total Feedback'; ?></span><strong><?php echo count($feedbackItems); ?></strong><small>Report conversations</small></article>
     <article class="stat-card warning"><span>Awaiting Reply</span><strong><?php echo e($awaitingCount); ?></strong><small>Needs response</small></article>

@@ -3,19 +3,21 @@ global $reports;
 $currentUser = getCurrentUser();
 $barangay = getCurrentBarangay();
 $mapReports = getReportsByBarangay($reports, $currentUser['barangay_id']);
+$search = trim($_GET['search'] ?? $_GET['q'] ?? '');
+if ($search !== '') {
+    $mapReports = array_values(array_filter($mapReports, function ($report) use ($search) {
+        $resident = getUserById($report['resident_id']);
+        return stripos($report['ticket_id'], $search) !== false
+            || stripos($report['issue_type'], $search) !== false
+            || stripos($report['location'], $search) !== false
+            || stripos($resident['name'] ?? '', $search) !== false;
+    }));
+}
 $totalReports = count($mapReports);
 $pendingReports = countReportsByStatus($mapReports, 'Pending');
 $progressReports = countReportsByStatus($mapReports, 'In Progress');
 $resolvedReports = countReportsByStatus($mapReports, 'Resolved');
 ?>
-<section class="page-header">
-    <div>
-        <h2>Barangay Map View</h2>
-        <p>All reports from residents in <?php echo e($barangay['name']); ?> are shown on the shared map.</p>
-    </div>
-    <a class="btn btn-primary" href="index.php?page=report-new">Report New Issue</a>
-</section>
-
 <section class="stats-row">
     <article class="stat-card"><span>Total Reports</span><strong><?php echo e($totalReports); ?></strong><small><?php echo e($barangay['name']); ?></small></article>
     <article class="stat-card warning"><span>Pending</span><strong><?php echo e($pendingReports); ?></strong><small>Waiting review</small></article>
@@ -25,11 +27,6 @@ $resolvedReports = countReportsByStatus($mapReports, 'Resolved');
 
 <section class="map-page">
     <aside class="map-sidebar">
-        <form method="get" class="stack-form">
-            <input type="hidden" name="page" value="map-view">
-            <input class="search-input" type="search" name="q" value="<?php echo e($_GET['q'] ?? ''); ?>" placeholder="Search for addresses or specific issues...">
-        </form>
-
         <h2>Issue Legend</h2>
         <div class="legend">
             <span><b class="water"></b>Water Leak</span>

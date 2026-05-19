@@ -2,14 +2,6 @@
 $user = getCurrentUser();
 $barangay = getCurrentBarangay();
 ?>
-<section class="page-header">
-    <div>
-        <p class="eyebrow"><?php echo e($barangay['city']); ?></p>
-        <h1>Account Settings</h1>
-        <p>Manage profile information, security, notifications, and account activity.</p>
-    </div>
-</section>
-
 <section class="profile-layout">
     <aside class="profile-card">
         <span class="avatar large"><?php echo e(substr($user['name'], 0, 1)); ?></span>

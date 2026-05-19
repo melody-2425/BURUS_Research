@@ -1199,3 +1199,151 @@ textarea {
         justify-content: flex-end;
     }
 }
+
+/* Centralized page header / topbar */
+.topbar {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto 24px auto;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+.topbar-title {
+    min-width: 0;
+    flex: 1;
+}
+
+.topbar-title h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: 0;
+    line-height: 1.15;
+}
+
+.topbar-title p {
+    margin: 6px 0 0;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+.topbar-search {
+    width: 320px;
+    max-width: 360px;
+}
+
+.topbar-search input {
+    width: 100%;
+    height: 42px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0 16px;
+    background: #fff;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.language-chip,
+.notification-chip,
+.profile-chip {
+    min-height: 42px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 14px;
+    color: var(--text);
+    text-decoration: none;
+    white-space: nowrap;
+    box-sizing: border-box;
+}
+
+.notification-chip strong {
+    display: inline-grid;
+    place-items: center;
+    min-width: 18px;
+    height: 18px;
+    margin-left: 6px;
+    border-radius: 999px;
+    background: var(--danger);
+    color: #fff;
+    font-size: 10px;
+}
+
+.profile-chip {
+    flex-direction: column;
+    align-items: flex-start;
+    height: auto;
+    min-height: 42px;
+    padding: 8px 14px;
+}
+
+.profile-chip span {
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.profile-chip small {
+    font-size: 11px;
+    color: var(--muted);
+}
+
+.main-content {
+    min-width: 0;
+    width: 100%;
+    overflow-x: hidden;
+    padding: 28px 36px;
+}
+
+.page-content {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+@media (max-width: 1100px) {
+    .topbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .topbar-actions {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .topbar-search {
+        flex: 1;
+        width: auto;
+        min-width: 240px;
+        max-width: none;
+    }
+}
+
+@media (max-width: 700px) {
+    .topbar-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .topbar-search,
+    .language-chip,
+    .notification-chip,
+    .profile-chip {
+        width: 100%;
+    }
+}

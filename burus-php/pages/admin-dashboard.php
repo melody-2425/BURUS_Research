@@ -8,15 +8,6 @@ $resolvedCount = countReportsByStatus($barangayReports, 'Resolved');
 $resolutionRate = count($barangayReports) ? round(($resolvedCount / count($barangayReports)) * 100) : 0;
 $criticalReports = array_values(array_filter($barangayReports, fn($report) => $report['priority'] === 'High' || $report['status'] !== 'Resolved'));
 ?>
-<section class="page-header">
-    <div>
-        <span class="section-kicker"><?php echo e(isAdmin($user) ? 'System Overview' : $barangay['name']); ?></span>
-        <h2>Welcome back, Administrator.</h2>
-        <p>Monitor barangay-wide complaints, assignments, feedback, and response progress.</p>
-    </div>
-    <a class="btn btn-primary" href="index.php?page=issue-reports">Manage Reports</a>
-</section>
-
 <section class="stats-row">
     <article class="stat-card"><span>Total Complaints</span><strong><?php echo count($barangayReports); ?></strong><small>Barangay tickets</small></article>
     <article class="stat-card success"><span>Resolution Rate</span><strong><?php echo e($resolutionRate); ?>%</strong><small>Closed reports</small></article>

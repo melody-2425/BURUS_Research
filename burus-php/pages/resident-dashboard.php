@@ -13,15 +13,6 @@ foreach ($myFeedback as $item) {
     }
 }
 ?>
-<section class="page-header">
-    <div>
-        <span class="section-kicker"><?php echo e($barangay['name']); ?></span>
-        <h2>Welcome back, <?php echo e($user['name']); ?>.</h2>
-        <p>Track your reports, review barangay updates, and continue feedback conversations.</p>
-    </div>
-    <a class="btn btn-primary" href="index.php?page=report-new">Report New Issue</a>
-</section>
-
 <section class="stats-row">
     <article class="stat-card"><span>Total Reports</span><strong><?php echo count($myReports); ?></strong><small>Submitted by you</small></article>
     <article class="stat-card warning"><span>Pending</span><strong><?php echo countReportsByStatus($myReports, 'Pending'); ?></strong><small>Waiting for review</small></article>

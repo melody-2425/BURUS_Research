@@ -33,6 +33,93 @@ if (!in_array($page, $allowedPages, true)) {
     $page = 'landing';
 }
 
+$pageMeta = [
+    'resident-dashboard' => [
+        'title' => 'Dashboard',
+        'subtitle' => 'Here is a summary of your community activities and reports.',
+        'show_search' => false,
+        'search_placeholder' => '',
+    ],
+    'my-reports' => [
+        'title' => 'My Reports',
+        'subtitle' => 'Track and manage your submitted civic service requests and reports.',
+        'show_search' => true,
+        'search_placeholder' => 'Search by Ticket ID or Issue Type...',
+    ],
+    'report-new' => [
+        'title' => 'Report New Issue',
+        'subtitle' => 'Submit a service request for your community.',
+        'show_search' => false,
+        'search_placeholder' => '',
+    ],
+    'map-view' => [
+        'title' => 'Map View',
+        'subtitle' => 'View barangay-wide reported issues by location.',
+        'show_search' => true,
+        'search_placeholder' => 'Search for addresses or specific issues...',
+    ],
+    'report-details' => [
+        'title' => 'Ticket Details',
+        'subtitle' => 'Review issue information, evidence, official proof, and resident confirmation.',
+        'show_search' => false,
+        'search_placeholder' => '',
+    ],
+    'notifications' => [
+        'title' => 'Notifications',
+        'subtitle' => 'Stay updated on the status of your reports, community announcements, and official responses.',
+        'show_search' => true,
+        'search_placeholder' => 'Search notifications...',
+    ],
+    'messages' => [
+        'title' => 'Feedback & Response',
+        'subtitle' => 'View report-based comments, official replies, and service ratings.',
+        'show_search' => true,
+        'search_placeholder' => 'Search feedback threads...',
+    ],
+    'profile' => [
+        'title' => 'Account Settings',
+        'subtitle' => 'Manage your profile, security, and notification preferences.',
+        'show_search' => false,
+        'search_placeholder' => '',
+    ],
+    'official-dashboard' => [
+        'title' => 'Official Dashboard',
+        'subtitle' => 'Monitor and manage active barangay complaints.',
+        'show_search' => false,
+        'search_placeholder' => '',
+    ],
+    'admin-dashboard' => [
+        'title' => 'Admin Dashboard',
+        'subtitle' => 'View system-wide performance and barangay operations.',
+        'show_search' => false,
+        'search_placeholder' => '',
+    ],
+    'issue-reports' => [
+        'title' => 'Issue Reports Management',
+        'subtitle' => 'Monitor, assign, and resolve community civic complaints.',
+        'show_search' => true,
+        'search_placeholder' => 'Search reports, residents, or ticket IDs...',
+    ],
+    'resident-directory' => [
+        'title' => 'Resident Directory',
+        'subtitle' => 'Manage and verify registered community members.',
+        'show_search' => true,
+        'search_placeholder' => 'Search residents...',
+    ],
+    'analytics' => [
+        'title' => 'Analytics',
+        'subtitle' => 'Review barangay issue trends and system performance.',
+        'show_search' => false,
+        'search_placeholder' => '',
+    ],
+    'system-settings' => [
+        'title' => 'System Settings',
+        'subtitle' => 'Manage barangay configuration, roles, security, and system logs.',
+        'show_search' => false,
+        'search_placeholder' => '',
+    ],
+];
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['login'])) {
         $user = findUserByEmailAndPassword($_POST['email'] ?? '', $_POST['password'] ?? '');
@@ -372,6 +459,14 @@ include __DIR__ . '/includes/header.php';
 if (in_array($page, $publicPages, true)) {
     include __DIR__ . '/pages/' . $page . '.php';
 } else {
+    $currentPage = $page;
+    $currentPageMeta = $pageMeta[$currentPage] ?? [
+        'title' => 'BURUS',
+        'subtitle' => '',
+        'show_search' => false,
+        'search_placeholder' => '',
+    ];
+
     echo '<div class="app-shell">';
     include __DIR__ . '/includes/sidebar.php';
     echo '<main class="main-content">';

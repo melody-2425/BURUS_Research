@@ -2,7 +2,7 @@
 $user = getCurrentUser();
 $myReports = getReportsByResident($reports, $user['id']);
 $statusFilter = $_GET['status'] ?? 'All';
-$search = trim($_GET['q'] ?? '');
+$search = trim($_GET['search'] ?? $_GET['q'] ?? '');
 
 if ($statusFilter !== 'All') {
     $myReports = array_values(array_filter($myReports, fn($report) => $report['status'] === $statusFilter));
@@ -17,17 +17,6 @@ if ($search !== '') {
 }
 $allReports = getReportsByResident($reports, $user['id']);
 ?>
-<section class="page-header">
-    <div>
-        <h2>My Reports</h2>
-        <p>All utility and infrastructure reports submitted by your account.</p>
-    </div>
-    <div class="button-row">
-        <button class="btn btn-outline" type="button">Export PDF</button>
-        <a class="btn btn-primary" href="index.php?page=report-new">New Issue</a>
-    </div>
-</section>
-
 <section class="stats-row">
     <article class="stat-card"><span>Total Reports</span><strong><?php echo count($allReports); ?></strong><small>All submitted</small></article>
     <article class="stat-card warning"><span>Pending</span><strong><?php echo countReportsByStatus($allReports, 'Pending'); ?></strong><small>Waiting review</small></article>
@@ -41,12 +30,6 @@ $allReports = getReportsByResident($reports, $user['id']);
             <a class="<?php echo $statusFilter === $status ? 'active' : ''; ?>" href="index.php?page=my-reports&status=<?php echo e(urlencode($status)); ?>"><?php echo e($status); ?></a>
         <?php endforeach; ?>
     </div>
-    <form method="get" class="filter-bar" style="grid-template-columns: 1fr auto;">
-        <input type="hidden" name="page" value="my-reports">
-        <input type="hidden" name="status" value="<?php echo e($statusFilter); ?>">
-        <input class="form-control" type="search" name="q" value="<?php echo e($search); ?>" placeholder="Search by Ticket ID or Issue Type...">
-        <button class="btn btn-primary" type="submit">Search</button>
-    </form>
     <div class="table-wrap">
         <table class="report-table">
             <thead>

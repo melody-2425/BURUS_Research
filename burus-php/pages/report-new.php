@@ -4,13 +4,6 @@ $barangay = getCurrentBarangay();
 global $reports;
 $nearbyReports = array_slice(getReportsByBarangay($reports, $barangay['id']), 0, 3);
 ?>
-<section class="page-header">
-    <div>
-        <h2>Report New Issue</h2>
-        <p>Submit a barangay infrastructure or utility concern with clear details, location, and optional evidence.</p>
-    </div>
-</section>
-
 <section class="form-layout">
     <div class="panel">
         <div class="stepper">
