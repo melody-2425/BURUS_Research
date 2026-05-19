@@ -7,6 +7,7 @@ $reports = loadJson('reports.json');
 $feedback = loadJson('feedback.json');
 $notifications = loadJson('notifications.json');
 $staff = loadJson('staff.json');
+$announcements = loadJson('announcements.json');
 
 function e($value)
 {
@@ -242,6 +243,72 @@ function getNotificationsByUser($userId, $barangayId)
     }));
 }
 
+function normalizeAnnouncementRecord($announcement)
+{
+    $announcement['status'] = $announcement['status'] ?? 'active';
+    $announcement['scope'] = $announcement['scope'] ?? (($announcement['barangay_id'] ?? '') === 'all' ? 'system' : 'barangay');
+    $announcement['barangay_id'] = $announcement['barangay_id'] ?? 'all';
+    $announcement['category'] = $announcement['category'] ?? 'General';
+    $announcement['is_pinned'] = !empty($announcement['is_pinned']);
+    $announcement['created_at'] = $announcement['created_at'] ?? '';
+    $announcement['updated_at'] = $announcement['updated_at'] ?? $announcement['created_at'];
+
+    return $announcement;
+}
+
+function getAnnouncementById($id)
+{
+    global $announcements;
+
+    foreach ($announcements as $announcement) {
+        if ((int) $announcement['id'] === (int) $id) {
+            return normalizeAnnouncementRecord($announcement);
+        }
+    }
+
+    return null;
+}
+
+function getVisibleAnnouncements($announcements, $user, $includeArchived = false)
+{
+    $announcements = array_map('normalizeAnnouncementRecord', $announcements);
+
+    return array_values(array_filter($announcements, function ($announcement) use ($user, $includeArchived) {
+        if (!$includeArchived && $announcement['status'] === 'archived') {
+            return false;
+        }
+
+        if (isAdmin($user)) {
+            return true;
+        }
+
+        if (($announcement['scope'] ?? '') === 'system' || ($announcement['barangay_id'] ?? '') === 'all') {
+            return true;
+        }
+
+        return ($announcement['barangay_id'] ?? '') === ($user['barangay_id'] ?? '');
+    }));
+}
+
+function canManageAnnouncement($user, $announcement = null)
+{
+    if (isAdmin($user)) {
+        return true;
+    }
+
+    if (!isOfficial($user)) {
+        return false;
+    }
+
+    if (!$announcement) {
+        return true;
+    }
+
+    $announcement = normalizeAnnouncementRecord($announcement);
+    return $announcement['scope'] === 'barangay'
+        && $announcement['barangay_id'] === $user['barangay_id'];
+}
+
 function isConfirmedResolved($report)
 {
     return isset($report['resident_confirmation'])
@@ -401,6 +468,7 @@ function allowedPagesForRole($user)
             'report-details',
             'messages',
             'notifications',
+            'announcements',
             'profile',
         ];
     }
@@ -413,6 +481,7 @@ function allowedPagesForRole($user)
             'report-details',
             'messages',
             'notifications',
+            'announcements',
             'profile',
         ];
     }
@@ -428,6 +497,7 @@ function allowedPagesForRole($user)
             'report-details',
             'messages',
             'notifications',
+            'announcements',
             'profile',
         ];
     }
@@ -473,6 +543,7 @@ function pageTitle($page)
         'report-new' => 'Report New Issue',
         'report-details' => 'Ticket Details',
         'notifications' => 'Notifications',
+        'announcements' => 'Announcements',
         'messages' => 'Feedback & Response',
         'profile' => 'Account Settings',
         'admin-dashboard' => 'Admin Dashboard',

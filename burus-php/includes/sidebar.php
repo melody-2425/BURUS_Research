@@ -8,6 +8,7 @@ $residentLinks = [
     'report-new' => 'Report New Issue',
     'map-view' => 'Map View',
     'messages' => 'Feedback',
+    'announcements' => 'Announcements',
     'notifications' => 'Notifications',
     'profile' => 'Account Settings',
 ];
@@ -17,6 +18,7 @@ $officialLinks = [
     'issue-reports' => 'Issue Reports',
     'map-view' => 'Map View',
     'messages' => 'Feedback',
+    'announcements' => 'Announcements',
     'notifications' => 'Notifications',
     'profile' => 'Profile',
 ];
@@ -27,6 +29,7 @@ $adminLinks = [
     'resident-directory' => 'Resident Directory',
     'analytics' => 'Analytics',
     'system-settings' => 'System Settings',
+    'announcements' => 'Announcements',
     'notifications' => 'Notifications',
 ];
 

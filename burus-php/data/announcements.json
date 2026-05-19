@@ -1,0 +1,58 @@
+[
+    {
+        "id": 1,
+        "title": "Water Service Interruption Advisory",
+        "body": "Water service may be interrupted near the public market from 9:00 AM to 12:00 PM while the maintenance team repairs a reported leak.",
+        "category": "Maintenance",
+        "barangay_id": "tejero",
+        "scope": "barangay",
+        "status": "active",
+        "is_pinned": true,
+        "created_by": 7,
+        "created_by_name": "Marco Reyes",
+        "created_at": "May 20, 2026 08:30 AM",
+        "updated_at": "May 20, 2026 08:30 AM"
+    },
+    {
+        "id": 2,
+        "title": "Community Clean-up Drive",
+        "body": "Residents are invited to join the Saturday clean-up drive. Please bring basic cleaning tools and meet at the barangay hall.",
+        "category": "Community",
+        "barangay_id": "tejero",
+        "scope": "barangay",
+        "status": "active",
+        "is_pinned": false,
+        "created_by": 7,
+        "created_by_name": "Marco Reyes",
+        "created_at": "May 19, 2026 03:15 PM",
+        "updated_at": "May 19, 2026 03:15 PM"
+    },
+    {
+        "id": 3,
+        "title": "BURUS Prototype Reminder",
+        "body": "This prototype uses shared server-side JSON records so resident, official, and admin actions can be viewed across demo accounts.",
+        "category": "System",
+        "barangay_id": "all",
+        "scope": "system",
+        "status": "active",
+        "is_pinned": true,
+        "created_by": 2,
+        "created_by_name": "Leah Cruz",
+        "created_at": "May 20, 2026 09:00 AM",
+        "updated_at": "May 20, 2026 09:00 AM"
+    },
+    {
+        "id": 4,
+        "title": "Drainage Inspection Schedule",
+        "body": "The Labangon operations team will inspect reported drainage areas this week. Please keep access paths clear where possible.",
+        "category": "Inspection",
+        "barangay_id": "labangon",
+        "scope": "barangay",
+        "status": "active",
+        "is_pinned": false,
+        "created_by": 9,
+        "created_by_name": "Sylvie",
+        "created_at": "May 18, 2026 02:45 PM",
+        "updated_at": "May 18, 2026 02:45 PM"
+    }
+]

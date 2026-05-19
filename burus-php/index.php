@@ -19,6 +19,7 @@ $allowedPages = [
     'report-new',
     'report-details',
     'notifications',
+    'announcements',
     'messages',
     'profile',
     'admin-dashboard',
@@ -69,6 +70,12 @@ $pageMeta = [
         'subtitle' => 'Stay updated on the status of your reports, community announcements, and official responses.',
         'show_search' => true,
         'search_placeholder' => 'Search notifications...',
+    ],
+    'announcements' => [
+        'title' => 'Announcements',
+        'subtitle' => 'View barangay advisories, community notices, and system-wide updates.',
+        'show_search' => true,
+        'search_placeholder' => 'Search announcements...',
     ],
     'messages' => [
         'title' => 'Feedback & Response',
@@ -433,6 +440,100 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $_SESSION['flash'] = 'Your feedback was saved to feedback.json.';
         header('Location: index.php?page=messages');
+        exit;
+    }
+
+    if (isset($_POST['save_announcement'])) {
+        global $announcements;
+
+        $currentUser = getCurrentUser();
+        if (!canManageAnnouncement($currentUser)) {
+            $_SESSION['flash'] = 'Access denied. Residents can only view announcements.';
+            header('Location: index.php?page=announcements');
+            exit;
+        }
+
+        $announcements = loadJson('announcements.json');
+        $announcementId = (int) ($_POST['announcement_id'] ?? 0);
+        $scope = isAdmin($currentUser) ? ($_POST['scope'] ?? 'barangay') : 'barangay';
+        $barangayId = isAdmin($currentUser)
+            ? ($_POST['barangay_id'] ?? $currentUser['barangay_id'])
+            : $currentUser['barangay_id'];
+
+        if ($scope === 'system') {
+            $barangayId = 'all';
+        } else {
+            $scope = 'barangay';
+        }
+
+        $payload = [
+            'title' => trim($_POST['title'] ?? 'Barangay Announcement'),
+            'body' => trim($_POST['body'] ?? ''),
+            'category' => trim($_POST['category'] ?? 'General'),
+            'barangay_id' => $barangayId,
+            'scope' => $scope,
+            'status' => $_POST['status'] ?? 'active',
+            'is_pinned' => isset($_POST['is_pinned']),
+            'updated_at' => date('F j, Y h:i A'),
+        ];
+
+        if ($announcementId > 0) {
+            foreach ($announcements as &$announcement) {
+                if ((int) $announcement['id'] === $announcementId) {
+                    if (!canManageAnnouncement($currentUser, $announcement)) {
+                        unset($announcement);
+                        $_SESSION['flash'] = 'Access denied. Officials can only manage announcements for their own barangay.';
+                        header('Location: index.php?page=announcements');
+                        exit;
+                    }
+
+                    $announcement = array_merge($announcement, $payload);
+                    break;
+                }
+            }
+            unset($announcement);
+            $_SESSION['flash'] = 'Announcement updated.';
+        } else {
+            $announcements[] = array_merge([
+                'id' => getNextId($announcements),
+                'created_by' => (int) $currentUser['id'],
+                'created_by_name' => $currentUser['name'],
+                'created_at' => date('F j, Y h:i A'),
+            ], $payload);
+            $_SESSION['flash'] = 'Announcement published.';
+        }
+
+        saveJson('announcements.json', $announcements);
+        header('Location: index.php?page=announcements');
+        exit;
+    }
+
+    if (isset($_POST['archive_announcement'])) {
+        global $announcements;
+
+        $currentUser = getCurrentUser();
+        $announcementId = (int) ($_POST['announcement_id'] ?? 0);
+        $announcements = loadJson('announcements.json');
+
+        foreach ($announcements as &$announcement) {
+            if ((int) $announcement['id'] === $announcementId) {
+                if (!canManageAnnouncement($currentUser, $announcement)) {
+                    unset($announcement);
+                    $_SESSION['flash'] = 'Access denied. You cannot archive that announcement.';
+                    header('Location: index.php?page=announcements');
+                    exit;
+                }
+
+                $announcement['status'] = 'archived';
+                $announcement['updated_at'] = date('F j, Y h:i A');
+                break;
+            }
+        }
+        unset($announcement);
+
+        saveJson('announcements.json', $announcements);
+        $_SESSION['flash'] = 'Announcement archived.';
+        header('Location: index.php?page=announcements');
         exit;
     }
 }
