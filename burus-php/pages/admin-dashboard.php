@@ -1,9 +1,10 @@
 <?php
-global $reports, $feedback;
+global $reports, $feedback, $announcements;
 $user = getCurrentUser();
 $barangay = getCurrentBarangay();
 $barangayReports = isAdmin($user) ? array_map('normalizeReportRecord', $reports) : getReportsByBarangay($reports, $barangay['id']);
 $barangayFeedback = isAdmin($user) ? $feedback : getFeedbackByBarangay($feedback, $barangay['id']);
+$latestAnnouncements = getLatestAnnouncements($announcements, 5);
 $resolvedCount = countReportsByStatus($barangayReports, 'Resolved');
 $resolutionRate = count($barangayReports) ? round(($resolvedCount / count($barangayReports)) * 100) : 0;
 $criticalReports = array_values(array_filter($barangayReports, fn($report) => $report['priority'] === 'High' || $report['status'] !== 'Resolved'));
@@ -60,12 +61,42 @@ $criticalReports = array_values(array_filter($barangayReports, fn($report) => $r
         </div>
     </article>
 
-    <aside class="panel">
-        <h2>Recent Activity</h2>
-        <div class="activity-list">
-            <?php foreach (getActivityLogsByBarangay($barangay['id']) as $log): ?>
-                <div><strong><?php echo e($log['message']); ?></strong><small><?php echo e($log['date']); ?></small></div>
-            <?php endforeach; ?>
-        </div>
+    <aside class="grid">
+        <article class="panel">
+            <div class="panel-heading compact">
+                <div>
+                    <h2>Announcements</h2>
+                    <p>Latest barangay and system-wide notices.</p>
+                </div>
+                <a class="ghost-link" href="index.php?page=announcements">Manage</a>
+            </div>
+            <div class="announcement-list compact">
+                <?php foreach ($latestAnnouncements as $announcement): ?>
+                    <article class="announcement-item">
+                        <div class="announcement-top">
+                            <span class="badge badge-<?php echo e(strtolower(str_replace(' ', '-', $announcement['category']))); ?>"><?php echo e($announcement['category']); ?></span>
+                            <small><?php echo e($announcement['date_posted']); ?></small>
+                        </div>
+                        <h4><?php echo e($announcement['title']); ?></h4>
+                        <p><?php echo e($announcement['content']); ?></p>
+                        <small>Posted by <?php echo e($announcement['posted_by']); ?></small>
+                    </article>
+                <?php endforeach; ?>
+                <?php if (!$latestAnnouncements): ?>
+                    <div class="empty-state">
+                        <h4>No announcements yet</h4>
+                        <p>Announcements posted by barangay officials and admins will appear here.</p>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </article>
+        <article class="panel">
+            <h2>Recent Activity</h2>
+            <div class="activity-list">
+                <?php foreach (getActivityLogsByBarangay($barangay['id']) as $log): ?>
+                    <div><strong><?php echo e($log['message']); ?></strong><small><?php echo e($log['date']); ?></small></div>
+                <?php endforeach; ?>
+            </div>
+        </article>
     </aside>
 </section>

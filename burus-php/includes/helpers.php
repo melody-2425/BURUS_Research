@@ -246,12 +246,20 @@ function getNotificationsByUser($userId, $barangayId)
 function normalizeAnnouncementRecord($announcement)
 {
     $announcement['status'] = $announcement['status'] ?? 'active';
-    $announcement['scope'] = $announcement['scope'] ?? (($announcement['barangay_id'] ?? '') === 'all' ? 'system' : 'barangay');
+    $announcement['is_system_wide'] = !empty($announcement['is_system_wide'])
+        || ($announcement['scope'] ?? '') === 'system'
+        || ($announcement['barangay_id'] ?? '') === 'all';
+    $announcement['scope'] = $announcement['scope'] ?? ($announcement['is_system_wide'] ? 'system' : 'barangay');
     $announcement['barangay_id'] = $announcement['barangay_id'] ?? 'all';
     $announcement['category'] = $announcement['category'] ?? 'General';
     $announcement['is_pinned'] = !empty($announcement['is_pinned']);
     $announcement['created_at'] = $announcement['created_at'] ?? '';
     $announcement['updated_at'] = $announcement['updated_at'] ?? $announcement['created_at'];
+    $announcement['date_posted'] = $announcement['date_posted'] ?? ($announcement['updated_at'] ?: $announcement['created_at']);
+    $announcement['content'] = $announcement['content'] ?? ($announcement['body'] ?? '');
+    $announcement['body'] = $announcement['body'] ?? $announcement['content'];
+    $announcement['posted_by'] = $announcement['posted_by'] ?? ($announcement['created_by_name'] ?? 'BURUS');
+    $announcement['created_by_name'] = $announcement['created_by_name'] ?? $announcement['posted_by'];
 
     return $announcement;
 }
@@ -288,6 +296,47 @@ function getVisibleAnnouncements($announcements, $user, $includeArchived = false
 
         return ($announcement['barangay_id'] ?? '') === ($user['barangay_id'] ?? '');
     }));
+}
+
+function getAnnouncementsForUser($announcements, $currentUser)
+{
+    if (!is_array($announcements) || !$currentUser) {
+        return [];
+    }
+
+    $announcements = array_map('normalizeAnnouncementRecord', $announcements);
+
+    if (($currentUser['role'] ?? '') === 'admin') {
+        return array_values($announcements);
+    }
+
+    return array_values(array_filter($announcements, function ($announcement) use ($currentUser) {
+        return $announcement['status'] !== 'archived'
+            && (
+                (!empty($announcement['is_system_wide']) && $announcement['is_system_wide'] === true)
+                || ($announcement['barangay_id'] ?? '') === ($currentUser['barangay_id'] ?? '')
+            );
+    }));
+}
+
+function getLatestAnnouncements($announcements, $limit = 3)
+{
+    if (!is_array($announcements)) {
+        return [];
+    }
+
+    $announcements = array_map('normalizeAnnouncementRecord', $announcements);
+    $announcements = array_values(array_filter($announcements, fn($announcement) => ($announcement['status'] ?? 'active') !== 'archived'));
+
+    usort($announcements, function ($a, $b) {
+        if (($a['is_pinned'] ?? false) !== ($b['is_pinned'] ?? false)) {
+            return ($b['is_pinned'] ?? false) <=> ($a['is_pinned'] ?? false);
+        }
+
+        return strtotime($b['date_posted'] ?? '') <=> strtotime($a['date_posted'] ?? '');
+    });
+
+    return array_slice($announcements, 0, $limit);
 }
 
 function canManageAnnouncement($user, $announcement = null)

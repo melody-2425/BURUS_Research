@@ -1,10 +1,11 @@
 <?php
-global $reports, $feedback;
+global $reports, $feedback, $announcements;
 $user = getCurrentUser();
 $barangay = getCurrentBarangay();
 $myReports = getReportsByResident($reports, $user['id']);
 $myFeedback = getFeedbackByResident($feedback, $user['id']);
 $recentReports = array_slice($myReports, 0, 4);
+$latestAnnouncements = getLatestAnnouncements(getAnnouncementsForUser($announcements, $user), 3);
 $recentReply = null;
 foreach ($myFeedback as $item) {
     if (!empty($item['official_reply'])) {
@@ -53,8 +54,32 @@ foreach ($myFeedback as $item) {
 
         <section class="grid grid-2">
             <article class="card">
-                <h2>Announcements</h2>
-                <p class="muted">Barangay office hours remain <?php echo e($barangay['office_hours']); ?>. Emergency concerns should still be reported directly to the barangay desk.</p>
+                <div class="panel-heading compact">
+                    <div>
+                        <h2>Announcements</h2>
+                        <p>Latest barangay and system-wide notices.</p>
+                    </div>
+                    <a class="ghost-link" href="index.php?page=announcements">View all</a>
+                </div>
+                <div class="announcement-list compact">
+                    <?php foreach ($latestAnnouncements as $announcement): ?>
+                        <article class="announcement-item">
+                            <div class="announcement-top">
+                                <span class="badge badge-<?php echo e(strtolower(str_replace(' ', '-', $announcement['category']))); ?>"><?php echo e($announcement['category']); ?></span>
+                                <small><?php echo e($announcement['date_posted']); ?></small>
+                            </div>
+                            <h4><?php echo e($announcement['title']); ?></h4>
+                            <p><?php echo e($announcement['content']); ?></p>
+                            <small>Posted by <?php echo e($announcement['posted_by']); ?></small>
+                        </article>
+                    <?php endforeach; ?>
+                    <?php if (!$latestAnnouncements): ?>
+                        <div class="empty-state">
+                            <h4>No announcements yet</h4>
+                            <p>Announcements posted by the barangay will appear here.</p>
+                        </div>
+                    <?php endif; ?>
+                </div>
             </article>
             <article class="card">
                 <h2>Community Activity</h2>
