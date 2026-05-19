@@ -4,7 +4,7 @@ $user = getCurrentUser();
 $barangay = getCurrentBarangay();
 $barangayReports = isAdmin($user) ? array_map('normalizeReportRecord', $reports) : getReportsByBarangay($reports, $barangay['id']);
 $barangayFeedback = isAdmin($user) ? $feedback : getFeedbackByBarangay($feedback, $barangay['id']);
-$latestAnnouncements = getLatestAnnouncements($announcements, 5);
+$pinnedAnnouncement = getDashboardPinnedAnnouncement($announcements ?? [], $user);
 $resolvedCount = countReportsByStatus($barangayReports, 'Resolved');
 $resolutionRate = count($barangayReports) ? round(($resolvedCount / count($barangayReports)) * 100) : 0;
 $criticalReports = array_values(array_filter($barangayReports, fn($report) => $report['priority'] === 'High' || $report['status'] !== 'Resolved'));
@@ -62,33 +62,30 @@ $criticalReports = array_values(array_filter($barangayReports, fn($report) => $r
     </article>
 
     <aside class="grid">
-        <article class="panel">
+        <article class="panel announcements-card">
             <div class="panel-heading compact">
                 <div>
                     <h2>Announcements</h2>
-                    <p>Latest barangay and system-wide notices.</p>
+                    <p>Pinned barangay or system-wide update for today.</p>
                 </div>
-                <a class="ghost-link" href="index.php?page=announcements">Manage</a>
+                <a class="btn btn-outline btn-sm" href="index.php?page=announcements">View all</a>
             </div>
-            <div class="announcement-list compact">
-                <?php foreach ($latestAnnouncements as $announcement): ?>
-                    <article class="announcement-item">
-                        <div class="announcement-top">
-                            <span class="badge badge-<?php echo e(strtolower(str_replace(' ', '-', $announcement['category']))); ?>"><?php echo e($announcement['category']); ?></span>
-                            <small><?php echo e($announcement['date_posted']); ?></small>
-                        </div>
-                        <h4><?php echo e($announcement['title']); ?></h4>
-                        <p><?php echo e($announcement['content']); ?></p>
-                        <small>Posted by <?php echo e($announcement['posted_by']); ?></small>
-                    </article>
-                <?php endforeach; ?>
-                <?php if (!$latestAnnouncements): ?>
-                    <div class="empty-state">
-                        <h4>No announcements yet</h4>
-                        <p>Announcements posted by barangay officials and admins will appear here.</p>
+            <?php if ($pinnedAnnouncement): ?>
+                <article class="announcement-card pinned-announcement">
+                    <div class="announcement-card-top">
+                        <span class="badge badge-<?php echo e(strtolower(str_replace(' ', '-', $pinnedAnnouncement['category']))); ?>"><?php echo e($pinnedAnnouncement['category']); ?></span>
+                        <small><?php echo e($pinnedAnnouncement['date_posted']); ?></small>
                     </div>
-                <?php endif; ?>
-            </div>
+                    <h4><?php echo e($pinnedAnnouncement['title']); ?></h4>
+                    <p><?php echo e($pinnedAnnouncement['content']); ?></p>
+                    <small class="announcement-meta">Posted by <?php echo e($pinnedAnnouncement['posted_by']); ?></small>
+                </article>
+            <?php else: ?>
+                <div class="empty-state compact-empty">
+                    <h4>No pinned announcement today</h4>
+                    <p>View all announcements for previous updates.</p>
+                </div>
+            <?php endif; ?>
         </article>
         <article class="panel">
             <h2>Recent Activity</h2>

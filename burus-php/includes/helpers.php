@@ -245,7 +245,14 @@ function getNotificationsByUser($userId, $barangayId)
 
 function normalizeAnnouncementRecord($announcement)
 {
-    $announcement['status'] = $announcement['status'] ?? 'active';
+    $status = $announcement['status'] ?? 'Published';
+    if ($status === 'active') {
+        $status = 'Published';
+    } elseif ($status === 'archived') {
+        $status = 'Archived';
+    }
+
+    $announcement['status'] = $status;
     $announcement['is_system_wide'] = !empty($announcement['is_system_wide'])
         || ($announcement['scope'] ?? '') === 'system'
         || ($announcement['barangay_id'] ?? '') === 'all';
@@ -260,6 +267,10 @@ function normalizeAnnouncementRecord($announcement)
     $announcement['body'] = $announcement['body'] ?? $announcement['content'];
     $announcement['posted_by'] = $announcement['posted_by'] ?? ($announcement['created_by_name'] ?? 'BURUS');
     $announcement['created_by_name'] = $announcement['created_by_name'] ?? $announcement['posted_by'];
+    $announcement['posted_by_role'] = $announcement['posted_by_role'] ?? '';
+    $announcement['priority'] = $announcement['priority'] ?? 'Normal';
+    $announcement['pin_date'] = $announcement['pin_date'] ?? null;
+    $announcement['pinned_until'] = $announcement['pinned_until'] ?? null;
 
     return $announcement;
 }
@@ -282,7 +293,7 @@ function getVisibleAnnouncements($announcements, $user, $includeArchived = false
     $announcements = array_map('normalizeAnnouncementRecord', $announcements);
 
     return array_values(array_filter($announcements, function ($announcement) use ($user, $includeArchived) {
-        if (!$includeArchived && $announcement['status'] === 'archived') {
+        if (!$includeArchived && $announcement['status'] === 'Archived') {
             return false;
         }
 
@@ -311,7 +322,7 @@ function getAnnouncementsForUser($announcements, $currentUser)
     }
 
     return array_values(array_filter($announcements, function ($announcement) use ($currentUser) {
-        return $announcement['status'] !== 'archived'
+        return $announcement['status'] !== 'Archived'
             && (
                 (!empty($announcement['is_system_wide']) && $announcement['is_system_wide'] === true)
                 || ($announcement['barangay_id'] ?? '') === ($currentUser['barangay_id'] ?? '')
@@ -326,7 +337,7 @@ function getLatestAnnouncements($announcements, $limit = 3)
     }
 
     $announcements = array_map('normalizeAnnouncementRecord', $announcements);
-    $announcements = array_values(array_filter($announcements, fn($announcement) => ($announcement['status'] ?? 'active') !== 'archived'));
+    $announcements = array_values(array_filter($announcements, fn($announcement) => ($announcement['status'] ?? 'Published') !== 'Archived'));
 
     usort($announcements, function ($a, $b) {
         if (($a['is_pinned'] ?? false) !== ($b['is_pinned'] ?? false)) {
@@ -337,6 +348,55 @@ function getLatestAnnouncements($announcements, $limit = 3)
     });
 
     return array_slice($announcements, 0, $limit);
+}
+
+function getDashboardPinnedAnnouncement($announcements, $currentUser)
+{
+    if (!is_array($announcements) || !$currentUser) {
+        return null;
+    }
+
+    $today = date('Y-m-d');
+    $announcements = array_map('normalizeAnnouncementRecord', $announcements);
+
+    $filtered = array_filter($announcements, function ($announcement) use ($currentUser, $today) {
+        $isVisibleToUser =
+            ($currentUser['role'] === 'admin')
+            || (!empty($announcement['is_system_wide']))
+            || (($announcement['barangay_id'] ?? '') === ($currentUser['barangay_id'] ?? ''));
+
+        $isPublished = ($announcement['status'] ?? '') === 'Published';
+
+        $isPinnedToday =
+            !empty($announcement['is_pinned'])
+            && !empty($announcement['pin_date'])
+            && !empty($announcement['pinned_until'])
+            && $announcement['pin_date'] <= $today
+            && $announcement['pinned_until'] >= $today;
+
+        return $isVisibleToUser && $isPublished && $isPinnedToday;
+    });
+
+    $filtered = array_values($filtered);
+
+    usort($filtered, function ($a, $b) {
+        $priorityOrder = [
+            'Emergency' => 1,
+            'Important' => 2,
+            'Normal' => 3,
+        ];
+
+        $aPriority = $priorityOrder[$a['priority'] ?? 'Normal'] ?? 3;
+        $bPriority = $priorityOrder[$b['priority'] ?? 'Normal'] ?? 3;
+
+        if ($aPriority === $bPriority) {
+            return strtotime($b['date_posted'] ?? '') <=> strtotime($a['date_posted'] ?? '');
+        }
+
+        return $aPriority <=> $bPriority;
+    });
+
+    return $filtered[0] ?? null;
 }
 
 function canManageAnnouncement($user, $announcement = null)

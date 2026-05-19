@@ -14,7 +14,7 @@ if ($editingAnnouncement && !canManageAnnouncement($currentUser, $editingAnnounc
 }
 
 if ($showArchived) {
-    $announcementList = array_values(array_filter($announcementList, fn($announcement) => $announcement['status'] === 'archived'));
+    $announcementList = array_values(array_filter($announcementList, fn($announcement) => $announcement['status'] === 'Archived'));
 }
 
 if ($search !== '') {
@@ -63,7 +63,7 @@ usort($announcementList, function ($a, $b) {
                         <span class="mini-label"><?php echo e($scopeLabel); ?></span>
                         <h2><?php echo e($announcement['title']); ?></h2>
                     </div>
-                    <span class="status-badge <?php echo $announcement['status'] === 'archived' ? 'badge-neutral' : 'badge-resolved'; ?>">
+                    <span class="status-badge <?php echo $announcement['status'] === 'Archived' ? 'badge-neutral' : 'badge-resolved'; ?>">
                         <?php echo e(ucfirst($announcement['status'])); ?>
                     </span>
                 </div>
@@ -75,10 +75,10 @@ usort($announcementList, function ($a, $b) {
                     <span><?php echo e($announcement['updated_at'] ?: $announcement['created_at']); ?></span>
                 </div>
 
-                <?php if ($canManageAnnouncements && canManageAnnouncement($currentUser, $announcement)): ?>
+                    <?php if ($canManageAnnouncements && canManageAnnouncement($currentUser, $announcement)): ?>
                     <div class="button-row announcement-actions">
                         <a class="btn btn-outline" href="index.php?page=announcements&edit=<?php echo e($announcement['id']); ?>">Edit</a>
-                        <?php if ($announcement['status'] !== 'archived'): ?>
+                        <?php if ($announcement['status'] !== 'Archived'): ?>
                             <form method="post">
                                 <input type="hidden" name="announcement_id" value="<?php echo e($announcement['id']); ?>">
                                 <button class="btn btn-outline" type="submit" name="archive_announcement">Archive</button>
@@ -107,6 +107,15 @@ usort($announcementList, function ($a, $b) {
                         <input class="form-control" type="text" name="category" placeholder="Maintenance, Community, Advisory" value="<?php echo e($editingAnnouncement['category'] ?? ''); ?>" required>
                     </label>
 
+                    <label>Priority
+                        <select class="form-control" name="priority">
+                            <?php $selectedPriority = $editingAnnouncement['priority'] ?? 'Normal'; ?>
+                            <option value="Normal" <?php echo $selectedPriority === 'Normal' ? 'selected' : ''; ?>>Normal</option>
+                            <option value="Important" <?php echo $selectedPriority === 'Important' ? 'selected' : ''; ?>>Important</option>
+                            <option value="Emergency" <?php echo $selectedPriority === 'Emergency' ? 'selected' : ''; ?>>Emergency</option>
+                        </select>
+                    </label>
+
                     <?php if (isAdmin($currentUser)): ?>
                         <label>Scope
                             <select class="form-control" name="scope">
@@ -133,16 +142,25 @@ usort($announcementList, function ($a, $b) {
 
                     <label>Status
                         <select class="form-control" name="status">
-                            <?php $selectedStatus = $editingAnnouncement['status'] ?? 'active'; ?>
-                            <option value="active" <?php echo $selectedStatus === 'active' ? 'selected' : ''; ?>>Active</option>
-                            <option value="archived" <?php echo $selectedStatus === 'archived' ? 'selected' : ''; ?>>Archived</option>
+                            <?php $selectedStatus = $editingAnnouncement['status'] ?? 'Published'; ?>
+                            <option value="Published" <?php echo $selectedStatus === 'Published' ? 'selected' : ''; ?>>Published</option>
+                            <option value="Archived" <?php echo $selectedStatus === 'Archived' ? 'selected' : ''; ?>>Archived</option>
                         </select>
                     </label>
 
                     <label class="toggle-row">
                         <input type="checkbox" name="is_pinned" <?php echo !empty($editingAnnouncement['is_pinned']) ? 'checked' : ''; ?>>
-                        Pin announcement
+                        Pin to dashboard today
                     </label>
+
+                    <div class="form-grid">
+                        <label>Pin Date
+                            <input class="form-control" type="date" name="pin_date" value="<?php echo e($editingAnnouncement['pin_date'] ?? date('Y-m-d')); ?>">
+                        </label>
+                        <label>Pinned Until
+                            <input class="form-control" type="date" name="pinned_until" value="<?php echo e($editingAnnouncement['pinned_until'] ?? date('Y-m-d')); ?>">
+                        </label>
+                    </div>
 
                     <label>Announcement Details
                         <textarea class="form-control" name="body" rows="5" placeholder="Write the announcement details..." required><?php echo e($editingAnnouncement['body'] ?? ''); ?></textarea>

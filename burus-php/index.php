@@ -469,11 +469,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $payload = [
             'title' => trim($_POST['title'] ?? 'Barangay Announcement'),
             'body' => trim($_POST['body'] ?? ''),
+            'content' => trim($_POST['body'] ?? ''),
             'category' => trim($_POST['category'] ?? 'General'),
+            'priority' => $_POST['priority'] ?? 'Normal',
             'barangay_id' => $barangayId,
             'scope' => $scope,
-            'status' => $_POST['status'] ?? 'active',
+            'status' => $_POST['status'] ?? 'Published',
+            'is_system_wide' => $scope === 'system',
             'is_pinned' => isset($_POST['is_pinned']),
+            'pin_date' => isset($_POST['is_pinned']) ? ($_POST['pin_date'] ?: date('Y-m-d')) : null,
+            'pinned_until' => isset($_POST['is_pinned']) ? ($_POST['pinned_until'] ?: date('Y-m-d')) : null,
+            'date_posted' => $_POST['date_posted'] ?? date('Y-m-d h:i A'),
+            'posted_by' => $currentUser['name'],
+            'posted_by_role' => $currentUser['role'],
             'updated_at' => date('F j, Y h:i A'),
         ];
 
@@ -524,7 +532,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     exit;
                 }
 
-                $announcement['status'] = 'archived';
+                $announcement['status'] = 'Archived';
                 $announcement['updated_at'] = date('F j, Y h:i A');
                 break;
             }
