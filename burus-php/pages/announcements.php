@@ -55,8 +55,9 @@ usort($announcementList, function ($a, $b) {
             <?php
             $barangay = getBarangayById($announcement['barangay_id']);
             $scopeLabel = $announcement['scope'] === 'system' ? 'System-wide' : ($barangay['name'] ?? 'Barangay');
+            $categoryClass = 'announcement-' . strtolower(preg_replace('/[^a-z0-9]+/i', '-', $announcement['category']));
             ?>
-            <article class="announcement-card <?php echo !empty($announcement['is_pinned']) ? 'pinned' : ''; ?>">
+            <article class="announcement-card <?php echo e($categoryClass); ?> <?php echo !empty($announcement['is_pinned']) ? 'pinned' : ''; ?>">
                 <div class="announcement-head">
                     <div>
                         <span class="mini-label"><?php echo e($scopeLabel); ?></span>
