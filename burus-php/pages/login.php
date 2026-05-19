@@ -10,8 +10,8 @@
             <div class="flash"><?php echo e($_SESSION['flash']); unset($_SESSION['flash']); ?></div>
         <?php endif; ?>
         <form method="post" class="stack-form">
-            <label>Email Address<input type="email" name="email" value="resident@burus.test" required></label>
-            <label>Password<input type="password" name="password" value="123456" required></label>
+            <label>Email Address<input type="email" name="email" placeholder="Enter your email address" required></label>
+            <label>Password<input type="password" name="password" placeholder="Enter your password" required></label>
             <button class="btn btn-primary full" type="submit" name="login">Login</button>
         </form>
         <div class="demo-accounts">

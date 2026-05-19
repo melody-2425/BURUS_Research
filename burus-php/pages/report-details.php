@@ -171,8 +171,8 @@ $activityTimeline = [
                     <small>Prototype only. A sample resolution image is displayed after resolution.</small>
                     <input type="file" name="resolution_photo">
                 </label>
-                <label>Public Update to Resident<textarea class="form-control" name="official_update" rows="3">This update will be visible to the resident.</textarea></label>
-                <label>Reply<textarea class="form-control" name="reply" rows="4">We are reviewing this report.</textarea></label>
+                <label>Public Update to Resident<textarea class="form-control" name="official_update" rows="3" placeholder="Write a public update visible to the resident"></textarea></label>
+                <label>Reply<textarea class="form-control" name="reply" rows="4" placeholder="Write your reply to the resident"></textarea></label>
                 <button class="btn btn-primary full" type="submit" name="update_report"><?php echo $isSolved ? 'Save Resolution Update' : 'Save Update'; ?></button>
             </form>
             <div class="rating-box">
@@ -211,7 +211,7 @@ $activityTimeline = [
                         </div>
                     </div>
 
-                    <label>Feedback<textarea class="form-control" name="feedback_comment" rows="4">Please share whether the issue is fully fixed.</textarea></label>
+                    <label>Feedback<textarea class="form-control" name="feedback_comment" rows="4" placeholder="Please share whether the issue is fully fixed"></textarea></label>
 
                     <button class="btn btn-primary full" name="feedback" type="submit">Submit Feedback</button>
                 </form>

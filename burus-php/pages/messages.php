@@ -125,7 +125,7 @@ $resolvedWithFeedback = count(array_filter($feedbackItems, fn($item) => isResolv
 
                 <form method="post" class="stack-form">
                     <input type="hidden" name="ticket" value="<?php echo e($selectedFeedback['ticket_id']); ?>">
-                    <label>Add Comment<textarea class="form-control" name="comment" rows="4">Please provide another update on this report.</textarea></label>
+                    <label>Add Comment<textarea class="form-control" name="comment" rows="4" placeholder="Write your comment or follow-up message"></textarea></label>
                     <?php if (canResidentRate($selectedFeedback)): ?>
                         <div class="rating-control">
                             <span>Rate Service</span>
@@ -215,8 +215,8 @@ $resolvedWithFeedback = count(array_filter($feedbackItems, fn($item) => isResolv
                 </div>
                 <form method="post" class="stack-form">
                     <input type="hidden" name="ticket" value="<?php echo e($selectedFeedback['ticket_id']); ?>">
-                    <label>Official Reply<textarea class="form-control" name="reply" rows="4">We will update you after the next inspection.</textarea></label>
-                    <label>Public Update<textarea class="form-control" name="public_update" rows="3">This update will be visible to the resident.</textarea></label>
+                    <label>Official Reply<textarea class="form-control" name="reply" rows="4" placeholder="Write your official reply"></textarea></label>
+                    <label>Public Update<textarea class="form-control" name="public_update" rows="3" placeholder="Write a public update visible to the resident"></textarea></label>
                     <label>Status Update
                         <select class="form-control" name="status">
                             <?php foreach (['Pending', 'In Progress', 'Resolved'] as $status): ?>

@@ -12,11 +12,11 @@
         <article class="panel">
             <h2>General Configuration</h2>
             <form class="stack-form two-cols">
-                <label>Barangay Name<input class="form-control" type="text" value="<?php echo e($barangay['name']); ?>"></label>
-                <label>City<input class="form-control" type="text" value="<?php echo e($barangay['city']); ?>"></label>
-                <label>Contact<input class="form-control" type="text" value="<?php echo e($barangay['contact']); ?>"></label>
-                <label>Barangay Captain<input class="form-control" type="text" value="<?php echo e($barangay['captain']); ?>"></label>
-                <label class="span-2">Office Hours<input class="form-control" type="text" value="<?php echo e($barangay['office_hours']); ?>"></label>
+                <label>Barangay Name<input class="form-control" type="text" placeholder="<?php echo e($barangay['name']); ?>"></label>
+                <label>City<input class="form-control" type="text" placeholder="<?php echo e($barangay['city']); ?>"></label>
+                <label>Contact<input class="form-control" type="text" placeholder="<?php echo e($barangay['contact']); ?>"></label>
+                <label>Barangay Captain<input class="form-control" type="text" placeholder="<?php echo e($barangay['captain']); ?>"></label>
+                <label class="span-2">Office Hours<input class="form-control" type="text" placeholder="<?php echo e($barangay['office_hours']); ?>"></label>
                 <button class="btn btn-primary span-2" type="button">Save Settings</button>
             </form>
         </article>

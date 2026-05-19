@@ -1347,3 +1347,17 @@ textarea {
         width: 100%;
     }
 }
+
+/* Clear, lightweight fill-up forms */
+.stack-form label,
+.report-form label,
+.form-group {
+    font-weight: 500;
+}
+
+.form-control::placeholder,
+input::placeholder,
+textarea::placeholder {
+    color: #94a3b8;
+    font-weight: 400;
+}

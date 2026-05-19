@@ -30,12 +30,12 @@ $nearbyReports = array_slice(getReportsByBarangay($reports, $barangay['id']), 0,
             <section class="card">
                 <h2>Incident Details</h2>
                 <div class="two-cols-fields">
-                    <label>Report Title<input class="form-control" type="text" name="title" value="Broken utility line near main road"></label>
+                    <label>Report Title<input class="form-control" type="text" name="title" placeholder="Enter a short report title"></label>
                     <label>Priority
                         <select class="form-control" name="priority"><option>Medium</option><option>High</option><option>Low</option></select>
                     </label>
                 </div>
-                <label>Description<textarea class="form-control" name="description" rows="5">Describe what happened, when it started, and who may be affected.</textarea></label>
+                <label>Description<textarea class="form-control" name="description" rows="5" placeholder="Describe what happened, when it started, and who may be affected."></textarea></label>
             </section>
 
             <section class="card">
@@ -47,7 +47,7 @@ $nearbyReports = array_slice(getReportsByBarangay($reports, $barangay['id']), 0,
                     </div>
                     <div class="mini-map"></div>
                 </div>
-                <label>Nearest Location<input class="form-control" type="text" name="location" value="<?php echo e($barangay['name']); ?> main road"></label>
+                <label>Nearest Location<input class="form-control" type="text" name="location" placeholder="Enter the nearest street, landmark, or purok"></label>
             </section>
 
             <section class="card">

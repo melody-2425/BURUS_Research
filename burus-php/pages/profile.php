@@ -21,11 +21,11 @@ $barangay = getCurrentBarangay();
             <article class="settings-card">
                 <h2>Profile Information</h2>
                 <form class="form-grid">
-                    <label class="form-group">Full Name<input class="form-control" type="text" value="<?php echo e($user['name']); ?>"></label>
-                    <label class="form-group">Email<input class="form-control" type="email" value="<?php echo e($user['email']); ?>"></label>
-                    <label class="form-group">Contact<input class="form-control" type="text" value="<?php echo e($user['contact']); ?>"></label>
-                    <label class="form-group">Barangay<input class="form-control" type="text" value="<?php echo e($barangay['name']); ?>"></label>
-                    <label class="form-group full">Address<input class="form-control" type="text" value="<?php echo e($user['address']); ?>"></label>
+                    <label class="form-group">Full Name<input class="form-control" type="text" placeholder="<?php echo e($user['name']); ?>"></label>
+                    <label class="form-group">Email<input class="form-control" type="email" placeholder="<?php echo e($user['email']); ?>"></label>
+                    <label class="form-group">Contact<input class="form-control" type="text" placeholder="<?php echo e($user['contact']); ?>"></label>
+                    <label class="form-group">Barangay<input class="form-control" type="text" placeholder="<?php echo e($barangay['name']); ?>"></label>
+                    <label class="form-group full">Address<input class="form-control" type="text" placeholder="<?php echo e($user['address']); ?>"></label>
                     <div class="form-group full"><button class="btn btn-primary" type="button">Save Profile</button></div>
                 </form>
             </article>
