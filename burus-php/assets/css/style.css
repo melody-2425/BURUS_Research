@@ -39,6 +39,29 @@ button { cursor: pointer; }
     gap: 12px;
     min-width: 0;
 }
+.brand-logo {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+}
+.landing-brand-logo {
+    width: 300px;
+}
+.footer-brand-logo {
+    width: 260px;
+}
+.auth-brand-logo {
+    width: 300px;
+    margin: 0 auto;
+}
+.sidebar-logo {
+    width: 100%;
+    justify-content: flex-start;
+}
+.sidebar-brand-logo {
+    width: 220px;
+}
 .brand-mark, .sidebar-mark {
     display: grid;
     place-items: center;
@@ -946,8 +969,19 @@ textarea { resize: vertical; }
 @media (max-width: 760px) {
     .landing-nav, .landing-footer-inner, .landing-cta, .page-header, .panel-heading, .ticket-head { flex-direction: column; align-items: flex-start; }
     .landing-menu { display: none; }
+    .landing-brand-logo,
+    .footer-brand-logo,
+    .auth-brand-logo {
+        height: auto;
+        width: min(280px, 100%);
+    }
     .app-shell { grid-template-columns: 1fr; }
     .sidebar { position: relative; height: auto; }
+    .sidebar-logo { justify-content: center; }
+    .sidebar-brand-logo {
+        height: auto;
+        width: min(260px, 100%);
+    }
     .main-panel { padding: 16px; }
     .grid-2, .grid-3, .grid-4, .stats-row, .feature-grid, .category-grid, .two-cols, .two-cols-fields, .location-box, .info-grid, .timeline, .stepper, .filter-bar { grid-template-columns: 1fr; }
     .span-2 { grid-column: span 1; }

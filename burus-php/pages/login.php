@@ -1,8 +1,7 @@
 <main class="auth-page">
     <section class="auth-card">
         <a class="brand centered" href="index.php?page=landing">
-            <span class="brand-mark">B</span>
-            <span><strong>BURUS</strong><small>Secure Access</small></span>
+            <img class="brand-logo auth-brand-logo" src="assets/images/burus-logo.png" alt="BURUS Barangay Utility Reporting and Updates System">
         </a>
         <h1>Welcome back</h1>
         <p>Sign in as a resident, official, or admin to open the correct dashboard.</p>

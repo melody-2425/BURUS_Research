@@ -1,8 +1,7 @@
 <main class="landing">
     <nav class="landing-nav">
         <a class="brand" href="index.php?page=landing">
-            <span class="brand-mark">B</span>
-            <span><strong>BURUS</strong><small>Barangay Utility Reporting</small></span>
+            <img class="brand-logo landing-brand-logo" src="assets/images/burus-logo.png" alt="BURUS Barangay Utility Reporting and Updates System">
         </a>
         <div class="landing-menu">
             <a href="index.php?page=landing">Home</a>
@@ -17,7 +16,7 @@
 
     <section class="hero">
         <div class="hero-copy">
-            <span class="section-kicker">Transparent barangay service</span>
+            <span class="section-kicker">Barangay Utility Reporting and Updates System</span>
             <h1>Digitalizing Civic Service for a Better Barangay</h1>
             <p>BURUS helps residents report local utility concerns and helps barangay teams track, respond, and resolve issues with clear status updates.</p>
             <div class="button-row">
@@ -65,8 +64,7 @@
     <footer id="contact" class="landing-footer">
         <div class="landing-footer-inner">
             <a class="brand" href="index.php?page=landing">
-                <span class="brand-mark">B</span>
-                <span><strong>BURUS</strong><small>Civic service platform</small></span>
+                <img class="brand-logo footer-brand-logo" src="assets/images/burus-logo.png" alt="BURUS Barangay Utility Reporting and Updates System">
             </a>
             <div class="footer-links">
                 <a href="index.php?page=landing">Home</a>

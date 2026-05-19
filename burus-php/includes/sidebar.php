@@ -40,11 +40,7 @@ if (isAdmin($currentUser)) {
 ?>
 <aside class="sidebar">
     <a class="sidebar-logo" href="index.php?page=<?php echo e(routeForUser($currentUser)); ?>">
-        <span class="sidebar-mark">B</span>
-        <span>
-            <strong>BURUS</strong>
-            <small>Barangay Utility Reporting</small>
-        </span>
+        <img class="brand-logo sidebar-brand-logo" src="assets/images/burus-logo.png" alt="BURUS Barangay Utility Reporting and Updates System">
     </a>
 
     <nav class="sidebar-nav">

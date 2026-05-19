@@ -1,8 +1,7 @@
 <main class="auth-page">
     <section class="auth-card wide">
         <a class="brand centered" href="index.php?page=landing">
-            <span class="brand-mark">B</span>
-            <span><strong>BURUS</strong><small>Resident Registration</small></span>
+            <img class="brand-logo auth-brand-logo" src="assets/images/burus-logo.png" alt="BURUS Barangay Utility Reporting and Updates System">
         </a>
         <h1>Create resident account</h1>
         <p>This prototype saves shared accounts to server-side JSON files.</p>
