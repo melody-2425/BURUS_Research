@@ -24,13 +24,56 @@
                 <a class="btn btn-outline" href="#resources">View Resources</a>
             </div>
         </div>
-        <div class="hero-dashboard" aria-hidden="true">
-            <div class="hero-topline"></div>
-            <div class="hero-grid">
-                <div></div><div></div><div></div>
+        <div class="hero-preview" aria-hidden="true">
+            <div class="preview-topbar">
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
-            <div class="hero-table">
-                <span></span><span></span><span></span><span></span>
+
+            <div class="preview-stats">
+                <div class="preview-stat blue">
+                    <strong>128</strong>
+                    <small>Total Reports</small>
+                </div>
+                <div class="preview-stat red">
+                    <strong>18</strong>
+                    <small>Pending</small>
+                </div>
+                <div class="preview-stat green">
+                    <strong>92</strong>
+                    <small>Resolved</small>
+                </div>
+            </div>
+
+            <div class="preview-main">
+                <div class="preview-map">
+                    <span class="preview-pin pin-red"></span>
+                    <span class="preview-pin pin-blue"></span>
+                    <span class="preview-pin pin-green"></span>
+                </div>
+
+                <div class="preview-report-card">
+                    <span class="badge badge-progress">In Progress</span>
+                    <h4>Water Leak Reported</h4>
+                    <p>Public Market, Barangay Tejero</p>
+                    <small>#BRGY-2026-00123</small>
+                </div>
+            </div>
+
+            <div class="preview-progress">
+                <div>
+                    <span>Submitted</span>
+                    <b></b>
+                </div>
+                <div>
+                    <span>Assigned</span>
+                    <b></b>
+                </div>
+                <div>
+                    <span>Resolved</span>
+                    <b></b>
+                </div>
             </div>
         </div>
     </section>
