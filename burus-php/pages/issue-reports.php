@@ -1,8 +1,9 @@
 <?php
 global $reports;
+$currentUser = getCurrentUser();
 $barangay = getCurrentBarangay();
 $allReports = $reports;
-$reports = isAdmin(getCurrentUser()) ? array_map('normalizeReportRecord', $allReports) : getReportsByBarangay($allReports, $barangay['id']);
+$reports = getReportsVisibleToUser($allReports ?? [], $currentUser);
 $statusFilter = $_GET['status'] ?? 'All';
 $typeFilter = $_GET['type'] ?? 'All';
 $priorityFilter = $_GET['priority'] ?? 'All';
@@ -27,7 +28,7 @@ if ($search !== '') {
             || stripos($resident['name'] ?? '', $search) !== false;
     }));
 }
-$allBarangayReports = isAdmin(getCurrentUser()) ? array_map('normalizeReportRecord', $allReports) : getReportsByBarangay($allReports, $barangay['id']);
+$allBarangayReports = getReportsVisibleToUser($allReports ?? [], $currentUser);
 ?>
 <section class="stats-row">
     <article class="stat-card"><span>Total Tickets</span><strong><?php echo count($allBarangayReports); ?></strong><small>Barangay reports</small></article>

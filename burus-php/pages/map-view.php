@@ -2,7 +2,9 @@
 global $reports;
 $currentUser = getCurrentUser();
 $barangay = getCurrentBarangay();
-$mapReports = getReportsByBarangay($reports, $currentUser['barangay_id']);
+$mapReports = isSuperAdmin($currentUser)
+    ? array_map('normalizeReportRecord', $reports ?? [])
+    : getReportsByBarangay($reports ?? [], $currentUser['barangay_id']);
 $search = trim($_GET['search'] ?? $_GET['q'] ?? '');
 if ($search !== '') {
     $mapReports = array_values(array_filter($mapReports, function ($report) use ($search) {

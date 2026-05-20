@@ -285,6 +285,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $updatedStatus = '';
         foreach ($reports as &$report) {
             if ((int) $report['id'] === $reportId) {
+                if (!isSuperAdmin($currentUser) && (($report['barangay_id'] ?? '') !== ($currentUser['barangay_id'] ?? ''))) {
+                    unset($report);
+                    $_SESSION['flash'] = 'Access denied. This report belongs to another barangay.';
+                    header('Location: index.php?page=issue-reports');
+                    exit;
+                }
+
                 $updatedTicket = $report['ticket_id'];
                 $report['status'] = $_POST['status'] ?? $report['status'];
                 $updatedStatus = $report['status'];
@@ -413,6 +420,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         foreach ($feedback as &$item) {
             if ($item['ticket_id'] === $ticket) {
                 if (isResident($currentUser)) {
+                    if ((int) ($item['resident_id'] ?? 0) !== (int) $currentUser['id']) {
+                        unset($item);
+                        $_SESSION['flash'] = 'Access denied. This feedback thread belongs to another resident.';
+                        header('Location: index.php?page=messages');
+                        exit;
+                    }
+
                     $message = trim($_POST['comment'] ?? 'Resident submitted feedback.');
                     $item['last_message'] = $message;
                     $item['messages'][] = [
@@ -422,6 +436,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         'date' => date('F j, Y h:i A'),
                     ];
                 } elseif (canManageReports($currentUser)) {
+                    if (!isSuperAdmin($currentUser) && (($item['barangay_id'] ?? '') !== ($currentUser['barangay_id'] ?? ''))) {
+                        unset($item);
+                        $_SESSION['flash'] = 'Access denied. This feedback thread belongs to another barangay.';
+                        header('Location: index.php?page=messages');
+                        exit;
+                    }
+
                     $message = trim($_POST['reply'] ?? $_POST['public_update'] ?? 'Official replied to resident.');
                     $item['official_reply'] = $message;
                     $item['feedback_status'] = 'Official Replied';
@@ -455,8 +476,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $announcements = loadJson('announcements.json');
         $announcementId = (int) ($_POST['announcement_id'] ?? 0);
-        $scope = isAdmin($currentUser) ? ($_POST['scope'] ?? 'barangay') : 'barangay';
-        $barangayId = isAdmin($currentUser)
+        $scope = isSuperAdmin($currentUser) ? ($_POST['scope'] ?? 'barangay') : 'barangay';
+        $barangayId = isSuperAdmin($currentUser)
             ? ($_POST['barangay_id'] ?? $currentUser['barangay_id'])
             : $currentUser['barangay_id'];
 
@@ -561,6 +582,22 @@ if (!in_array($page, $publicPages, true)) {
         header('Location: index.php?page=' . routeForUser($currentUser));
         exit;
     }
+
+    if ($page === 'report-details') {
+        $requestedReport = getReportById($reports ?? [], (int) ($_GET['id'] ?? 0));
+
+        if (!$requestedReport) {
+            $_SESSION['flash'] = 'Report not found.';
+            header('Location: index.php?page=' . (canManageReports($currentUser) ? 'issue-reports' : 'map-view'));
+            exit;
+        }
+
+        if (!isSuperAdmin($currentUser) && (($requestedReport['barangay_id'] ?? '') !== ($currentUser['barangay_id'] ?? ''))) {
+            $_SESSION['flash'] = 'Access denied. This report belongs to another barangay.';
+            header('Location: index.php?page=' . (canManageReports($currentUser) ? 'issue-reports' : 'map-view'));
+            exit;
+        }
+    }
 }
 
 include __DIR__ . '/includes/header.php';
@@ -575,6 +612,10 @@ if (in_array($page, $publicPages, true)) {
         'show_search' => false,
         'search_placeholder' => '',
     ];
+    if ($currentPage === 'admin-dashboard' && !isSuperAdmin($currentUser)) {
+        $currentPageMeta['title'] = getCurrentBarangay()['name'] . ' Admin Dashboard';
+        $currentPageMeta['subtitle'] = 'Manage complaints and barangay operations for your assigned barangay.';
+    }
 
     echo '<div class="app-shell">';
     include __DIR__ . '/includes/sidebar.php';

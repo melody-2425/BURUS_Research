@@ -90,10 +90,14 @@ function getBarangayById($barangayId)
 
 function getReportsByBarangay($reports, $barangayId)
 {
+    if (!is_array($reports)) {
+        return [];
+    }
+
     $reports = array_map('normalizeReportRecord', $reports);
 
     return array_values(array_filter($reports, function ($report) use ($barangayId) {
-        return $report['barangay_id'] === $barangayId;
+        return ($report['barangay_id'] ?? '') === $barangayId;
     }));
 }
 
@@ -113,12 +117,23 @@ function getReportsByResident($reportsOrResidentId, $residentId = null)
     return array_values(array_filter($sourceReports, fn($report) => $report['resident_id'] === (int) $residentId));
 }
 
-function getReportById($id)
+function getReportById($reportsOrId, $id = null)
 {
     global $reports;
 
-    foreach ($reports as $report) {
-        if ($report['id'] === (int) $id) {
+    if ($id === null) {
+        $id = $reportsOrId;
+        $sourceReports = $reports;
+    } else {
+        $sourceReports = $reportsOrId;
+    }
+
+    if (!is_array($sourceReports)) {
+        return null;
+    }
+
+    foreach ($sourceReports as $report) {
+        if ((int) ($report['id'] ?? 0) === (int) $id) {
             return normalizeReportRecord($report);
         }
     }
@@ -297,7 +312,7 @@ function getVisibleAnnouncements($announcements, $user, $includeArchived = false
             return false;
         }
 
-        if (isAdmin($user)) {
+        if (isSuperAdmin($user)) {
             return true;
         }
 
@@ -317,7 +332,7 @@ function getAnnouncementsForUser($announcements, $currentUser)
 
     $announcements = array_map('normalizeAnnouncementRecord', $announcements);
 
-    if (($currentUser['role'] ?? '') === 'admin') {
+    if (isSuperAdmin($currentUser)) {
         return array_values($announcements);
     }
 
@@ -361,7 +376,7 @@ function getDashboardPinnedAnnouncement($announcements, $currentUser)
 
     $filtered = array_filter($announcements, function ($announcement) use ($currentUser, $today) {
         $isVisibleToUser =
-            ($currentUser['role'] === 'admin')
+            isSuperAdmin($currentUser)
             || (!empty($announcement['is_system_wide']))
             || (($announcement['barangay_id'] ?? '') === ($currentUser['barangay_id'] ?? ''));
 
@@ -401,11 +416,11 @@ function getDashboardPinnedAnnouncement($announcements, $currentUser)
 
 function canManageAnnouncement($user, $announcement = null)
 {
-    if (isAdmin($user)) {
+    if (isSuperAdmin($user)) {
         return true;
     }
 
-    if (!isOfficial($user)) {
+    if (!isOfficial($user) && !isAdmin($user)) {
         return false;
     }
 
@@ -524,24 +539,76 @@ function isAdmin($user)
     return $user && $user['role'] === 'admin';
 }
 
+function isSuperAdmin($user)
+{
+    return isset($user['role']) && $user['role'] === 'super_admin';
+}
+
 function canManageReports($user)
 {
-    return $user && in_array($user['role'], ['official', 'admin'], true);
+    return $user && in_array($user['role'], ['official', 'admin', 'super_admin'], true);
+}
+
+function getReportsVisibleToUser($reports, $currentUser)
+{
+    if (!is_array($reports) || !$currentUser) {
+        return [];
+    }
+
+    $reports = array_map('normalizeReportRecord', $reports);
+
+    if (isSuperAdmin($currentUser)) {
+        return array_values($reports);
+    }
+
+    if (in_array($currentUser['role'], ['admin', 'official'], true)) {
+        return array_values(array_filter($reports, function ($report) use ($currentUser) {
+            return ($report['barangay_id'] ?? '') === ($currentUser['barangay_id'] ?? '');
+        }));
+    }
+
+    if ($currentUser['role'] === 'resident') {
+        return array_values(array_filter($reports, function ($report) use ($currentUser) {
+            return ($report['resident_id'] ?? null) == ($currentUser['id'] ?? null);
+        }));
+    }
+
+    return [];
+}
+
+function getResidentsVisibleToUser($users, $currentUser)
+{
+    if (!is_array($users) || !$currentUser) {
+        return [];
+    }
+
+    if (isSuperAdmin($currentUser)) {
+        return array_values(array_filter($users, fn($user) => ($user['role'] ?? '') === 'resident'));
+    }
+
+    if (in_array($currentUser['role'], ['admin', 'official'], true)) {
+        return array_values(array_filter($users, function ($user) use ($currentUser) {
+            return ($user['role'] ?? '') === 'resident'
+                && ($user['barangay_id'] ?? '') === ($currentUser['barangay_id'] ?? '');
+        }));
+    }
+
+    return [];
 }
 
 function canAccessSystemSettings($user)
 {
-    return isAdmin($user);
+    return isAdmin($user) || isSuperAdmin($user);
 }
 
 function canAccessAnalytics($user)
 {
-    return isAdmin($user);
+    return isAdmin($user) || isSuperAdmin($user);
 }
 
 function canAccessResidentDirectory($user)
 {
-    return isAdmin($user);
+    return isAdmin($user) || isSuperAdmin($user);
 }
 
 function isAdminLike($user)
@@ -551,8 +618,12 @@ function isAdminLike($user)
 
 function roleLabel($user)
 {
+    if (isSuperAdmin($user)) {
+        return 'Super Admin';
+    }
+
     if (isAdmin($user)) {
-        return 'Administrator';
+        return 'Barangay Admin';
     }
 
     if (isOfficial($user)) {
@@ -595,7 +666,7 @@ function allowedPagesForRole($user)
         ];
     }
 
-    if (isAdmin($user)) {
+    if (isAdmin($user) || isSuperAdmin($user)) {
         return [
             'admin-dashboard',
             'issue-reports',
@@ -629,7 +700,7 @@ function requireLogin()
 
 function routeForUser($user)
 {
-    if (isAdmin($user)) {
+    if (isSuperAdmin($user) || isAdmin($user)) {
         return 'admin-dashboard';
     }
 

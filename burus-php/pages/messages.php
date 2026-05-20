@@ -3,9 +3,13 @@ global $feedback;
 
 $currentUser = getCurrentUser();
 $isResident = $currentUser['role'] === 'resident';
-$feedbackItems = $isResident
-    ? getFeedbackByResident($feedback, $currentUser['id'])
-    : getFeedbackByBarangay($feedback, $currentUser['barangay_id']);
+if (isSuperAdmin($currentUser)) {
+    $feedbackItems = $feedback ?? [];
+} elseif (in_array($currentUser['role'], ['admin', 'official'], true)) {
+    $feedbackItems = getFeedbackByBarangay($feedback ?? [], $currentUser['barangay_id']);
+} else {
+    $feedbackItems = getFeedbackByResident($feedback ?? [], $currentUser['id']);
+}
 $search = trim($_GET['search'] ?? $_GET['q'] ?? '');
 if ($search !== '') {
     $feedbackItems = array_values(array_filter($feedbackItems, function ($item) use ($search) {

@@ -2,8 +2,8 @@
 global $reports, $feedback, $announcements;
 $user = getCurrentUser();
 $barangay = getCurrentBarangay();
-$barangayReports = isAdmin($user) ? array_map('normalizeReportRecord', $reports) : getReportsByBarangay($reports, $barangay['id']);
-$barangayFeedback = isAdmin($user) ? $feedback : getFeedbackByBarangay($feedback, $barangay['id']);
+$barangayReports = getReportsVisibleToUser($reports ?? [], $user);
+$barangayFeedback = isSuperAdmin($user) ? ($feedback ?? []) : getFeedbackByBarangay($feedback ?? [], $user['barangay_id']);
 $pinnedAnnouncement = getDashboardPinnedAnnouncement($announcements ?? [], $user);
 $resolvedCount = countReportsByStatus($barangayReports, 'Resolved');
 $resolutionRate = count($barangayReports) ? round(($resolvedCount / count($barangayReports)) * 100) : 0;
@@ -38,7 +38,7 @@ $criticalReports = array_values(array_filter($barangayReports, fn($report) => $r
         <div class="panel-heading">
             <div>
                 <h2>Critical Complaints</h2>
-                <p><?php echo e(isAdmin($user) ? 'High priority and unresolved tickets across all barangays.' : 'High priority and unresolved tickets scoped to ' . $barangay['name'] . '.'); ?></p>
+                <p><?php echo e(isSuperAdmin($user) ? 'High priority and unresolved tickets across all barangays.' : 'High priority and unresolved tickets scoped to ' . $barangay['name'] . '.'); ?></p>
             </div>
         </div>
         <div class="table-wrap">

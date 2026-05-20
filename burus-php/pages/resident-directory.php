@@ -1,9 +1,8 @@
 <?php
 $barangay = getCurrentBarangay();
 global $users;
-$residents = isAdmin(getCurrentUser())
-    ? array_values(array_filter($users, fn($user) => $user['role'] === 'resident'))
-    : getResidentsByBarangay($barangay['id']);
+$currentUser = getCurrentUser();
+$residents = getResidentsVisibleToUser($users ?? [], $currentUser);
 $search = trim($_GET['search'] ?? $_GET['q'] ?? '');
 if ($search !== '') {
     $residents = array_values(array_filter($residents, function ($resident) use ($search) {

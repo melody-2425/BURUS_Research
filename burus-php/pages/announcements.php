@@ -116,7 +116,7 @@ usort($announcementList, function ($a, $b) {
                         </select>
                     </label>
 
-                    <?php if (isAdmin($currentUser)): ?>
+                    <?php if (isSuperAdmin($currentUser)): ?>
                         <label>Scope
                             <select class="form-control" name="scope">
                                 <?php $selectedScope = $editingAnnouncement['scope'] ?? 'barangay'; ?>

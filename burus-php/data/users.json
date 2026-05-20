@@ -20,6 +20,16 @@
         "contact": "09987654321"
     },
     {
+        "id": 5,
+        "name": "Marco Reyes",
+        "email": "labangonadmin@burus.test",
+        "password": "123456",
+        "role": "admin",
+        "barangay_id": "labangon",
+        "address": "Barangay Hall, Labangon",
+        "contact": "09170002222"
+    },
+    {
         "id": 3,
         "name": "Juan Dela Cruz",
         "email": "labangon@burus.test",

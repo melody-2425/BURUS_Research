@@ -1,12 +1,34 @@
 <?php
-$report = getReportById($_GET['id'] ?? 1);
+global $reports;
+$reportId = (int) ($_GET['id'] ?? 1);
+$report = getReportById($reports ?? [], $reportId);
 $user = getCurrentUser();
 $isStaff = canManageReports($user);
 $isResident = isResident($user);
 
-if (!$report || $report['barangay_id'] !== $user['barangay_id']) {
-    echo '<section class="panel"><h2>Report not found</h2><p>This ticket is not available for your barangay.</p></section>';
+if (!$report) {
+    echo '<section class="panel"><h2>Report not found</h2><p>This ticket is not available.</p></section>';
     return;
+}
+
+if (!isSuperAdmin($user)) {
+    if (in_array($user['role'], ['admin', 'official'], true)) {
+        if (($report['barangay_id'] ?? '') !== ($user['barangay_id'] ?? '')) {
+            $_SESSION['flash'] = 'Access denied. This report belongs to another barangay.';
+            header('Location: index.php?page=issue-reports');
+            exit;
+        }
+    }
+
+    if ($user['role'] === 'resident') {
+        $sameBarangay = ($report['barangay_id'] ?? '') === ($user['barangay_id'] ?? '');
+
+        if (!$sameBarangay) {
+            $_SESSION['flash'] = 'Access denied. This report belongs to another barangay.';
+            header('Location: index.php?page=map-view');
+            exit;
+        }
+    }
 }
 
 $resident = getUserById($report['resident_id']);

@@ -1,7 +1,8 @@
 <?php
 global $reports;
+$currentUser = getCurrentUser();
 $barangay = getCurrentBarangay();
-$reports = isAdmin(getCurrentUser()) ? array_map('normalizeReportRecord', $reports) : getReportsByBarangay($reports, $barangay['id']);
+$reports = getReportsVisibleToUser($reports ?? [], $currentUser);
 $types = getCommonIssueTypes($reports);
 $resolutionRate = count($reports) ? round((countReportsByStatus($reports, 'Resolved') / count($reports)) * 100) : 0;
 ?>
