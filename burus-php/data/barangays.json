@@ -14,5 +14,29 @@
         "contact": "032-987-6543",
         "captain": "Hon. Elena Cabahug",
         "office_hours": "Monday to Saturday, 8:00 AM - 5:00 PM"
+    },
+    {
+        "id": "mabolo",
+        "name": "Barangay Mabolo",
+        "city": "Cebu City",
+        "contact": "032-555-1234",
+        "captain": "Hon. Carlos Mendoza",
+        "office_hours": "Monday to Friday, 8:00 AM - 5:00 PM"
+    },
+    {
+        "id": "banilad",
+        "name": "Barangay Pooc",
+        "city": "Talisay Cebu City",
+        "contact": "032-555-5678",
+        "captain": "Hon. Maria Santos",
+        "office_hours": "Monday to Saturday, 8:00 AM - 5:00 PM"
+    },
+    {
+        "id": "ap-tower",
+        "name": "Barangay Ap-tower",
+        "city": "Cebu City",
+        "contact": "032-555-9012",
+        "captain": "Hon. Juan Dela Cruz",
+        "office_hours": "Monday to Friday, 8:00 AM - 5:00 PM"
     }
 ]
