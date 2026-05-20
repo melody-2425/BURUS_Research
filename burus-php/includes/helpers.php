@@ -673,6 +673,7 @@ function allowedPagesForRole($user)
             'resident-directory',
             'analytics',
             'system-settings',
+            'staff-management',
             'map-view',
             'report-details',
             'messages',
@@ -731,6 +732,7 @@ function pageTitle($page)
         'resident-directory' => 'Resident Directory',
         'analytics' => 'Analytics',
         'system-settings' => 'System Settings',
+        'staff-management' => 'Staff Management',
         'map-view' => 'Map View',
     ];
 

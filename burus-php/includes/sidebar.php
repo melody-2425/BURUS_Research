@@ -31,6 +31,7 @@ $adminLinks = [
     'system-settings' => 'System Settings',
     'announcements' => 'Announcements',
     'notifications' => 'Notifications',
+    'staff-management' => 'Staff Management',
 ];
 
 if (isAdmin($currentUser)) {
