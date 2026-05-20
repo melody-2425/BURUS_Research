@@ -27,6 +27,7 @@ $allowedPages = [
     'resident-directory',
     'analytics',
     'system-settings',
+    'staff-management',
     'map-view',
 ];
 
@@ -125,6 +126,12 @@ $pageMeta = [
         'show_search' => false,
         'search_placeholder' => '',
     ],
+    'staff-management' => [
+        'title' => 'Staff Management',
+        'subtitle' => 'Add and track barangay staff assignments for maintenance and issue response teams.',
+        'show_search' => true,
+        'search_placeholder' => 'Search staff member or issue specialty...',
+    ],
 ];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -166,6 +173,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['user_id'] = $newUser['id'];
         $_SESSION['flash'] = 'Account created. You are signed in as ' . $newUser['name'] . '.';
         header('Location: index.php?page=' . routeForUser($newUser));
+        exit;
+    }
+
+    if (isset($_POST['add_staff_member'])) {
+        $currentUser = getCurrentUser();
+
+        if (!$currentUser || !isAdmin($currentUser)) {
+            $_SESSION['flash'] = 'Access denied. Only administrators can add staff members.';
+            header('Location: index.php?page=' . ($currentUser ? routeForUser($currentUser) : 'login'));
+            exit;
+        }
+
+        global $staff;
+
+        $staff = loadJson('staff.json');
+        $name = trim($_POST['name'] ?? '');
+        $department = trim($_POST['department'] ?? 'Public Works');
+        $status = trim($_POST['status'] ?? 'Available');
+        $allowedStatuses = ['Available', 'Assigned', 'On Leave'];
+        $issueTypes = array_values(array_filter(array_map('trim', $_POST['issue_types'] ?? [])));
+
+        if ($name === '') {
+            $_SESSION['flash'] = 'Staff name is required.';
+            header('Location: index.php?page=staff-management');
+            exit;
+        }
+
+        if (!in_array($status, $allowedStatuses, true)) {
+            $status = 'Available';
+        }
+
+        $staff[] = [
+            'id' => getNextId($staff),
+            'barangay_id' => $currentUser['barangay_id'],
+            'name' => $name,
+            'department' => $department !== '' ? $department : 'Public Works',
+            'status' => $status,
+            'issue_types' => $issueTypes,
+        ];
+
+        saveJson('staff.json', $staff);
+        $_SESSION['flash'] = 'Staff member added to response roster.';
+        header('Location: index.php?page=staff-management');
         exit;
     }
 
