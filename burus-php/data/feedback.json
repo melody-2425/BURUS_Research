@@ -131,5 +131,28 @@
                 "date": "May 19, 2026 11:49 PM"
             }
         ]
+    },
+    {
+        "id": 6,
+        "report_id": 6,
+        "ticket_id": "#BRGY-2026-00211",
+        "barangay_id": "labangon",
+        "resident_id": 10,
+        "resident_name": "Lorie Uy",
+        "issue_type": "Power Outage",
+        "location": "casa mira",
+        "status": "Pending",
+        "last_message": "Report submitted with initial evidence.",
+        "official_reply": "",
+        "rating": null,
+        "feedback_status": "Awaiting Reply",
+        "messages": [
+            {
+                "sender_role": "resident",
+                "sender_name": "Lorie Uy",
+                "message": "Report submitted with initial evidence.",
+                "date": "May 20, 2026 01:34 PM"
+            }
+        ]
     }
 ]

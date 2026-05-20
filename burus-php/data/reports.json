@@ -272,5 +272,49 @@
         ],
         "resolution_evidence": [],
         "resident_confirmation": null
+    },
+    {
+        "id": 6,
+        "ticket_id": "#BRGY-2026-00211",
+        "barangay_id": "labangon",
+        "resident_id": 10,
+        "issue_type": "Power Outage",
+        "title": "BROWNOUT",
+        "description": "way wifi gahapon pani",
+        "location": "casa mira",
+        "status": "Pending",
+        "assigned_to": "Unassigned",
+        "date_submitted": "May 20, 2026",
+        "priority": "Medium",
+        "timeline": [
+            "Submitted"
+        ],
+        "comments": [
+            {
+                "sender": "Lorie Uy",
+                "message": "Report submitted with initial evidence.",
+                "date": "May 20, 2026 01:34 PM"
+            }
+        ],
+        "rating": null,
+        "pin": {
+            "x": 76,
+            "y": 32
+        },
+        "pin_x": 76,
+        "pin_y": 32,
+        "evidence": [
+            {
+                "type": "resident_upload",
+                "title": "Initial Report Photo",
+                "description": "Photo submitted by resident showing the reported issue.",
+                "image": "assets\/images\/sample-water-leak-before.jpg",
+                "uploaded_by": "Lorie Uy",
+                "uploaded_role": "resident",
+                "date": "May 20, 2026 01:34 PM"
+            }
+        ],
+        "resolution_evidence": [],
+        "resident_confirmation": null
     }
 ]

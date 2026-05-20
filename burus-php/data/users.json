@@ -68,5 +68,15 @@
         "barangay_id": "labangon",
         "address": "casa mira 56",
         "contact": "09181234567"
+    },
+    {
+        "id": 10,
+        "name": "Lorie Uy",
+        "email": "melodytejedor@gmail.com",
+        "password": "123456",
+        "role": "resident",
+        "barangay_id": "labangon",
+        "address": "Casa Mira Towers Labangon",
+        "contact": "09181234567"
     }
 ]
