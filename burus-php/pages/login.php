@@ -13,13 +13,13 @@
             <label>Password<input type="password" name="password" placeholder="Enter your password" required></label>
             <button class="btn btn-primary full" type="submit" name="login">Login</button>
         </form>
-        <div class="demo-accounts">
+        <!-- <div class="demo-accounts">
             <strong>Demo accounts</strong>
             <span>resident@burus.test / 123456</span>
             <span>official@burus.test / 123456</span>
             <span>admin@burus.test / 123456</span>
             <span>labangon@burus.test / 123456</span>
-        </div>
+        </div> -->
         <p class="auth-switch">No account yet? <a href="index.php?page=register">Create account</a></p>
     </section>
 </main>
