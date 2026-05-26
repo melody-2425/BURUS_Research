@@ -231,106 +231,207 @@
         "time_submitted": "10:05 AM"
     },
     {
-        "id":  5,
-        "ticket_id":  "#BRGY-2026-00187",
-        "barangay_id":  "labangon",
-        "resident_id":  8,
-        "issue_type":  "Power Outage",
-        "title":  "Power outage near Casa Mira",
-        "description":  "wapay suga since two days ago",
-        "location":  "Casa Mira, Barangay Labangon",
-        "status":  "In Progress",
-        "assigned_to":  "Road Maintenance Team",
-        "date_submitted":  "May 19, 2026",
-        "priority":  "Medium",
-        "timeline":  [
-                         "Submitted",
-                         "Reviewed",
-                         "Assigned"
-                     ],
-        "comments":  [
-                         {
-                             "sender":  "Ana Mercado",
-                             "message":  "Report submitted with initial evidence.",
-                             "date":  "May 19, 2026 11:46 PM"
-                         },
-                         {
-                             "sender":  "Sylvie",
-                             "message":  "This update will be visible to the resident.",
-                             "date":  "May 19, 2026 11:49 PM"
-                         }
-                     ],
-        "rating":  null,
-        "pin":  {
-                    "x":  44,
-                    "y":  57
-                },
-        "pin_x":  44,
-        "pin_y":  57,
-        "evidence":  [
-                         {
-                             "type":  "resident_upload",
-                             "title":  "Initial Report Photo",
-                             "description":  "Photo submitted by resident showing the reported issue.",
-                             "image":  "assets/images/sample-water-leak-before.jpg",
-                             "uploaded_by":  "Ana Mercado",
-                             "uploaded_role":  "resident",
-                             "date":  "May 19, 2026 11:46 PM"
-                         }
-                     ],
-        "resolution_evidence":  [
-
-                                ],
-        "resident_confirmation":  null,
-        "resident_name":  "Ana Mercado",
-        "time_submitted":  "11:46 PM"
+        "id": 5,
+        "ticket_id": "#BRGY-2026-00187",
+        "barangay_id": "labangon",
+        "resident_id": 8,
+        "issue_type": "Power Outage",
+        "title": "Power outage near Casa Mira",
+        "description": "wapay suga since two days ago",
+        "location": "Casa Mira, Barangay Labangon",
+        "status": "In Progress",
+        "assigned_to": "Road Maintenance Team",
+        "date_submitted": "May 19, 2026",
+        "priority": "Medium",
+        "timeline": [
+            "Submitted",
+            "Reviewed",
+            "Assigned"
+        ],
+        "comments": [
+            {
+                "sender": "Ana Mercado",
+                "message": "Report submitted with initial evidence.",
+                "date": "May 19, 2026 11:46 PM"
+            },
+            {
+                "sender": "Sylvie",
+                "message": "This update will be visible to the resident.",
+                "date": "May 19, 2026 11:49 PM"
+            }
+        ],
+        "rating": null,
+        "pin": {
+            "x": 44,
+            "y": 57
+        },
+        "pin_x": 44,
+        "pin_y": 57,
+        "evidence": [
+            {
+                "type": "resident_upload",
+                "title": "Initial Report Photo",
+                "description": "Photo submitted by resident showing the reported issue.",
+                "image": "assets\/images\/sample-water-leak-before.jpg",
+                "uploaded_by": "Ana Mercado",
+                "uploaded_role": "resident",
+                "date": "May 19, 2026 11:46 PM"
+            }
+        ],
+        "resolution_evidence": [],
+        "resident_confirmation": null,
+        "resident_name": "Ana Mercado",
+        "time_submitted": "11:46 PM"
     },
     {
-        "id":  6,
-        "ticket_id":  "#BRGY-2026-00211",
-        "barangay_id":  "labangon",
-        "resident_id":  10,
-        "issue_type":  "Power Outage",
-        "title":  "BROWNOUT",
-        "description":  "way wifi gahapon pani",
-        "location":  "casa mira",
-        "status":  "Pending",
-        "assigned_to":  "Unassigned",
-        "date_submitted":  "May 20, 2026",
-        "priority":  "Medium",
-        "timeline":  [
-                         "Submitted"
-                     ],
-        "comments":  [
-                         {
-                             "sender":  "Lorie Uy",
-                             "message":  "Report submitted with initial evidence.",
-                             "date":  "May 20, 2026 01:34 PM"
-                         }
-                     ],
-        "rating":  null,
-        "pin":  {
-                    "x":  76,
-                    "y":  32
-                },
-        "pin_x":  76,
-        "pin_y":  32,
-        "evidence":  [
-                         {
-                             "type":  "resident_upload",
-                             "title":  "Initial Report Photo",
-                             "description":  "Photo submitted by resident showing the reported issue.",
-                             "image":  "assets/images/sample-water-leak-before.jpg",
-                             "uploaded_by":  "Lorie Uy",
-                             "uploaded_role":  "resident",
-                             "date":  "May 20, 2026 01:34 PM"
-                         }
-                     ],
-        "resolution_evidence":  [
-
-                                ],
-        "resident_confirmation":  null,
-        "resident_name":  "Lorie Uy",
-        "time_submitted":  "01:34 PM"
+        "id": 6,
+        "ticket_id": "#BRGY-2026-00211",
+        "barangay_id": "labangon",
+        "resident_id": 10,
+        "issue_type": "Power Outage",
+        "title": "BROWNOUT",
+        "description": "way wifi gahapon pani",
+        "location": "casa mira",
+        "status": "Pending",
+        "assigned_to": "Unassigned",
+        "date_submitted": "May 20, 2026",
+        "priority": "Medium",
+        "timeline": [
+            "Submitted"
+        ],
+        "comments": [
+            {
+                "sender": "Lorie Uy",
+                "message": "Report submitted with initial evidence.",
+                "date": "May 20, 2026 01:34 PM"
+            }
+        ],
+        "rating": null,
+        "pin": {
+            "x": 76,
+            "y": 32
+        },
+        "pin_x": 76,
+        "pin_y": 32,
+        "evidence": [
+            {
+                "type": "resident_upload",
+                "title": "Initial Report Photo",
+                "description": "Photo submitted by resident showing the reported issue.",
+                "image": "assets\/images\/sample-water-leak-before.jpg",
+                "uploaded_by": "Lorie Uy",
+                "uploaded_role": "resident",
+                "date": "May 20, 2026 01:34 PM"
+            }
+        ],
+        "resolution_evidence": [],
+        "resident_confirmation": null,
+        "resident_name": "Lorie Uy",
+        "time_submitted": "01:34 PM"
+    },
+    {
+        "id": 7,
+        "ticket_id": "#BRGY-2026-00698",
+        "barangay_id": "labangon",
+        "resident_id": 8,
+        "issue_type": "Waste \/ Trash",
+        "title": "scattered trash",
+        "description": "too much baho kaayo",
+        "location": "near barangay hall",
+        "status": "Resolved",
+        "assigned_to": "Road Maintenance Team",
+        "date_submitted": "May 26, 2026",
+        "priority": "Medium",
+        "timeline": [
+            "Submitted",
+            "Reviewed",
+            "Assigned",
+            "Fixed"
+        ],
+        "comments": [
+            {
+                "sender": "Ana Mercado",
+                "message": "Report submitted with initial evidence.",
+                "date": "May 26, 2026 03:19 PM"
+            },
+            {
+                "sender": "Sylvie",
+                "message": "assigned staff",
+                "date": "May 26, 2026 03:20 PM"
+            },
+            {
+                "sender": "Sylvie",
+                "message": "solved already check evidence",
+                "date": "May 26, 2026 03:21 PM"
+            },
+            {
+                "sender": "Sylvie",
+                "message": "",
+                "date": "May 26, 2026 03:23 PM"
+            }
+        ],
+        "rating": null,
+        "pin": {
+            "x": 45,
+            "y": 69
+        },
+        "pin_x": 45,
+        "pin_y": 69,
+        "evidence": [
+            {
+                "type": "resident_upload",
+                "title": "Initial Report Photo",
+                "description": "Photo submitted by resident showing the reported issue.",
+                "image": "assets\/images\/sample-water-leak-before.jpg",
+                "uploaded_by": "Ana Mercado",
+                "uploaded_role": "resident",
+                "date": "May 26, 2026 03:19 PM"
+            }
+        ],
+        "resolution_evidence": [
+            {
+                "type": "official_resolution",
+                "title": "Resolution Photo",
+                "description": "Photo uploaded by official showing that the issue has been fixed.",
+                "image": "assets\/images\/sample-water-leak-after.jpg",
+                "uploaded_by": "Sylvie",
+                "uploaded_role": "official",
+                "date": "May 26, 2026 03:23 PM"
+            }
+        ],
+        "resident_confirmation": null,
+        "last_updated_at": "May 26, 2026 03:23 PM",
+        "last_updated_by": "Sylvie",
+        "last_updated_role": "official",
+        "assigned_at": "May 26, 2026 03:20 PM",
+        "assigned_by": "Sylvie",
+        "reviewed_at": "May 26, 2026 03:20 PM",
+        "official_updates": [
+            {
+                "sender": "Sylvie",
+                "status": "Pending",
+                "assigned_to": "Road Maintenance Team",
+                "message": "assigned staff",
+                "date": "May 26, 2026 03:20 PM"
+            },
+            {
+                "sender": "Sylvie",
+                "status": "In Progress",
+                "assigned_to": "Road Maintenance Team",
+                "message": "solved already check evidence",
+                "date": "May 26, 2026 03:21 PM"
+            },
+            {
+                "sender": "Sylvie",
+                "status": "Resolved",
+                "assigned_to": "Road Maintenance Team",
+                "message": "",
+                "date": "May 26, 2026 03:23 PM"
+            }
+        ],
+        "status_updated_at": "May 26, 2026 03:23 PM",
+        "status_updated_by": "Sylvie",
+        "resolved_at": "May 26, 2026 03:23 PM",
+        "resolved_by": "Sylvie"
     }
 ]
