@@ -1,9 +1,20 @@
 <?php
-global $feedback;
+global $feedback, $reports, $users;
 
 $currentUser = getCurrentUser();
 $isResident = $currentUser['role'] === 'resident';
-if (isSuperAdmin($currentUser)) {
+$residentReports = [];
+$residentFeedbackByReportId = [];
+$residentThreadReports = [];
+
+if ($isResident) {
+    $residentReports = getReportsByResident($reports ?? [], $currentUser['id']);
+    $feedbackItems = getFeedbackByResident($feedback ?? [], $currentUser['id']);
+    foreach ($feedbackItems as $item) {
+        $residentFeedbackByReportId[(int) ($item['report_id'] ?? 0)] = $item;
+    }
+    $residentThreadReports = $residentReports;
+} elseif (isSuperAdmin($currentUser)) {
     $feedbackItems = $feedback ?? [];
 } elseif (in_array($currentUser['role'], ['admin', 'official'], true)) {
     $feedbackItems = getFeedbackByBarangay($feedback ?? [], $currentUser['barangay_id']);
@@ -18,6 +29,18 @@ if ($search !== '') {
             || stripos($item['issue_type'], $search) !== false
             || stripos($item['location'], $search) !== false
             || stripos($item['last_message'], $search) !== false;
+    }));
+}
+if ($isResident && $search !== '') {
+    $residentThreadReports = array_values(array_filter($residentThreadReports, function ($report) use ($search, $residentFeedbackByReportId) {
+        $threadFeedback = $residentFeedbackByReportId[(int) ($report['id'] ?? 0)] ?? null;
+
+        return stripos($report['ticket_id'], $search) !== false
+            || stripos($report['resident_name'] ?? '', $search) !== false
+            || stripos($report['issue_type'], $search) !== false
+            || stripos($report['location'], $search) !== false
+            || stripos($report['title'] ?? '', $search) !== false
+            || ($threadFeedback && stripos($threadFeedback['last_message'] ?? '', $search) !== false);
     }));
 }
 
@@ -41,7 +64,8 @@ if (!$isResident && isset($_GET['filter'])) {
     }));
 }
 
-$selectedId = isset($_GET['feedback_id']) ? (int) $_GET['feedback_id'] : ($feedbackItems[0]['id'] ?? 0);
+$selectedId = isset($_GET['feedback_id']) ? (int) $_GET['feedback_id'] : ($isResident ? 0 : ($feedbackItems[0]['id'] ?? 0));
+$selectedReportId = isset($_GET['report_id']) ? (int) $_GET['report_id'] : 0;
 $selectedFeedback = null;
 foreach ($feedbackItems as $item) {
     if ($item['id'] === $selectedId) {
@@ -49,16 +73,37 @@ foreach ($feedbackItems as $item) {
         break;
     }
 }
-$selectedFeedback = $selectedFeedback ?? ($feedbackItems[0] ?? null);
-$selectedReport = $selectedFeedback ? getReportById($selectedFeedback['report_id']) : null;
+if ($isResident) {
+    if (!$selectedReportId && $selectedFeedback) {
+        $selectedReportId = (int) ($selectedFeedback['report_id'] ?? 0);
+    }
+    if (!$selectedReportId && !empty($residentThreadReports)) {
+        $selectedReportId = (int) $residentThreadReports[0]['id'];
+    }
 
-$awaitingCount = countFeedbackByStatus($feedbackItems, 'Awaiting Reply');
+    $selectedReport = $selectedReportId ? getReportById($reports ?? [], $selectedReportId) : null;
+    if ($selectedReport && (int) ($selectedReport['resident_id'] ?? 0) !== (int) $currentUser['id']) {
+        $selectedReport = null;
+    }
+    $selectedFeedback = $selectedReport ? ($residentFeedbackByReportId[(int) $selectedReport['id']] ?? null) : null;
+} else {
+    $selectedFeedback = $selectedFeedback ?? ($feedbackItems[0] ?? null);
+    $selectedReport = $selectedFeedback ? getReportById($selectedFeedback['report_id']) : null;
+}
+
+$awaitingCount = $isResident
+    ? count(array_filter($residentReports, fn($report) => ($residentFeedbackByReportId[(int) $report['id']]['feedback_status'] ?? 'Awaiting Reply') === 'Awaiting Reply'))
+    : countFeedbackByStatus($feedbackItems, 'Awaiting Reply');
 $ratedCount = countFeedbackByStatus($feedbackItems, 'Rated');
-$readyToRateCount = count(array_filter($feedbackItems, fn($item) => canResidentRate($item)));
-$resolvedWithFeedback = count(array_filter($feedbackItems, fn($item) => isResolvedReport($item) && !empty($item['last_message'])));
+$readyToRateCount = $isResident
+    ? count(array_filter($residentReports, fn($report) => ($report['status'] ?? '') === 'Resolved' && empty($residentFeedbackByReportId[(int) $report['id']]['rating'])))
+    : count(array_filter($feedbackItems, fn($item) => canResidentRate($item)));
+$resolvedWithFeedback = $isResident
+    ? count(array_filter($residentReports, fn($report) => ($report['status'] ?? '') === 'Resolved' && !empty($residentFeedbackByReportId[(int) $report['id']]['last_message'])))
+    : count(array_filter($feedbackItems, fn($item) => isResolvedReport($item) && !empty($item['last_message'])));
 ?>
 <section class="stats-row">
-    <article class="stat-card"><span><?php echo $isResident ? 'My Threads' : 'Total Feedback'; ?></span><strong><?php echo count($feedbackItems); ?></strong><small>Report conversations</small></article>
+    <article class="stat-card"><span><?php echo $isResident ? 'My Threads' : 'Total Feedback'; ?></span><strong><?php echo $isResident ? count($residentReports) : count($feedbackItems); ?></strong><small>Report conversations</small></article>
     <article class="stat-card warning"><span>Awaiting Reply</span><strong><?php echo e($awaitingCount); ?></strong><small>Needs response</small></article>
     <article class="stat-card"><span><?php echo $isResident ? 'Ready to Rate' : 'Rated'; ?></span><strong><?php echo e($isResident ? $readyToRateCount : $ratedCount); ?></strong><small>Service feedback</small></article>
     <article class="stat-card success"><span>Resolved With Feedback</span><strong><?php echo e($resolvedWithFeedback); ?></strong><small>Closed threads</small></article>
@@ -74,34 +119,55 @@ $resolvedWithFeedback = count(array_filter($feedbackItems, fn($item) => isResolv
                 </div>
             </div>
             <div class="feedback-thread-list">
-                <?php foreach ($feedbackItems as $item): ?>
-                    <a class="feedback-thread-card <?php echo $selectedFeedback && $selectedFeedback['id'] === $item['id'] ? 'active' : ''; ?>" href="index.php?page=messages&feedback_id=<?php echo e($item['id']); ?>">
-                        <strong><?php echo e($item['ticket_id']); ?></strong>
-                        <span><?php echo e($item['issue_type']); ?></span>
-                        <small><?php echo e($item['feedback_status']); ?></small>
+                <?php foreach ($residentThreadReports as $report): ?>
+                    <?php
+                    $threadFeedback = $residentFeedbackByReportId[(int) $report['id']] ?? null;
+                    $feedbackStatus = $threadFeedback['feedback_status'] ?? 'Awaiting Reply';
+                    $residentName = $report['resident_name'] ?? getUserNameById($users ?? [], $report['resident_id'] ?? null);
+                    $threadHref = $threadFeedback
+                        ? 'index.php?page=messages&feedback_id=' . urlencode((string) $threadFeedback['id'])
+                        : 'index.php?page=messages&report_id=' . urlencode((string) $report['id']);
+                    $isActiveThread = $selectedReport && (int) $selectedReport['id'] === (int) $report['id'];
+                    ?>
+                    <a class="feedback-thread-card report-thread-card <?php echo $isActiveThread ? 'active' : ''; ?>" href="<?php echo e($threadHref); ?>">
+                        <div class="thread-top">
+                            <strong><?php echo e($report['ticket_id']); ?></strong>
+                            <span class="status-badge <?php echo e(getStatusBadgeClass($report['status'])); ?>"><?php echo e($report['status']); ?></span>
+                        </div>
+                        <h4><?php echo e($report['title'] ?? $report['issue_type']); ?></h4>
+                        <p><?php echo e($report['issue_type']); ?></p>
+                        <div class="thread-meta">
+                            <span>Submitted by <?php echo e($residentName); ?></span>
+                            <span><?php echo e($report['date_submitted'] ?? 'No date'); ?> <?php echo e($report['time_submitted'] ?? 'No time'); ?></span>
+                        </div>
+                        <div class="thread-status-row">
+                            <span>Report Status</span>
+                            <strong><?php echo e($report['status']); ?></strong>
+                        </div>
+                        <div class="thread-status-row">
+                            <span>Feedback Status</span>
+                            <strong><?php echo e($feedbackStatus); ?></strong>
+                        </div>
                     </a>
                 <?php endforeach; ?>
+                <?php if (!$residentThreadReports): ?><p class="empty-state">No submitted reports found.</p><?php endif; ?>
             </div>
         </aside>
 
         <div class="panel">
-            <?php if ($selectedFeedback): ?>
+            <?php if ($selectedReport): ?>
                 <div class="feedback-detail-head">
                     <div>
-                        <span class="section-kicker"><?php echo e($selectedFeedback['ticket_id']); ?></span>
-                        <h2><?php echo e($selectedFeedback['issue_type']); ?> Feedback</h2>
-                        <p class="muted"><?php echo e($selectedFeedback['location']); ?></p>
+                        <span class="section-kicker"><?php echo e($selectedReport['ticket_id']); ?></span>
+                        <h2><?php echo e($selectedReport['issue_type']); ?> Feedback</h2>
+                        <p class="muted"><?php echo e($selectedReport['location']); ?></p>
                     </div>
-                    <?php if ($selectedReport): ?>
-                        <span class="status-badge <?php echo e(getTransparentStatusClass($selectedReport)); ?>"><?php echo e(getTransparentStatusLabel($selectedReport)); ?></span>
-                    <?php else: ?>
-                        <span class="status-badge <?php echo e(getStatusBadgeClass($selectedFeedback['status'])); ?>"><?php echo e($selectedFeedback['status']); ?></span>
-                    <?php endif; ?>
+                    <span class="status-badge <?php echo e(getTransparentStatusClass($selectedReport)); ?>"><?php echo e(getTransparentStatusLabel($selectedReport)); ?></span>
                 </div>
 
                 <div class="official-response-box">
                     <strong>Official Response / Update</strong>
-                    <p><?php echo e($selectedFeedback['official_reply'] ?: 'Awaiting official response from the barangay desk.'); ?></p>
+                    <p><?php echo e(($selectedFeedback['official_reply'] ?? '') ?: 'Awaiting official response from the barangay desk.'); ?></p>
                 </div>
                 <?php if ($selectedReport && needsFurtherAttention($selectedReport)): ?>
                     <div class="confirmation-card needs-attention">
@@ -118,19 +184,20 @@ $resolvedWithFeedback = count(array_filter($feedbackItems, fn($item) => isResolv
                 <?php endif; ?>
 
                 <div class="feedback-conversation">
-                    <?php foreach ($selectedFeedback['messages'] as $message): ?>
+                    <?php foreach (($selectedFeedback['messages'] ?? []) as $message): ?>
                         <div class="feedback-message <?php echo e($message['sender_role']); ?>">
                             <strong><?php echo e($message['sender_name']); ?></strong>
                             <p><?php echo e($message['message']); ?></p>
                             <small><?php echo e($message['date']); ?></small>
                         </div>
                     <?php endforeach; ?>
+                    <?php if (empty($selectedFeedback['messages'])): ?><p class="muted">No feedback messages yet for this report.</p><?php endif; ?>
                 </div>
 
                 <form method="post" class="stack-form">
-                    <input type="hidden" name="ticket" value="<?php echo e($selectedFeedback['ticket_id']); ?>">
+                    <input type="hidden" name="ticket" value="<?php echo e($selectedReport['ticket_id']); ?>">
                     <label>Add Comment<textarea class="form-control" name="comment" rows="4" placeholder="Write your comment or follow-up message"></textarea></label>
-                    <?php if (canResidentRate($selectedFeedback)): ?>
+                    <?php if ($selectedFeedback && canResidentRate($selectedFeedback)): ?>
                         <div class="rating-control">
                             <span>Rate Service</span>
                             <div class="star-row">
@@ -139,7 +206,7 @@ $resolvedWithFeedback = count(array_filter($feedbackItems, fn($item) => isResolv
                                 <?php endfor; ?>
                             </div>
                         </div>
-                    <?php elseif (isResolvedReport($selectedFeedback) && !empty($selectedFeedback['rating'])): ?>
+                    <?php elseif ($selectedFeedback && isResolvedReport($selectedFeedback) && !empty($selectedFeedback['rating'])): ?>
                         <div class="rating-control"><span>Rated</span><strong><?php echo e($selectedFeedback['rating']); ?>/5</strong></div>
                     <?php else: ?>
                         <div class="rating-control"><span>Rating</span><strong>Available when resolved</strong></div>
