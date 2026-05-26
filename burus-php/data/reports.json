@@ -1,338 +1,425 @@
 [
     {
-        "id":  1,
-        "ticket_id":  "#BRGY-2026-00123",
-        "barangay_id":  "tejero",
-        "resident_id":  1,
-        "issue_type":  "Water Leak",
-        "title":  "Broken water pipe near main road",
-        "description":  "Water has been leaking since morning near the intersection.",
-        "location":  "Main Street, Barangay Tejero",
-        "status":  "Pending",
-        "assigned_to":  "Unassigned",
-        "date_submitted":  "May 18, 2026",
-        "priority":  "Medium",
-        "timeline":  [
-                         "Submitted"
-                     ],
-        "comments":  [
-                         {
-                             "sender":  "Maria Santos",
-                             "message":  "Please check this as soon as possible.",
-                             "date":  "May 18, 2026"
-                         }
-                     ],
-        "rating":  null,
-        "pin":  {
-                    "x":  28,
-                    "y":  42
-                },
-        "evidence":  [
-                         {
-                             "type":  "resident_upload",
-                             "title":  "Initial Report Photo",
-                             "description":  "Photo submitted by resident showing the reported issue.",
-                             "image":  "assets/images/sample-water-leak-before.jpg",
-                             "uploaded_by":  "Maria Santos",
-                             "uploaded_role":  "resident",
-                             "date":  "May 18, 2026 09:30 AM"
-                         }
-                     ],
-        "resolution_evidence":  [
-
-                                ],
-        "resident_confirmation":  null,
-        "resident_name":  "Maria Santos",
-        "time_submitted":  "09:30 AM"
+        "id": 1,
+        "ticket_id": "#BRGY-2026-00123",
+        "barangay_id": "tejero",
+        "resident_id": 1,
+        "issue_type": "Water Leak",
+        "title": "Broken water pipe near main road",
+        "description": "Water has been leaking since morning near the intersection.",
+        "location": "Main Street, Barangay Tejero",
+        "status": "Pending",
+        "assigned_to": "Unassigned",
+        "date_submitted": "May 18, 2026",
+        "priority": "Medium",
+        "timeline": [
+            "Submitted"
+        ],
+        "comments": [
+            {
+                "sender": "Maria Santos",
+                "message": "Please check this as soon as possible.",
+                "date": "May 18, 2026"
+            }
+        ],
+        "rating": null,
+        "pin": {
+            "x": 28,
+            "y": 42
+        },
+        "evidence": [
+            {
+                "type": "resident_upload",
+                "title": "Initial Report Photo",
+                "description": "Photo submitted by resident showing the reported issue.",
+                "image": "assets\/images\/sample-water-leak-before.jpg",
+                "uploaded_by": "Maria Santos",
+                "uploaded_role": "resident",
+                "date": "May 18, 2026 09:30 AM"
+            }
+        ],
+        "resolution_evidence": [],
+        "resident_confirmation": null,
+        "resident_name": "Maria Santos",
+        "time_submitted": "09:30 AM"
     },
     {
-        "id":  2,
-        "ticket_id":  "#BRGY-2026-00124",
-        "barangay_id":  "tejero",
-        "resident_id":  4,
-        "issue_type":  "Street Light",
-        "title":  "Street light not working",
-        "description":  "The street light near the basketball court is broken.",
-        "location":  "Basketball Court, Barangay Tejero",
-        "status":  "In Progress",
-        "assigned_to":  "Maintenance Team A",
-        "date_submitted":  "May 17, 2026",
-        "priority":  "High",
-        "timeline":  [
-                         "Submitted",
-                         "Reviewed",
-                         "Assigned"
-                     ],
-        "comments":  [
-                         {
-                             "sender":  "Carlo Reyes",
-                             "message":  "This area is dark at night and needs repair.",
-                             "date":  "May 17, 2026"
-                         },
-                         {
-                             "sender":  "Maintenance Team A",
-                             "message":  "Inspection scheduled this afternoon.",
-                             "date":  "May 18, 2026"
-                         }
-                     ],
-        "rating":  null,
-        "pin":  {
-                    "x":  63,
-                    "y":  34
-                },
-        "evidence":  [
-                         {
-                             "type":  "resident_upload",
-                             "title":  "Initial Report Photo",
-                             "description":  "Photo submitted by resident showing the reported issue.",
-                             "image":  "assets/images/sample-street-light-before.jpg",
-                             "uploaded_by":  "Carlo Reyes",
-                             "uploaded_role":  "resident",
-                             "date":  "May 17, 2026 07:10 PM"
-                         }
-                     ],
-        "resolution_evidence":  [
-                                    {
-                                        "type":  "official_resolution",
-                                        "title":  "Resolution Photo",
-                                        "description":  "Photo uploaded by official showing that the issue has been fixed.",
-                                        "image":  "assets/images/sample-street-light-after.jpg",
-                                        "uploaded_by":  "Leah Cruz",
-                                        "uploaded_role":  "official",
-                                        "date":  "May 18, 2026 04:35 PM"
-                                    }
-                                ],
-        "resident_confirmation":  null,
-        "resident_name":  "Carlo Reyes",
-        "time_submitted":  "07:10 PM"
+        "id": 2,
+        "ticket_id": "#BRGY-2026-00124",
+        "barangay_id": "tejero",
+        "resident_id": 4,
+        "issue_type": "Street Light",
+        "title": "Street light not working",
+        "description": "The street light near the basketball court is broken.",
+        "location": "Basketball Court, Barangay Tejero",
+        "status": "In Progress",
+        "assigned_to": "Maintenance Team A",
+        "date_submitted": "May 17, 2026",
+        "priority": "High",
+        "timeline": [
+            "Submitted",
+            "Reviewed",
+            "Assigned"
+        ],
+        "comments": [
+            {
+                "sender": "Carlo Reyes",
+                "message": "This area is dark at night and needs repair.",
+                "date": "May 17, 2026"
+            },
+            {
+                "sender": "Maintenance Team A",
+                "message": "Inspection scheduled this afternoon.",
+                "date": "May 18, 2026"
+            }
+        ],
+        "rating": null,
+        "pin": {
+            "x": 63,
+            "y": 34
+        },
+        "evidence": [
+            {
+                "type": "resident_upload",
+                "title": "Initial Report Photo",
+                "description": "Photo submitted by resident showing the reported issue.",
+                "image": "assets\/images\/sample-street-light-before.jpg",
+                "uploaded_by": "Carlo Reyes",
+                "uploaded_role": "resident",
+                "date": "May 17, 2026 07:10 PM"
+            }
+        ],
+        "resolution_evidence": [
+            {
+                "type": "official_resolution",
+                "title": "Resolution Photo",
+                "description": "Photo uploaded by official showing that the issue has been fixed.",
+                "image": "assets\/images\/sample-street-light-after.jpg",
+                "uploaded_by": "Leah Cruz",
+                "uploaded_role": "official",
+                "date": "May 18, 2026 04:35 PM"
+            }
+        ],
+        "resident_confirmation": null,
+        "resident_name": "Carlo Reyes",
+        "time_submitted": "07:10 PM"
     },
     {
-        "id":  3,
-        "ticket_id":  "#BRGY-2026-00125",
-        "barangay_id":  "labangon",
-        "resident_id":  3,
-        "issue_type":  "Road Damage",
-        "title":  "Pothole near school entrance",
-        "description":  "Large pothole causing traffic and safety issues.",
-        "location":  "Katipunan Street, Barangay Labangon",
-        "status":  "Resolved",
-        "assigned_to":  "Road Maintenance Team",
-        "date_submitted":  "May 15, 2026",
-        "priority":  "High",
-        "timeline":  [
-                         "Submitted",
-                         "Reviewed",
-                         "Assigned",
-                         "Fixed"
-                     ],
-        "comments":  [
-                         {
-                             "sender":  "Road Maintenance Team",
-                             "message":  "Repair completed and area cleared.",
-                             "date":  "May 17, 2026"
-                         }
-                     ],
-        "rating":  5,
-        "pin":  {
-                    "x":  45,
-                    "y":  58
-                },
-        "evidence":  [
-                         {
-                             "type":  "resident_upload",
-                             "title":  "Initial Report Photo",
-                             "description":  "Photo submitted by resident showing the reported issue.",
-                             "image":  "assets/images/sample-road-before.jpg",
-                             "uploaded_by":  "Juan Dela Cruz",
-                             "uploaded_role":  "resident",
-                             "date":  "May 15, 2026 08:20 AM"
-                         }
-                     ],
-        "resolution_evidence":  [
-                                    {
-                                        "type":  "official_resolution",
-                                        "title":  "Resolution Photo",
-                                        "description":  "Photo uploaded by official showing that the issue has been fixed.",
-                                        "image":  "assets/images/sample-road-after.jpg",
-                                        "uploaded_by":  "Road Maintenance Team",
-                                        "uploaded_role":  "official",
-                                        "date":  "May 17, 2026 02:30 PM"
-                                    }
-                                ],
-        "resident_confirmation":  {
-                                      "confirmed":  false,
-                                      "status":  "Still Needs Attention",
-                                      "comment":  "The pothole was repaired, but the area still needs cleaning.",
-                                      "rating":  3,
-                                      "date":  "May 17, 2026 05:10 PM"
-                                  },
-        "resident_name":  "Juan Dela Cruz",
-        "time_submitted":  "08:20 AM"
+        "id": 3,
+        "ticket_id": "#BRGY-2026-00125",
+        "barangay_id": "labangon",
+        "resident_id": 3,
+        "issue_type": "Road Damage",
+        "title": "Pothole near school entrance",
+        "description": "Large pothole causing traffic and safety issues.",
+        "location": "Katipunan Street, Barangay Labangon",
+        "status": "Resolved",
+        "assigned_to": "Road Maintenance Team",
+        "date_submitted": "May 15, 2026",
+        "priority": "High",
+        "timeline": [
+            "Submitted",
+            "Reviewed",
+            "Assigned",
+            "Fixed"
+        ],
+        "comments": [
+            {
+                "sender": "Road Maintenance Team",
+                "message": "Repair completed and area cleared.",
+                "date": "May 17, 2026"
+            }
+        ],
+        "rating": 5,
+        "pin": {
+            "x": 45,
+            "y": 58
+        },
+        "evidence": [
+            {
+                "type": "resident_upload",
+                "title": "Initial Report Photo",
+                "description": "Photo submitted by resident showing the reported issue.",
+                "image": "assets\/images\/sample-road-before.jpg",
+                "uploaded_by": "Juan Dela Cruz",
+                "uploaded_role": "resident",
+                "date": "May 15, 2026 08:20 AM"
+            }
+        ],
+        "resolution_evidence": [
+            {
+                "type": "official_resolution",
+                "title": "Resolution Photo",
+                "description": "Photo uploaded by official showing that the issue has been fixed.",
+                "image": "assets\/images\/sample-road-after.jpg",
+                "uploaded_by": "Road Maintenance Team",
+                "uploaded_role": "official",
+                "date": "May 17, 2026 02:30 PM"
+            }
+        ],
+        "resident_confirmation": {
+            "confirmed": false,
+            "status": "Still Needs Attention",
+            "comment": "The pothole was repaired, but the area still needs cleaning.",
+            "rating": 3,
+            "date": "May 17, 2026 05:10 PM"
+        },
+        "resident_name": "Juan Dela Cruz",
+        "time_submitted": "08:20 AM"
     },
     {
-        "id":  4,
-        "ticket_id":  "#BRGY-2026-00126",
-        "barangay_id":  "tejero",
-        "resident_id":  6,
-        "issue_type":  "Waste / Trash",
-        "title":  "Uncollected trash beside market",
-        "description":  "Garbage has been left near the market entrance for two days.",
-        "location":  "Public Market, Barangay Tejero",
-        "status":  "Resolved",
-        "assigned_to":  "Sanitation Team",
-        "date_submitted":  "May 14, 2026",
-        "priority":  "Low",
-        "timeline":  [
-                         "Submitted",
-                         "Reviewed",
-                         "Assigned",
-                         "Fixed"
-                     ],
-        "comments":  [
-                         {
-                             "sender":  "Ana Lim",
-                             "message":  "The garbage was cleared this morning. Thank you.",
-                             "date":  "May 16, 2026"
-                         }
-                     ],
-        "rating":  4,
-        "pin":  {
-                    "x":  76,
-                    "y":  67
-                },
-        "evidence":  [
-                         {
-                             "type":  "resident_upload",
-                             "title":  "Initial Report Photo",
-                             "description":  "Photo submitted by resident showing the reported issue.",
-                             "image":  "assets/images/sample-trash-before.jpg",
-                             "uploaded_by":  "Ana Lim",
-                             "uploaded_role":  "resident",
-                             "date":  "May 14, 2026 10:05 AM"
-                         }
-                     ],
-        "resolution_evidence":  [
-                                    {
-                                        "type":  "official_resolution",
-                                        "title":  "Resolution Photo",
-                                        "description":  "Photo uploaded by official showing that the issue has been fixed.",
-                                        "image":  "assets/images/sample-trash-after.jpg",
-                                        "uploaded_by":  "Sanitation Team",
-                                        "uploaded_role":  "official",
-                                        "date":  "May 16, 2026 03:45 PM"
-                                    }
-                                ],
-        "resident_confirmation":  {
-                                      "confirmed":  true,
-                                      "status":  "Confirmed Resolved",
-                                      "comment":  "The trash has been collected and the area is now clean.",
-                                      "rating":  5,
-                                      "date":  "May 18, 2026 05:10 PM"
-                                  },
-        "resident_name":  "Unknown Resident",
-        "time_submitted":  "10:05 AM"
+        "id": 4,
+        "ticket_id": "#BRGY-2026-00126",
+        "barangay_id": "tejero",
+        "resident_id": 6,
+        "issue_type": "Waste \/ Trash",
+        "title": "Uncollected trash beside market",
+        "description": "Garbage has been left near the market entrance for two days.",
+        "location": "Public Market, Barangay Tejero",
+        "status": "Resolved",
+        "assigned_to": "Sanitation Team",
+        "date_submitted": "May 14, 2026",
+        "priority": "Low",
+        "timeline": [
+            "Submitted",
+            "Reviewed",
+            "Assigned",
+            "Fixed"
+        ],
+        "comments": [
+            {
+                "sender": "Ana Lim",
+                "message": "The garbage was cleared this morning. Thank you.",
+                "date": "May 16, 2026"
+            }
+        ],
+        "rating": 4,
+        "pin": {
+            "x": 76,
+            "y": 67
+        },
+        "evidence": [
+            {
+                "type": "resident_upload",
+                "title": "Initial Report Photo",
+                "description": "Photo submitted by resident showing the reported issue.",
+                "image": "assets\/images\/sample-trash-before.jpg",
+                "uploaded_by": "Ana Lim",
+                "uploaded_role": "resident",
+                "date": "May 14, 2026 10:05 AM"
+            }
+        ],
+        "resolution_evidence": [
+            {
+                "type": "official_resolution",
+                "title": "Resolution Photo",
+                "description": "Photo uploaded by official showing that the issue has been fixed.",
+                "image": "assets\/images\/sample-trash-after.jpg",
+                "uploaded_by": "Sanitation Team",
+                "uploaded_role": "official",
+                "date": "May 16, 2026 03:45 PM"
+            }
+        ],
+        "resident_confirmation": {
+            "confirmed": true,
+            "status": "Confirmed Resolved",
+            "comment": "The trash has been collected and the area is now clean.",
+            "rating": 5,
+            "date": "May 18, 2026 05:10 PM"
+        },
+        "resident_name": "Unknown Resident",
+        "time_submitted": "10:05 AM"
     },
     {
-        "id":  5,
-        "ticket_id":  "#BRGY-2026-00187",
-        "barangay_id":  "labangon",
-        "resident_id":  8,
-        "issue_type":  "Power Outage",
-        "title":  "Power outage near Casa Mira",
-        "description":  "wapay suga since two days ago",
-        "location":  "Casa Mira, Barangay Labangon",
-        "status":  "In Progress",
-        "assigned_to":  "Road Maintenance Team",
-        "date_submitted":  "May 19, 2026",
-        "priority":  "Medium",
-        "timeline":  [
-                         "Submitted",
-                         "Reviewed",
-                         "Assigned"
-                     ],
-        "comments":  [
-                         {
-                             "sender":  "Ana Mercado",
-                             "message":  "Report submitted with initial evidence.",
-                             "date":  "May 19, 2026 11:46 PM"
-                         },
-                         {
-                             "sender":  "Sylvie",
-                             "message":  "This update will be visible to the resident.",
-                             "date":  "May 19, 2026 11:49 PM"
-                         }
-                     ],
-        "rating":  null,
-        "pin":  {
-                    "x":  44,
-                    "y":  57
-                },
-        "pin_x":  44,
-        "pin_y":  57,
-        "evidence":  [
-                         {
-                             "type":  "resident_upload",
-                             "title":  "Initial Report Photo",
-                             "description":  "Photo submitted by resident showing the reported issue.",
-                             "image":  "assets/images/sample-water-leak-before.jpg",
-                             "uploaded_by":  "Ana Mercado",
-                             "uploaded_role":  "resident",
-                             "date":  "May 19, 2026 11:46 PM"
-                         }
-                     ],
-        "resolution_evidence":  [
-
-                                ],
-        "resident_confirmation":  null,
-        "resident_name":  "Ana Mercado",
-        "time_submitted":  "11:46 PM"
+        "id": 5,
+        "ticket_id": "#BRGY-2026-00187",
+        "barangay_id": "labangon",
+        "resident_id": 8,
+        "issue_type": "Power Outage",
+        "title": "Power outage near Casa Mira",
+        "description": "wapay suga since two days ago",
+        "location": "Casa Mira, Barangay Labangon",
+        "status": "In Progress",
+        "assigned_to": "Road Maintenance Team",
+        "date_submitted": "May 19, 2026",
+        "priority": "Medium",
+        "timeline": [
+            "Submitted",
+            "Reviewed",
+            "Assigned"
+        ],
+        "comments": [
+            {
+                "sender": "Ana Mercado",
+                "message": "Report submitted with initial evidence.",
+                "date": "May 19, 2026 11:46 PM"
+            },
+            {
+                "sender": "Sylvie",
+                "message": "This update will be visible to the resident.",
+                "date": "May 19, 2026 11:49 PM"
+            }
+        ],
+        "rating": null,
+        "pin": {
+            "x": 44,
+            "y": 57
+        },
+        "pin_x": 44,
+        "pin_y": 57,
+        "evidence": [
+            {
+                "type": "resident_upload",
+                "title": "Initial Report Photo",
+                "description": "Photo submitted by resident showing the reported issue.",
+                "image": "assets\/images\/sample-water-leak-before.jpg",
+                "uploaded_by": "Ana Mercado",
+                "uploaded_role": "resident",
+                "date": "May 19, 2026 11:46 PM"
+            }
+        ],
+        "resolution_evidence": [],
+        "resident_confirmation": null,
+        "resident_name": "Ana Mercado",
+        "time_submitted": "11:46 PM"
     },
     {
-        "id":  6,
-        "ticket_id":  "#BRGY-2026-00211",
-        "barangay_id":  "labangon",
-        "resident_id":  10,
-        "issue_type":  "Power Outage",
-        "title":  "BROWNOUT",
-        "description":  "way wifi gahapon pani",
-        "location":  "casa mira",
-        "status":  "Pending",
-        "assigned_to":  "Unassigned",
-        "date_submitted":  "May 20, 2026",
-        "priority":  "Medium",
-        "timeline":  [
-                         "Submitted"
-                     ],
-        "comments":  [
-                         {
-                             "sender":  "Lorie Uy",
-                             "message":  "Report submitted with initial evidence.",
-                             "date":  "May 20, 2026 01:34 PM"
-                         }
-                     ],
-        "rating":  null,
-        "pin":  {
-                    "x":  76,
-                    "y":  32
-                },
-        "pin_x":  76,
-        "pin_y":  32,
-        "evidence":  [
-                         {
-                             "type":  "resident_upload",
-                             "title":  "Initial Report Photo",
-                             "description":  "Photo submitted by resident showing the reported issue.",
-                             "image":  "assets/images/sample-water-leak-before.jpg",
-                             "uploaded_by":  "Lorie Uy",
-                             "uploaded_role":  "resident",
-                             "date":  "May 20, 2026 01:34 PM"
-                         }
-                     ],
-        "resolution_evidence":  [
-
-                                ],
-        "resident_confirmation":  null,
-        "resident_name":  "Lorie Uy",
-        "time_submitted":  "01:34 PM"
+        "id": 6,
+        "ticket_id": "#BRGY-2026-00211",
+        "barangay_id": "labangon",
+        "resident_id": 10,
+        "issue_type": "Power Outage",
+        "title": "BROWNOUT",
+        "description": "way wifi gahapon pani",
+        "location": "casa mira",
+        "status": "Pending",
+        "assigned_to": "Unassigned",
+        "date_submitted": "May 20, 2026",
+        "priority": "Medium",
+        "timeline": [
+            "Submitted"
+        ],
+        "comments": [
+            {
+                "sender": "Lorie Uy",
+                "message": "Report submitted with initial evidence.",
+                "date": "May 20, 2026 01:34 PM"
+            }
+        ],
+        "rating": null,
+        "pin": {
+            "x": 76,
+            "y": 32
+        },
+        "pin_x": 76,
+        "pin_y": 32,
+        "evidence": [
+            {
+                "type": "resident_upload",
+                "title": "Initial Report Photo",
+                "description": "Photo submitted by resident showing the reported issue.",
+                "image": "assets\/images\/sample-water-leak-before.jpg",
+                "uploaded_by": "Lorie Uy",
+                "uploaded_role": "resident",
+                "date": "May 20, 2026 01:34 PM"
+            }
+        ],
+        "resolution_evidence": [],
+        "resident_confirmation": null,
+        "resident_name": "Lorie Uy",
+        "time_submitted": "01:34 PM"
+    },
+    {
+        "id": 7,
+        "ticket_id": "#BRGY-2026-00210",
+        "barangay_id": "labangon",
+        "resident_id": 8,
+        "issue_type": "Road Repair",
+        "title": "large pothole near barangay hall",
+        "description": "the pothole has been causing traffic",
+        "location": "casa mira",
+        "status": "Resolved",
+        "assigned_to": "Road Maintenance Team",
+        "date_submitted": "May 26, 2026",
+        "priority": "High",
+        "timeline": [
+            "Submitted",
+            "Reviewed",
+            "Assigned",
+            "Fixed"
+        ],
+        "comments": [
+            {
+                "sender": "Ana Mercado",
+                "message": "Report submitted with initial evidence.",
+                "date": "May 26, 2026 02:52 PM"
+            },
+            {
+                "sender": "Sylvie",
+                "message": "working on it, assigning to staff",
+                "date": "May 26, 2026 02:54 PM"
+            },
+            {
+                "sender": "Sylvie",
+                "message": "resolved already",
+                "date": "May 26, 2026 02:56 PM"
+            }
+        ],
+        "rating": null,
+        "pin": {
+            "x": 63,
+            "y": 74
+        },
+        "pin_x": 63,
+        "pin_y": 74,
+        "evidence": [
+            {
+                "type": "resident_upload",
+                "title": "Initial Report Photo",
+                "description": "Photo submitted by resident showing the reported issue.",
+                "image": "assets\/images\/sample-water-leak-before.jpg",
+                "uploaded_by": "Ana Mercado",
+                "uploaded_role": "resident",
+                "date": "May 26, 2026 02:52 PM"
+            }
+        ],
+        "resolution_evidence": [
+            {
+                "type": "official_resolution",
+                "title": "Resolution Photo",
+                "description": "Photo uploaded by official showing that the issue has been fixed.",
+                "image": "assets\/images\/sample-water-leak-after.jpg",
+                "uploaded_by": "Sylvie",
+                "uploaded_role": "official",
+                "date": "May 26, 2026 02:56 PM"
+            }
+        ],
+        "resident_confirmation": null,
+        "last_updated_at": "May 26, 2026 02:56 PM",
+        "last_updated_by": "Sylvie",
+        "last_updated_role": "official",
+        "status_updated_at": "May 26, 2026 02:56 PM",
+        "status_updated_by": "Sylvie",
+        "assigned_at": "May 26, 2026 02:54 PM",
+        "assigned_by": "Sylvie",
+        "reviewed_at": "May 26, 2026 02:54 PM",
+        "official_updates": [
+            {
+                "sender": "Sylvie",
+                "status": "In Progress",
+                "assigned_to": "Road Maintenance Team",
+                "message": "working on it, assigning to staff",
+                "date": "May 26, 2026 02:54 PM"
+            },
+            {
+                "sender": "Sylvie",
+                "status": "Resolved",
+                "assigned_to": "Road Maintenance Team",
+                "message": "resolved already",
+                "date": "May 26, 2026 02:56 PM"
+            }
+        ],
+        "resolved_at": "May 26, 2026 02:56 PM",
+        "resolved_by": "Sylvie"
     }
 ]
