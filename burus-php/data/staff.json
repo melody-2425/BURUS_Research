@@ -19,5 +19,65 @@
         "name": "Sanitation Team",
         "department": "Environment",
         "status": "Available"
+    },
+    {
+        "id": 4,
+        "barangay_id": "labangon",
+        "name": "Lance",
+        "department": "Public Works",
+        "status": "Available",
+        "issue_types": [
+            "Waste \/ Trash"
+        ]
+    },
+    {
+        "id": 5,
+        "barangay_id": "labangon",
+        "name": "Julian",
+        "department": "Public Works",
+        "status": "Available",
+        "issue_types": [
+            "Drainage"
+        ]
+    },
+    {
+        "id": 6,
+        "barangay_id": "labangon",
+        "name": "Brandon",
+        "department": "Public Works",
+        "status": "Available",
+        "issue_types": [
+            "Power Outage"
+        ]
+    },
+    {
+        "id": 7,
+        "barangay_id": "labangon",
+        "name": "Kendrick",
+        "department": "Public Works",
+        "status": "Available",
+        "issue_types": [
+            "Street Light"
+        ]
+    },
+    {
+        "id": 8,
+        "barangay_id": "labangon",
+        "name": "Cydrik",
+        "department": "Public Works",
+        "status": "Available",
+        "issue_types": [
+            "Water Leak"
+        ]
+    },
+    {
+        "id": 9,
+        "barangay_id": "labangon",
+        "name": "Kate",
+        "department": "Public Works",
+        "status": "Available",
+        "issue_types": [
+            "Road Damage"
+        ]
     }
 ]
