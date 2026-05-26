@@ -158,6 +158,7 @@
     {
         "id": 7,
         "report_id": 7,
+<<<<<<< HEAD
         "ticket_id": "#BRGY-2026-00210",
         "barangay_id": "labangon",
         "resident_id": 8,
@@ -169,11 +170,25 @@
         "official_reply": "resolved already",
         "rating": null,
         "feedback_status": "Official Replied",
+=======
+        "ticket_id": "#BRGY-2026-00844",
+        "barangay_id": "labangon",
+        "resident_id": 8,
+        "resident_name": "Ana Mercado",
+        "issue_type": "Waste \/ Trash",
+        "location": "casa mira",
+        "status": "Pending",
+        "last_message": "Report submitted with initial evidence.",
+        "official_reply": "",
+        "rating": null,
+        "feedback_status": "Awaiting Reply",
+>>>>>>> 5b57c506f9be636a620967b8ba8ac689cc0d933b
         "messages": [
             {
                 "sender_role": "resident",
                 "sender_name": "Ana Mercado",
                 "message": "Report submitted with initial evidence.",
+<<<<<<< HEAD
                 "date": "May 26, 2026 02:52 PM"
             },
             {
@@ -187,6 +202,9 @@
                 "sender_name": "Sylvie",
                 "message": "resolved already",
                 "date": "May 26, 2026 02:56 PM"
+=======
+                "date": "May 26, 2026 07:12 AM"
+>>>>>>> 5b57c506f9be636a620967b8ba8ac689cc0d933b
             }
         ]
     }
