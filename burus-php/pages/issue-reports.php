@@ -61,15 +61,30 @@ $allBarangayReports = getReportsVisibleToUser($allReports ?? [], $currentUser);
         </form>
         <div class="table-wrap">
             <table class="report-table">
-                <thead><tr><th>Ticket ID</th><th>Issue Type</th><th>Resident</th><th>Date</th><th>Evidence</th><th>Priority</th><th>Status</th><th>Last Update</th><th>Actions</th></tr></thead>
+                <thead><tr><th>Ticket ID</th><th>Issue Type</th><th>Resident</th><th>Date</th><th>Time</th><th>Evidence</th><th>Priority</th><th>Status</th><th>Last Update</th><th>Actions</th></tr></thead>
                 <tbody>
                     <?php foreach ($reports as $report): ?>
                         <?php $resident = getUserById($report['resident_id']); ?>
+                        <?php
+                            $reportTime = $report['time_submitted'] ?? 'No time';
+
+                            if (($report['status'] ?? '') === 'Resolved' && !empty($report['resolved_at'])) {
+                                $resolvedTimestamp = strtotime($report['resolved_at']);
+                                $reportTime = $resolvedTimestamp ? date('h:i A', $resolvedTimestamp) : $report['resolved_at'];
+                            } elseif (!empty($report['status_updated_at'])) {
+                                $statusTimestamp = strtotime($report['status_updated_at']);
+                                $reportTime = $statusTimestamp ? date('h:i A', $statusTimestamp) : $report['status_updated_at'];
+                            } elseif (!empty($report['last_updated_at'])) {
+                                $updateTimestamp = strtotime($report['last_updated_at']);
+                                $reportTime = $updateTimestamp ? date('h:i A', $updateTimestamp) : $report['last_updated_at'];
+                            }
+                        ?>
                         <tr>
                             <td><strong><?php echo e($report['ticket_id']); ?></strong></td>
                             <td><?php echo e($report['issue_type']); ?><small><?php echo e($report['location']); ?></small></td>
                             <td><?php echo e($resident['name'] ?? 'Resident'); ?></td>
                             <td><?php echo e($report['date_submitted']); ?></td>
+                            <td><?php echo e($reportTime); ?></td>
                             <td>
                                 <span class="status-badge status-neutral"><?php echo count($report['evidence'] ?? []); ?> before</span>
                                 <small><?php echo count($report['resolution_evidence'] ?? []); ?> resolution proof</small>
@@ -83,7 +98,7 @@ $allBarangayReports = getReportsVisibleToUser($allReports ?? [], $currentUser);
                             <td><a class="table-link" href="index.php?page=report-details&id=<?php echo e($report['id']); ?>">Manage</a></td>
                         </tr>
                     <?php endforeach; ?>
-                    <?php if (!$reports): ?><tr><td colspan="9" class="empty-state">No reports found.</td></tr><?php endif; ?>
+                    <?php if (!$reports): ?><tr><td colspan="10" class="empty-state">No reports found.</td></tr><?php endif; ?>
                 </tbody>
             </table>
         </div>
