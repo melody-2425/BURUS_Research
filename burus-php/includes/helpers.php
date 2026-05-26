@@ -14,6 +14,12 @@ function e($value)
     return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
 }
 
+function phTimestamp($format = 'F j, Y h:i A')
+{
+    $date = new DateTime('now', new DateTimeZone('Asia/Manila'));
+    return $date->format($format);
+}
+
 function getCurrentUser()
 {
     global $users;

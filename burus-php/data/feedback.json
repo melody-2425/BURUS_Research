@@ -1,158 +1,158 @@
 [
     {
-        "id": 1,
-        "report_id": 1,
-        "ticket_id": "#BRGY-2026-00123",
-        "barangay_id": "tejero",
-        "resident_id": 1,
-        "resident_name": "Maria Santos",
-        "issue_type": "Water Leak",
-        "location": "Main Street, Barangay Tejero",
-        "status": "In Progress",
-        "last_message": "Is there an update on the repair schedule?",
-        "official_reply": "The maintenance team has already been assigned and will inspect the area today.",
-        "rating": null,
-        "feedback_status": "Official Replied",
-        "messages": [
-            {
-                "sender_role": "resident",
-                "sender_name": "Maria Santos",
-                "message": "Is there an update on the repair schedule?",
-                "date": "May 18, 2026 09:30 AM"
-            },
-            {
-                "sender_role": "official",
-                "sender_name": "Leah Cruz",
-                "message": "The maintenance team has already been assigned and will inspect the area today.",
-                "date": "May 18, 2026 10:15 AM"
-            }
-        ]
+        "id":  1,
+        "report_id":  1,
+        "ticket_id":  "#BRGY-2026-00123",
+        "barangay_id":  "tejero",
+        "resident_id":  1,
+        "resident_name":  "Maria Santos",
+        "issue_type":  "Water Leak",
+        "location":  "Main Street, Barangay Tejero",
+        "status":  "In Progress",
+        "last_message":  "Is there an update on the repair schedule?",
+        "official_reply":  "The maintenance team has already been assigned and will inspect the area today.",
+        "rating":  null,
+        "feedback_status":  "Official Replied",
+        "messages":  [
+                         {
+                             "sender_role":  "resident",
+                             "sender_name":  "Maria Santos",
+                             "message":  "Is there an update on the repair schedule?",
+                             "date":  "May 18, 2026 09:30 AM"
+                         },
+                         {
+                             "sender_role":  "official",
+                             "sender_name":  "Leah Cruz",
+                             "message":  "The maintenance team has already been assigned and will inspect the area today.",
+                             "date":  "May 18, 2026 10:15 AM"
+                         }
+                     ]
     },
     {
-        "id": 2,
-        "report_id": 2,
-        "ticket_id": "#BRGY-2026-00124",
-        "barangay_id": "tejero",
-        "resident_id": 4,
-        "resident_name": "Carlo Reyes",
-        "issue_type": "Street Light",
-        "location": "Basketball Court, Barangay Tejero",
-        "status": "Resolved",
-        "last_message": "Thank you, the street light is now working.",
-        "official_reply": "Thank you for confirming. This report has been marked resolved.",
-        "rating": 5,
-        "feedback_status": "Rated",
-        "messages": [
-            {
-                "sender_role": "resident",
-                "sender_name": "Carlo Reyes",
-                "message": "Thank you, the street light is now working.",
-                "date": "May 17, 2026 04:20 PM"
-            },
-            {
-                "sender_role": "official",
-                "sender_name": "Leah Cruz",
-                "message": "Thank you for confirming. This report has been marked resolved.",
-                "date": "May 17, 2026 04:35 PM"
-            }
-        ]
+        "id":  2,
+        "report_id":  2,
+        "ticket_id":  "#BRGY-2026-00124",
+        "barangay_id":  "tejero",
+        "resident_id":  4,
+        "resident_name":  "Carlo Reyes",
+        "issue_type":  "Street Light",
+        "location":  "Basketball Court, Barangay Tejero",
+        "status":  "Resolved",
+        "last_message":  "Thank you, the street light is now working.",
+        "official_reply":  "Thank you for confirming. This report has been marked resolved.",
+        "rating":  5,
+        "feedback_status":  "Rated",
+        "messages":  [
+                         {
+                             "sender_role":  "resident",
+                             "sender_name":  "Carlo Reyes",
+                             "message":  "Thank you, the street light is now working.",
+                             "date":  "May 17, 2026 04:20 PM"
+                         },
+                         {
+                             "sender_role":  "official",
+                             "sender_name":  "Leah Cruz",
+                             "message":  "Thank you for confirming. This report has been marked resolved.",
+                             "date":  "May 17, 2026 04:35 PM"
+                         }
+                     ]
     },
     {
-        "id": 3,
-        "report_id": 3,
-        "ticket_id": "#BRGY-2026-00125",
-        "barangay_id": "labangon",
-        "resident_id": 3,
-        "resident_name": "Juan Dela Cruz",
-        "issue_type": "Road Damage",
-        "location": "Katipunan Street, Barangay Labangon",
-        "status": "Resolved",
-        "last_message": "The pothole was repaired, but the area still needs cleaning.",
-        "official_reply": "",
-        "rating": 3,
-        "feedback_status": "Awaiting Reply",
-        "messages": [
-            {
-                "sender_role": "resident",
-                "sender_name": "Juan Dela Cruz",
-                "message": "The pothole was repaired, but the area still needs cleaning.",
-                "date": "May 16, 2026 01:10 PM"
-            }
-        ]
+        "id":  3,
+        "report_id":  3,
+        "ticket_id":  "#BRGY-2026-00125",
+        "barangay_id":  "labangon",
+        "resident_id":  3,
+        "resident_name":  "Juan Dela Cruz",
+        "issue_type":  "Road Damage",
+        "location":  "Katipunan Street, Barangay Labangon",
+        "status":  "Resolved",
+        "last_message":  "The pothole was repaired, but the area still needs cleaning.",
+        "official_reply":  "",
+        "rating":  3,
+        "feedback_status":  "Awaiting Reply",
+        "messages":  [
+                         {
+                             "sender_role":  "resident",
+                             "sender_name":  "Juan Dela Cruz",
+                             "message":  "The pothole was repaired, but the area still needs cleaning.",
+                             "date":  "May 16, 2026 01:10 PM"
+                         }
+                     ]
     },
     {
-        "id": 4,
-        "report_id": 4,
-        "ticket_id": "#BRGY-2026-00126",
-        "barangay_id": "tejero",
-        "resident_id": 6,
-        "resident_name": "Ana Lim",
-        "issue_type": "Waste \/ Trash",
-        "location": "Public Market, Barangay Tejero",
-        "status": "Resolved",
-        "last_message": "The waste was collected but the area needs regular monitoring.",
-        "official_reply": "",
-        "rating": 4,
-        "feedback_status": "Awaiting Reply",
-        "messages": [
-            {
-                "sender_role": "resident",
-                "sender_name": "Ana Lim",
-                "message": "The waste was collected but the area needs regular monitoring.",
-                "date": "May 16, 2026 08:45 AM"
-            }
-        ]
+        "id":  4,
+        "report_id":  4,
+        "ticket_id":  "#BRGY-2026-00126",
+        "barangay_id":  "tejero",
+        "resident_id":  6,
+        "resident_name":  "Ana Lim",
+        "issue_type":  "Waste / Trash",
+        "location":  "Public Market, Barangay Tejero",
+        "status":  "Resolved",
+        "last_message":  "The waste was collected but the area needs regular monitoring.",
+        "official_reply":  "",
+        "rating":  4,
+        "feedback_status":  "Awaiting Reply",
+        "messages":  [
+                         {
+                             "sender_role":  "resident",
+                             "sender_name":  "Ana Lim",
+                             "message":  "The waste was collected but the area needs regular monitoring.",
+                             "date":  "May 16, 2026 08:45 AM"
+                         }
+                     ]
     },
     {
-        "id": 5,
-        "report_id": 5,
-        "ticket_id": "#BRGY-2026-00187",
-        "barangay_id": "labangon",
-        "resident_id": 8,
-        "resident_name": "Ana Mercado",
-        "issue_type": "Power Outage",
-        "location": "casa mira",
-        "status": "In Progress",
-        "last_message": "Report submitted with initial evidence.",
-        "official_reply": "This update will be visible to the resident.",
-        "rating": null,
-        "feedback_status": "Official Replied",
-        "messages": [
-            {
-                "sender_role": "resident",
-                "sender_name": "Ana Mercado",
-                "message": "Report submitted with initial evidence.",
-                "date": "May 19, 2026 11:46 PM"
-            },
-            {
-                "sender_role": "official",
-                "sender_name": "Sylvie",
-                "message": "This update will be visible to the resident.",
-                "date": "May 19, 2026 11:49 PM"
-            }
-        ]
+        "id":  5,
+        "report_id":  5,
+        "ticket_id":  "#BRGY-2026-00187",
+        "barangay_id":  "labangon",
+        "resident_id":  8,
+        "resident_name":  "Ana Mercado",
+        "issue_type":  "Power Outage",
+        "location":  "casa mira",
+        "status":  "In Progress",
+        "last_message":  "Report submitted with initial evidence.",
+        "official_reply":  "This update will be visible to the resident.",
+        "rating":  null,
+        "feedback_status":  "Official Replied",
+        "messages":  [
+                         {
+                             "sender_role":  "resident",
+                             "sender_name":  "Ana Mercado",
+                             "message":  "Report submitted with initial evidence.",
+                             "date":  "May 19, 2026 11:46 PM"
+                         },
+                         {
+                             "sender_role":  "official",
+                             "sender_name":  "Sylvie",
+                             "message":  "This update will be visible to the resident.",
+                             "date":  "May 19, 2026 11:49 PM"
+                         }
+                     ]
     },
     {
-        "id": 6,
-        "report_id": 6,
-        "ticket_id": "#BRGY-2026-00211",
-        "barangay_id": "labangon",
-        "resident_id": 10,
-        "resident_name": "Lorie Uy",
-        "issue_type": "Power Outage",
-        "location": "casa mira",
-        "status": "Pending",
-        "last_message": "Report submitted with initial evidence.",
-        "official_reply": "",
-        "rating": null,
-        "feedback_status": "Awaiting Reply",
-        "messages": [
-            {
-                "sender_role": "resident",
-                "sender_name": "Lorie Uy",
-                "message": "Report submitted with initial evidence.",
-                "date": "May 20, 2026 01:34 PM"
-            }
-        ]
+        "id":  6,
+        "report_id":  6,
+        "ticket_id":  "#BRGY-2026-00211",
+        "barangay_id":  "labangon",
+        "resident_id":  10,
+        "resident_name":  "Lorie Uy",
+        "issue_type":  "Power Outage",
+        "location":  "casa mira",
+        "status":  "Pending",
+        "last_message":  "Report submitted with initial evidence.",
+        "official_reply":  "",
+        "rating":  null,
+        "feedback_status":  "Awaiting Reply",
+        "messages":  [
+                         {
+                             "sender_role":  "resident",
+                             "sender_name":  "Lorie Uy",
+                             "message":  "Report submitted with initial evidence.",
+                             "date":  "May 20, 2026 01:34 PM"
+                         }
+                     ]
     }
 ]

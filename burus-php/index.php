@@ -333,6 +333,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $feedback = loadJson('feedback.json');
         $updatedTicket = '';
         $updatedStatus = '';
+        $updateTimestamp = phTimestamp();
         foreach ($reports as &$report) {
             if ((int) $report['id'] === $reportId) {
                 if (!isSuperAdmin($currentUser) && (($report['barangay_id'] ?? '') !== ($currentUser['barangay_id'] ?? ''))) {
@@ -343,20 +344,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
 
                 $updatedTicket = $report['ticket_id'];
-                $report['status'] = $_POST['status'] ?? $report['status'];
+                $previousStatus = $report['status'] ?? 'Pending';
+                $previousAssignee = $report['assigned_to'] ?? 'Unassigned';
+                $newStatus = $_POST['status'] ?? $previousStatus;
+                $newAssignee = $_POST['assigned_to'] ?? $previousAssignee;
+                $report['status'] = $newStatus;
                 $updatedStatus = $report['status'];
-                $report['assigned_to'] = $_POST['assigned_to'] ?? $report['assigned_to'];
+                $report['assigned_to'] = $newAssignee;
+                $report['last_updated_at'] = $updateTimestamp;
+                $report['last_updated_by'] = $currentUser['name'];
+                $report['last_updated_role'] = $currentUser['role'];
+                if ($newStatus !== $previousStatus) {
+                    $report['status_updated_at'] = $updateTimestamp;
+                    $report['status_updated_by'] = $currentUser['name'];
+                }
+                if ($newAssignee !== $previousAssignee) {
+                    $report['assigned_at'] = $updateTimestamp;
+                    $report['assigned_by'] = $currentUser['name'];
+                }
+                if ($newAssignee !== 'Unassigned' && empty($report['assigned_at'])) {
+                    $report['assigned_at'] = $updateTimestamp;
+                    $report['assigned_by'] = $currentUser['name'];
+                }
                 $report['timeline'] = $report['timeline'] ?? ['Submitted'];
                 if (!in_array('Reviewed', $report['timeline'], true)) {
                     $report['timeline'][] = 'Reviewed';
+                    $report['reviewed_at'] = $report['reviewed_at'] ?? $updateTimestamp;
                 }
                 if (($report['assigned_to'] ?? 'Unassigned') !== 'Unassigned' && !in_array('Assigned', $report['timeline'], true)) {
                     $report['timeline'][] = 'Assigned';
+                    $report['assigned_at'] = $report['assigned_at'] ?? $updateTimestamp;
                 }
                 if ($report['status'] === 'Resolved') {
                     if (!in_array('Fixed', $report['timeline'], true)) {
                         $report['timeline'][] = 'Fixed';
                     }
+                    $report['resolved_at'] = $report['resolved_at'] ?? $updateTimestamp;
+                    $report['resolved_by'] = $currentUser['name'];
                     if (empty($report['resolution_evidence'])) {
                         $report['resolution_evidence'][] = [
                             'type' => 'official_resolution',
@@ -365,16 +389,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             'image' => 'assets/images/sample-water-leak-after.jpg',
                             'uploaded_by' => $currentUser['name'],
                             'uploaded_role' => $currentUser['role'],
-                            'date' => date('F j, Y h:i A'),
+                            'date' => $updateTimestamp,
                         ];
                     }
                 }
 
                 $officialMessage = trim($_POST['official_update'] ?? $_POST['reply'] ?? 'Report status updated.');
+                $report['official_updates'] = $report['official_updates'] ?? [];
+                $report['official_updates'][] = [
+                    'sender' => $currentUser['name'],
+                    'status' => $report['status'],
+                    'assigned_to' => $report['assigned_to'],
+                    'message' => $officialMessage,
+                    'date' => $updateTimestamp,
+                ];
                 $report['comments'][] = [
                     'sender' => $currentUser['name'],
                     'message' => $officialMessage,
-                    'date' => date('F j, Y h:i A'),
+                    'date' => $updateTimestamp,
                 ];
                 break;
             }
@@ -391,7 +423,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'sender_role' => 'official',
                     'sender_name' => $currentUser['name'],
                     'message' => $item['official_reply'],
-                    'date' => date('F j, Y h:i A'),
+                    'date' => $updateTimestamp,
                 ];
                 break;
             }

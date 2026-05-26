@@ -61,7 +61,7 @@ $allBarangayReports = getReportsVisibleToUser($allReports ?? [], $currentUser);
         </form>
         <div class="table-wrap">
             <table class="report-table">
-                <thead><tr><th>Ticket ID</th><th>Issue Type</th><th>Resident</th><th>Date</th><th>Evidence</th><th>Priority</th><th>Status</th><th>Actions</th></tr></thead>
+                <thead><tr><th>Ticket ID</th><th>Issue Type</th><th>Resident</th><th>Date</th><th>Evidence</th><th>Priority</th><th>Status</th><th>Last Update</th><th>Actions</th></tr></thead>
                 <tbody>
                     <?php foreach ($reports as $report): ?>
                         <?php $resident = getUserById($report['resident_id']); ?>
@@ -76,10 +76,14 @@ $allBarangayReports = getReportsVisibleToUser($allReports ?? [], $currentUser);
                             </td>
                             <td><span class="<?php echo e(getPriorityClass($report['priority'])); ?>"><?php echo e($report['priority']); ?></span></td>
                             <td><span class="status-badge <?php echo e(getTransparentStatusClass($report)); ?>"><?php echo e(getTransparentStatusLabel($report)); ?></span></td>
+                            <td>
+                                <?php echo e($report['last_updated_at'] ?? 'No official update'); ?>
+                                <?php if (!empty($report['status_updated_at'])): ?><small>Status updated: <?php echo e($report['status_updated_at']); ?></small><?php endif; ?>
+                            </td>
                             <td><a class="table-link" href="index.php?page=report-details&id=<?php echo e($report['id']); ?>">Manage</a></td>
                         </tr>
                     <?php endforeach; ?>
-                    <?php if (!$reports): ?><tr><td colspan="8" class="empty-state">No reports found.</td></tr><?php endif; ?>
+                    <?php if (!$reports): ?><tr><td colspan="9" class="empty-state">No reports found.</td></tr><?php endif; ?>
                 </tbody>
             </table>
         </div>

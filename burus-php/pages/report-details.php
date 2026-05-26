@@ -37,22 +37,25 @@ $isSolved = $report['status'] === 'Resolved';
 $reportEvidence = $report['evidence'] ?? [];
 $resolutionEvidence = $report['resolution_evidence'] ?? [];
 $residentConfirmation = $report['resident_confirmation'] ?? null;
+$officialUpdates = $report['official_updates'] ?? [];
 $showResolutionEvidence = $isSolved || !empty($resolutionEvidence);
 $latestOfficialUpdate = 'The report is waiting for official review.';
+$latestOfficialUpdateDate = '';
 
 foreach (array_reverse($report['comments']) as $comment) {
     if (($comment['sender'] ?? '') !== ($resident['name'] ?? 'Resident')) {
         $latestOfficialUpdate = $comment['message'];
+        $latestOfficialUpdateDate = $comment['date'] ?? '';
         break;
     }
 }
 
 $activityTimeline = [
-    ['title' => 'Resident submitted issue with evidence', 'done' => true, 'detail' => $report['date_submitted']],
-    ['title' => 'Official reviewed report', 'done' => in_array('Reviewed', $report['timeline'], true), 'detail' => 'Barangay desk review'],
-    ['title' => 'Official assigned staff', 'done' => in_array('Assigned', $report['timeline'], true), 'detail' => $report['assigned_to']],
+    ['title' => 'Resident submitted issue with evidence', 'done' => true, 'detail' => trim(($report['date_submitted'] ?? '') . ' ' . ($report['time_submitted'] ?? ''))],
+    ['title' => 'Official reviewed report', 'done' => in_array('Reviewed', $report['timeline'], true), 'detail' => $report['reviewed_at'] ?? 'Barangay desk review'],
+    ['title' => 'Official assigned staff', 'done' => in_array('Assigned', $report['timeline'], true), 'detail' => trim(($report['assigned_to'] ?? 'Unassigned') . (empty($report['assigned_at']) ? '' : ' on ' . $report['assigned_at']))],
     ['title' => 'Official uploaded resolution proof', 'done' => !empty($resolutionEvidence), 'detail' => $resolutionEvidence[0]['date'] ?? 'Awaiting proof'],
-    ['title' => 'Official marked as resolved', 'done' => $isSolved, 'detail' => $isSolved ? 'Resolved' : 'Not yet resolved'],
+    ['title' => 'Official marked as resolved', 'done' => $isSolved, 'detail' => $report['resolved_at'] ?? ($isSolved ? 'Resolved' : 'Not yet resolved')],
     ['title' => needsFurtherAttention($report) ? 'Resident requested follow-up' : 'Resident confirmed resolved', 'done' => !empty($residentConfirmation), 'detail' => $residentConfirmation['date'] ?? 'Awaiting resident confirmation'],
 ];
 ?>
@@ -72,7 +75,10 @@ $activityTimeline = [
                 <div><span>Submitted By</span><strong><?php echo e($resident['name'] ?? 'Resident'); ?></strong></div>
                 <div><span>Assigned Staff / Team</span><strong><?php echo e($report['assigned_to']); ?></strong></div>
                 <div><span>Date Submitted</span><strong><?php echo e($report['date_submitted']); ?></strong></div>
+                <div><span>Time Submitted</span><strong><?php echo e($report['time_submitted'] ?? 'No time'); ?></strong></div>
                 <div><span>Transparency Status</span><strong><?php echo e(getTransparentStatusLabel($report)); ?></strong></div>
+                <div><span>Last Official Update</span><strong><?php echo e($report['last_updated_at'] ?? 'No official update yet'); ?></strong></div>
+                <div><span>Status Updated</span><strong><?php echo e($report['status_updated_at'] ?? 'No status update yet'); ?></strong></div>
             </div>
         </article>
 
@@ -154,6 +160,15 @@ $activityTimeline = [
                 <?php endforeach; ?>
             </div>
             <div class="comment-list">
+                <?php if ($officialUpdates): ?>
+                    <?php foreach (array_reverse($officialUpdates) as $update): ?>
+                        <div class="comment-card official-update-card">
+                            <strong><?php echo e($update['sender'] ?? 'Official'); ?></strong>
+                            <p><?php echo e($update['message'] ?? 'Report updated.'); ?></p>
+                            <small>Status: <?php echo e($update['status'] ?? $report['status']); ?> | Assigned to: <?php echo e($update['assigned_to'] ?? $report['assigned_to']); ?> | <?php echo e($update['date'] ?? ''); ?></small>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
                 <?php foreach ($report['comments'] as $comment): ?>
                     <div class="comment-card">
                         <strong><?php echo e($comment['sender']); ?></strong>
@@ -208,8 +223,10 @@ $activityTimeline = [
             <div class="ticket-summary-list">
                 <div><span>Current Status</span><strong><span class="status-badge <?php echo e(getTransparentStatusClass($report)); ?>"><?php echo e(getTransparentStatusLabel($report)); ?></span></strong></div>
                 <div><span>Assigned Staff</span><strong><?php echo e($report['assigned_to']); ?></strong></div>
+                <div><span>Assigned At</span><strong><?php echo e($report['assigned_at'] ?? 'Not assigned yet'); ?></strong></div>
                 <div><span>Solved Status</span><strong class="<?php echo $isSolved ? 'solved-text' : 'unsolved-text'; ?>"><?php echo e($isSolved ? 'Official marked resolved' : 'Not solved'); ?></strong></div>
-                <div><span>Official Reply</span><p><?php echo e($latestOfficialUpdate); ?></p></div>
+                <div><span>Resolved At</span><strong><?php echo e($report['resolved_at'] ?? 'Not resolved yet'); ?></strong></div>
+                <div><span>Official Reply</span><p><?php echo e($latestOfficialUpdate); ?></p><?php if ($latestOfficialUpdateDate): ?><small><?php echo e($latestOfficialUpdateDate); ?></small><?php endif; ?></div>
             </div>
 
             <?php if ($isSolved && !$residentConfirmation): ?>
