@@ -1,6 +1,7 @@
 <?php
+global $reports, $users;
 $user = getCurrentUser();
-$myReports = getReportsByResident($reports, $user['id']);
+$myReports = getReportsByResident($reports ?? [], $user['id']);
 $statusFilter = $_GET['status'] ?? 'All';
 $search = trim($_GET['search'] ?? $_GET['q'] ?? '');
 
@@ -15,7 +16,7 @@ if ($search !== '') {
             || stripos($report['location'], $search) !== false;
     }));
 }
-$allReports = getReportsByResident($reports, $user['id']);
+$allReports = getReportsByResident($reports ?? [], $user['id']);
 ?>
 <section class="stats-row">
     <article class="stat-card"><span>Total Reports</span><strong><?php echo count($allReports); ?></strong><small>All submitted</small></article>
@@ -33,19 +34,33 @@ $allReports = getReportsByResident($reports, $user['id']);
     <div class="table-wrap">
         <table class="report-table">
             <thead>
-                <tr><th>Ticket ID</th><th>Issue Type</th><th>Date Submitted</th><th>Status</th><th>Action</th></tr>
+                <tr>
+                    <th>Ticket ID</th>
+                    <th>Issue</th>
+                    <th>Submitted By</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
             </thead>
             <tbody>
                 <?php foreach ($myReports as $report): ?>
+                    <?php $residentName = $report['resident_name'] ?? getUserNameById($users ?? [], $report['resident_id'] ?? null); ?>
                     <tr>
                         <td><strong><?php echo e($report['ticket_id']); ?></strong></td>
-                        <td><?php echo e($report['issue_type']); ?><small><?php echo e($report['title']); ?></small></td>
-                        <td><?php echo e($report['date_submitted']); ?></td>
-                        <td><span class="status-badge <?php echo e(getTransparentStatusClass($report)); ?>"><?php echo e(getTransparentStatusLabel($report)); ?></span></td>
-                        <td><a class="table-link" href="index.php?page=report-details&id=<?php echo e($report['id']); ?>">View</a></td>
+                        <td>
+                            <strong><?php echo e($report['title'] ?? $report['issue_type']); ?></strong>
+                            <small><?php echo e($report['issue_type']); ?></small>
+                        </td>
+                        <td><?php echo e($residentName); ?></td>
+                        <td><?php echo e($report['date_submitted'] ?? 'No date'); ?></td>
+                        <td><?php echo e($report['time_submitted'] ?? 'No time'); ?></td>
+                        <td><span class="status-badge <?php echo e(getStatusBadgeClass($report['status'])); ?>"><?php echo e($report['status']); ?></span></td>
+                        <td><a class="btn btn-outline btn-sm" href="index.php?page=report-details&id=<?php echo e(urlencode((string) $report['id'])); ?>">View Details</a></td>
                     </tr>
                 <?php endforeach; ?>
-                <?php if (!$myReports): ?><tr><td colspan="5" class="empty-state">No reports found.</td></tr><?php endif; ?>
+                <?php if (!$myReports): ?><tr><td colspan="7" class="empty-state">No reports found.</td></tr><?php endif; ?>
             </tbody>
         </table>
     </div>

@@ -44,6 +44,21 @@ function getUserById($id)
     return null;
 }
 
+function getUserNameById($users, $userId)
+{
+    if (!is_array($users)) {
+        return 'Unknown Resident';
+    }
+
+    foreach ($users as $user) {
+        if (($user['id'] ?? null) == $userId) {
+            return $user['name'] ?? 'Unknown Resident';
+        }
+    }
+
+    return 'Unknown Resident';
+}
+
 function findUserByEmailAndPassword($email, $password)
 {
     global $users;
@@ -156,6 +171,16 @@ function normalizeReportRecord($report)
     $report['resident_confirmation'] = $report['resident_confirmation'] ?? null;
     $report['timeline'] = $report['timeline'] ?? ['Submitted'];
     $report['comments'] = $report['comments'] ?? [];
+    $report['resident_name'] = $report['resident_name'] ?? getUserNameById($GLOBALS['users'] ?? [], $report['resident_id'] ?? null);
+    $report['date_submitted'] = $report['date_submitted'] ?? 'No date';
+
+    if (empty($report['time_submitted'])) {
+        $evidenceDate = $report['evidence'][0]['date'] ?? '';
+        $commentDate = $report['comments'][0]['date'] ?? '';
+        $sourceDate = preg_match('/\d{1,2}:\d{2}/', $evidenceDate) ? $evidenceDate : $commentDate;
+        $timestamp = $sourceDate ? strtotime($sourceDate) : false;
+        $report['time_submitted'] = $timestamp ? date('h:i A', $timestamp) : 'No time';
+    }
 
     return $report;
 }
